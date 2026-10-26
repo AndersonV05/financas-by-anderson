@@ -1,0 +1,7 @@
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Observação: config.js PODE ser versionado para o GitHub Pages funcionar,
+# pois a chave "anon" do Supabase é pública por natureza (o RLS é quem
+# protege os dados). NUNCA versione a chave "service_role".
