@@ -286,7 +286,24 @@ const DC='Alimentação|🍽️,Casa|🏠,Energia|⚡,Internet|📶,Transporte|�
 const SW='#22d3ee,#8b5cf6,#f472b6,#34d399,#fbbf24,#f87171,#60a5fa,#a78bfa,#fb923c,#2dd4bf,#e879f9,#facc15,#4ade80,#38bdf8,#f43f5e,#94a3b8'.split(',');
 const DPE={Dinheiro:'💵',PIX:'📱','Crédito':'💳','Débito':'🏦',Boleto:'🧾'};
 const mkA=(n,e,c,c2)=>({pf:{n,dn:n,e,av:e,c,c2,cav:c,cd:c2},cats:DC.split(',').map((x,i)=>({n:x.split('|')[0],e:x.split('|')[1],c:SW[i%16],on:1})),st:{paid:{e:'✅',c:'#34d399'},pend:{e:'⏳',c:'#fbbf24'},late:{e:'⚠️',c:'#f87171'},rec:{e:'💰',c:'#34d399'}},set:{theme:'dark',font:16,auto:true,n:{fat:1,late:1,rec:1,neg:1},accent:c,cPar:'frac',cCat:'simple',cBtn:'line',incOther:false,expOther:false,cardOther:false,consolidate:false,showCharts:true,incPeople:true},pe:{...DPE}});
-const def=()=>({acc:{a:mkA('Anderson','👨','#22d3ee','#8b5cf6'),b:mkA('Sabrina','👩','#f472b6','#a78bfa')},cur:'a',tx:[],cards:[],buys:[],loans:[],fav:[],people:[{id:'eu',name:'Eu',e:'🧑',c:'#22d3ee'},{id:'mae',name:'Mãe',e:'👩',c:'#f472b6'}]});
+const blankAccount=(name='Minha conta')=>mkA(name,'👤','#22d3ee','#8b5cf6');
+
+const def=()=>({
+  acc:{
+    a:blankAccount(),
+    b:blankAccount('Outra conta')
+  },
+  cur:'a',
+  tx:[],
+  cards:[],
+  buys:[],
+  loans:[],
+  fav:[],
+  people:[
+    {id:'eu',name:'Eu',e:'🧑',c:'#22d3ee'},
+    {id:'mae',name:'Mãe',e:'👩',c:'#f472b6'}
+  ]
+});
 let S;try{S=JSON.parse(localStorage.getItem(K))||def()}catch(e){S=def()}
 S.site=S.site||{accent:'#6d7cff'};if(!S.v){toC(S,[S.acc.a,S.acc.b]);S.v=2}
 ['a','b'].forEach(k=>{const st=S.acc[k]&&S.acc[k].set;if(st&&!st.accent)st.accent=S.site.accent;if(st){['incOther','expOther','cardOther','consolidate'].forEach(f=>{if(st[f]===undefined)st[f]=false});if(st.showCharts===undefined)st.showCharts=true;if(st.incPeople===undefined)st.incPeople=true}});
