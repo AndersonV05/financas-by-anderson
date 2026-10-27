@@ -528,7 +528,16 @@ function vSet(){const a=AC(),p=a.pf,t=a.set,s=V.sub||'pf',nm=esc(p.dn||p.n),oth=
  if(s==='sy')b=`<div class="grid g2"><div class="box"><b>Sincronização</b><div class="k" style="margin:.4rem 0">${SYNC==='ok'?'☁️ Sincronizado online: os dados aparecem em qualquer aparelho que abrir este link com acesso.':'💾 Salvo só neste navegador. A gravação online fica ativa quando o link é aberto por uma conta com acesso.'}</div></div>
  <div class="box"><b>Backup da conta ${nm}</b><div class="k" style="margin:.3rem 0 .9rem">Guarde seus dados num arquivo ou traga de volta um backup salvo. Afeta apenas esta conta.</div><input type="file" id="bf" accept="*/*" style="display:none"><div class="bkg"><button class="btn" data-a="dl">⬇️ Exportar backup</button><button class="btn g" data-a="csv">📊 Exportar CSV</button><button class="btn g" data-a="imp">📂 Importar backup</button><button class="btn d" data-a="rst">🗑️ Apagar tudo</button></div></div></div>`;
  return nav+b}
-function vCpl(){const r=rg(),its=items(r.y).filter(i=>(!r.a||i.date===r.a)),T={all:tot(its,'all',i=>pOK(i,i.p)?i.amt:0),a:tot(its,'a',i=>pOK(i,'a')?sh(i,'a'):0),b:tot(its,'b',i=>pOK(i,'b')?sh(i,'b'):0)},dv=its.filter(i=>i.c).sort((a,b)=>a.date<b.date?1:-1),o={a:0,b:0};
+function vCpl(){
+  if(typeof hasPartner!=='undefined'&&!hasPartner){
+    return '<div class="box empty" style="padding:32px;text-align:center">'
+      +'<div style="font-size:42px;margin-bottom:12px">👫</div>'
+      +'<h2 style="margin:0 0 8px">Nenhum compartilhamento ativo</h2>'
+      +'<div class="k" style="max-width:520px;margin:0 auto">'
+      +'A aba Casal só mostra os dados de outra pessoa depois que um convite for aceito.'
+      +'</div></div>';
+  }
+  const r=rg(),its=items(r.y).filter(i=>(!r.a||i.date===r.a)),T={all:tot(its,'all',i=>pOK(i,i.p)?i.amt:0),a:tot(its,'a',i=>pOK(i,'a')?sh(i,'a'):0),b:tot(its,'b',i=>pOK(i,'b')?sh(i,'b'):0)},dv=its.filter(i=>i.c).sort((a,b)=>a.date<b.date?1:-1),o={a:0,b:0};
  dv.filter(i=>!i.ac).forEach(i=>o[i.p]+=i.amt-Math.round(i.amt*i.sp/100));
  const net=o.a-o.b,who=net>0?'b':'a',kp=(l,v,x='')=>`<div class="box kp"><div class="k">${l}</div><div class="v ${x}">${R(v)}</div></div>`;
  const pb=p=>{const x=T[p];return`<div class="box"><div class="ph"><span class="av" style="background:${AC(p).pf.cav}">${avIn(AC(p).pf)}</span><b style="color:${pc(p)}">${esc(AC(p).pf.dn||AC(p).pf.n)}</b></div><div class="kv"><span>Receitas</span><b class="ok">${R(x.rec)}</b></div><div class="kv"><span>Despesas</span><b class="bad">${R(x.desp)}</b></div><div class="kv"><span>Saldo</span><b class="${x.saldo<0?'bad':''}">${R(x.saldo)}</b></div><div class="kv sm"><span>A receber ${R(x.pend)}</span><span>Guardado ${R(x.sv)}</span></div></div>`};
@@ -681,8 +690,7 @@ V.acc='a';
   var URL = window.SUPABASE_URL, KEY = window.SUPABASE_ANON_KEY;
   var CFG_OK = !!(URL && KEY) && !/SUA_URL_AQUI|SUA_ANON_KEY_AQUI/.test(URL + KEY);
   var sb=null, ME=null, MAIL=null, USER=null, PARTNER=null, hasPartner=false;
-  var savePT=null, booted=false, SHARE_STATE={}, MIGR_AVAILABLE=false, LEGACY=null;
-  try{ LEGACY = JSON.parse(localStorage.getItem(K)); }catch(e){ LEGACY=null; }
+  var savePT=null, booted=false, SHARE_STATE={};
   var $=function(id){return document.getElementById(id);};
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
@@ -808,16 +816,24 @@ V.acc='a';
     if(doc.site)S.site=doc.site;
   }
   function freshMine(){
-    var d=def();
-    S.acc.a=d.acc.a;
+    var name='Minha conta';
+    try{
+      name=(USER&&USER.user_metadata&&USER.user_metadata.display_name)
+        ||(MAIL?MAIL.split('@')[0]:'Minha conta');
+    }catch(e){}
+    S.acc.a=blankAccount(name);
     ['tx','cards','buys','loans'].forEach(function(n){
       S[n]=S[n].filter(function(x){return x.owner!=='a';});
-      (d[n]||[]).forEach(function(x){x.owner='a';S[n].push(x);});
     });
-    S.fav=d.fav||[]; S.people=d.people||[]; S.site=d.site||{accent:'#6d7cff'};
+    S.fav=[];
+    S.people=[
+      {id:'eu',name:'Eu',e:'🧑',c:'#22d3ee'},
+      {id:'mae',name:'Mãe',e:'👩',c:'#f472b6'}
+    ];
+    S.site={accent:'#6d7cff'};
   }
   function applyPartner(doc,info){
-    S.acc.b = doc.a || def().acc.b;
+    S.acc.b = doc.a || blankAccount(info&&info.name?info.name:'Outra conta');
     if(info){ S.acc.b.pf=S.acc.b.pf||{}; if(info.name){S.acc.b.pf.n=info.name;S.acc.b.pf.dn=info.name;} }
     ['tx','cards','buys','loans'].forEach(function(n){
       S[n]=S[n].filter(function(x){return x.owner!=='b';})
@@ -825,7 +841,7 @@ V.acc='a';
     });
   }
   function clearPartner(){
-    var d=def(); S.acc.b=d.acc.b;
+    S.acc.b=blankAccount('Outra conta');
     ['tx','cards','buys','loans'].forEach(function(n){
       S[n]=S[n].filter(function(x){return x.owner!=='b';});
     });
@@ -841,22 +857,6 @@ V.acc='a';
     savePT=setTimeout(function(){pushMine(true);},600);
   };
 
-  function legacyHasData(){
-    if(!LEGACY)return false;
-    return ['tx','buys','cards','loans'].some(function(n){
-      return (LEGACY[n]||[]).some(function(x){return x.owner==='a';});});
-  }
-  function migrateLegacy(){
-    if(!LEGACY)return;
-    ['tx','cards','buys','loans'].forEach(function(n){
-      (LEGACY[n]||[]).filter(function(x){return x.owner==='a';}).forEach(function(x){
-        var y=Object.assign({},x);y.owner='a';S[n].push(y);});
-    });
-    if(LEGACY.acc&&LEGACY.acc.a)S.acc.a=LEGACY.acc.a;
-    if(LEGACY.fav&&LEGACY.fav.length)S.fav=LEGACY.fav;
-    if(LEGACY.people&&LEGACY.people.length)S.people=LEGACY.people;
-    if(LEGACY.site)S.site=LEGACY.site;
-  }
 
   async function loadAll(){
     var firstTime=false;
@@ -866,14 +866,6 @@ V.acc='a';
       firstTime=true; freshMine();
       try{ if(USER&&USER.user_metadata&&USER.user_metadata.display_name){ S.acc.a.pf.n=S.acc.a.pf.dn=USER.user_metadata.display_name; } }catch(e){}
       await pushMine(true);
-    }
-    MIGR_AVAILABLE = firstTime && legacyHasData();
-    if(MIGR_AVAILABLE){
-      setTimeout(function(){
-        if(MIGR_AVAILABLE && confirm('Encontramos dados de finan\u00e7as salvos neste dispositivo. Deseja import\u00e1-los para a sua conta agora?')){
-          migrateLegacy(); MIGR_AVAILABLE=false; pushMine().then(redraw);
-        }
-      },700);
     }
     await loadPartner();
   }
@@ -936,7 +928,7 @@ V.acc='a';
         +'<input id="invMail" type="email" placeholder="email@da.pessoa" style="margin-top:8px">'
         +'<button class="a" data-act="invite">Enviar convite</button></div>';
     }
-    var migr = MIGR_AVAILABLE ? '<h4>Dados deste dispositivo</h4><div class="box"><div class="mini">H\u00e1 dados salvos neste navegador que ainda n\u00e3o est\u00e3o na sua conta.</div><button class="a" data-act="migrate">Importar agora</button></div>' : '';
+    var migr = '';
     window.__acctDlg.innerHTML='<div class="hd">Conta</div><div class="bd">'
       +'<h4>Sess\u00e3o</h4><div class="box"><div>'+esc(MAIL||'')+'</div>'
       +'<button class="g" data-act="logout" style="margin-top:10px">Sair</button></div>'
@@ -962,7 +954,6 @@ V.acc='a';
       if(act==='accept'){ var ra=await sb.rpc('accept_invite',{p_id:id}); if(ra.error)throw ra.error; await loadPartner(); redraw(); await refreshState(); renderAcct(); amsg('Compartilhamento ativado!',true); return; }
       if(act==='decline'||act==='cancel'){ var rc=await sb.rpc('cancel_invite',{p_id:id}); if(rc.error)throw rc.error; await refreshState(); renderAcct(); amsg(act==='decline'?'Convite recusado.':'Convite cancelado.',true); return; }
       if(act==='end'){ if(!confirm('Encerrar o compartilhamento? O acesso aos dados do parceiro ser\u00e1 removido.'))return; var re=await sb.rpc('end_share'); if(re.error)throw re.error; await loadPartner(); redraw(); await refreshState(); renderAcct(); amsg('Compartilhamento encerrado.',true); return; }
-      if(act==='migrate'){ if(!confirm('Importar os dados deste dispositivo para sua conta? Eles ser\u00e3o somados aos atuais.'))return; migrateLegacy(); MIGR_AVAILABLE=false; await pushMine(); redraw(); renderAcct(); amsg('Dados importados!',true); return; }
     }catch(e){ amsg(traduz(e.message||String(e)),false); }
   }
   /* ---------- realtime ---------- */
