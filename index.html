@@ -365,7 +365,7 @@ const ownP=i=>!i.person||i.person==='eu',incPpl=w=>AC(w).set.incPeople!==false,p
 const scv=(i,w)=>{const st=AC(w).set;if(st.consolidate)return i.amt;let v=sh(i,w);if(!v&&!i.c&&i.p!==w){const on=i.k==='inc'?st.incOther:i.k==='card'?st.cardOther:st.expOther;if(on)v=i.amt}return v};
 function tot(its,s,vf){const v=vf||(i=>s==='all'?i.amt:sh(i,s)),f=(a,p)=>sum(a.filter(p),v),I=its.filter(i=>i.k==='inc'),G=its.filter(i=>i.cat==='Dinheiro guardado'&&i.k!=='inc'),E=its.filter(i=>i.k!=='inc'&&i.cat!=='Dinheiro guardado'),C=its.filter(i=>i.k==='card');
  const rec=f(I,i=>i.paid),pend=f(I,i=>!i.paid),pg=f(E,i=>i.paid),ap=f(E,i=>!i.paid),sv=f(G,i=>i.paid);return{rec,pend,pg,ap,desp:pg+ap,sv,cd:f(C,()=>1),cda:f(C,i=>!i.paid),ln:f(its.filter(i=>i.k==='loan'),()=>1),saldo:rec-pg-sv}}
-const stt=i=>i.paid?(i.k==='inc'?'Recebido':'Já pago'):i.date<td()?'Atrasado':i.k==='inc'?'Pendente':'A pagar';
+const stt=i=>i.paid?(i.k==='inc'?'Recebido':'Já pago'):i.k==='card'?'Pendente':i.date<td()?'Atrasado':i.k==='inc'?'Pendente':'A pagar';
 // ---------- helpers de UI ----------
 const avIn=pf=>pf&&pf.photo?`<img class="avimg" src="${pf.photo}" alt="">`:((pf&&(pf.av||pf.e))||'🧑');
 const imgToData=(file,cb)=>{if(!file)return;const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const mx=240,s=Math.min(im.width,im.height),sx=(im.width-s)/2,sy=(im.height-s)/2,cv=document.createElement('canvas');cv.width=mx;cv.height=mx;const cx=cv.getContext('2d');try{cx.imageSmoothingQuality='high'}catch(e){}cx.drawImage(im,sx,sy,s,s,0,0,mx,mx);try{cb(cv.toDataURL('image/jpeg',0.85))}catch(e){toast('Não foi possível ler a imagem')}};im.onerror=()=>toast('Arquivo de imagem inválido');im.src=fr.result};fr.readAsDataURL(file)};
