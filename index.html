@@ -327,6 +327,10 @@ let S;try{S=JSON.parse(localStorage.getItem(K))||def()}catch(e){S=def()}
 S.site=S.site||{accent:'#6d7cff'};if(!S.v){toC(S,[S.acc.a,S.acc.b]);S.v=2}
 ['a','b'].forEach(k=>{const st=S.acc[k]&&S.acc[k].set;if(st&&!st.accent)st.accent=S.site.accent;if(st){['incOther','expOther','cardOther','consolidate'].forEach(f=>{if(st[f]===undefined)st[f]=false});if(st.showCharts===undefined)st.showCharts=true;}});
 S.people=(S.people&&S.people.length)?S.people:[{id:'eu',name:'Eu',e:'🧑',c:'#22d3ee'},{id:'mae',name:'Mãe',e:'👩',c:'#f472b6'}];
+S.peopleByOwner=S.peopleByOwner||{a:S.people.map(p=>({...p,showByOwner:{...(p.showByOwner||{})}})),b:null};
+if(!S.peopleByOwner.a)S.peopleByOwner.a=S.people.map(p=>({...p,showByOwner:{...(p.showByOwner||{})}}));
+S.peopleByOwner.b=S.peopleByOwner.b||null;
+S.people=S.peopleByOwner.a;
 S.people.forEach(pp=>{pp.showByOwner=pp.showByOwner||{};if(pp.id!=='eu'){['a','b'].forEach(k=>{if(pp.showByOwner[k]===undefined&&S.acc[k]&&S.acc[k].set&&S.acc[k].set.incPeople===false)pp.showByOwner[k]=false})}});['a','b'].forEach(k=>{if(S.acc[k]&&S.acc[k].set)delete S.acc[k].set.incPeople});
 let DB=null,pt=null,last={},SYNC='local';
 const slice=k=>({a:S.acc[k],tx:S.tx.filter(x=>x.owner===k),cards:S.cards.filter(x=>x.owner===k),buys:S.buys.filter(x=>x.owner===k),loans:S.loans.filter(x=>x.owner===k)});
@@ -670,7 +674,7 @@ moEl.onchange=e=>{if(e.target.value)setM(e.target.value)};
 function accUI(){const p=AC().pf,av=k=>`<span class="av" style="background:${AC(k).pf.cav}">${avIn(AC(k).pf)}</span>`,aks=document.body.classList.contains('has-partner')?['a','b']:['a'];
  if(!aks.includes(V.acc))V.acc='a';
  accEl.innerHTML=`<button class="accb" aria-haspopup="true" aria-expanded="${!!V.open}">${av(V.acc)}<span>${esc(p.dn||p.n)}</span> ▾</button>${V.open?`<div class="dd">${aks.map(k=>`<button data-p="${k}" class="${V.acc===k?'cur':''}">${av(k)}<span>${AC(k).pf.e} ${esc(AC(k).pf.dn||AC(k).pf.n)}${V.acc===k?'<small>✓ Conta atual</small>':'<small>↗ Entrar e editar esta conta</small>'}</span></button>`).join('')}</div>`:''}`}
-accEl.onclick=e=>{e.stopPropagation();const o=e.target.closest('[data-p]');if(o){V.acc=o.dataset.p;S.cur=V.acc;V.card=null;V.cvd=null;V.f={cat:'',st:'',pay:''};V.open=0;save();applySet();anim=1;draw()}else if(e.target.closest('.accb')){V.open=!V.open;accUI()}};
+accEl.onclick=e=>{e.stopPropagation();const o=e.target.closest('[data-p]');if(o){const next=o.dataset.p;if(next!==V.acc){S.peopleByOwner=S.peopleByOwner||{};S.peopleByOwner[V.acc]=S.people.map(p=>({...p,showByOwner:{...(p.showByOwner||{})}}));V.acc=next;S.people=(S.peopleByOwner[next]||S.peopleByOwner.a||[]).map(p=>({...p,showByOwner:{...(p.showByOwner||{})}}));S.peopleByOwner[next]=S.people;}S.cur=V.acc;V.card=null;V.cvd=null;V.f={cat:'',st:'',pay:''};V.open=0;save();applySet();anim=1;draw()}else if(e.target.closest('.accb')){V.open=!V.open;accUI()}};
 document.addEventListener('click',e=>{if(V.open&&!e.target.closest('#acc')){V.open=0;accUI()}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&V.open){V.open=0;accUI()}});
 const svg=p=>`<svg viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
@@ -825,7 +829,7 @@ V.acc='a';
     return { a:S.acc.a,
       tx:S.tx.filter(f('a')), cards:S.cards.filter(f('a')),
       buys:S.buys.filter(f('a')), loans:S.loans.filter(f('a')),
-      fav:S.fav, people:S.people, site:S.site };
+      fav:S.fav, people:S.peopleByOwner.a||S.people, site:S.site };
   }
   function applyMine(doc){
     if(doc.a) S.acc.a=doc.a;
@@ -834,7 +838,7 @@ V.acc='a';
               .concat((doc[n]||[]).map(function(x){var y=Object.assign({},x);y.owner='a';return y;}));
     });
     if(doc.fav)S.fav=doc.fav;
-    if(doc.people)S.people=doc.people;
+    if(doc.people){S.peopleByOwner=S.peopleByOwner||{};S.peopleByOwner.a=doc.people; if(V.acc==='a')S.people=doc.people;}
     if(doc.site)S.site=doc.site;
   }
   function freshMine(){
@@ -856,6 +860,9 @@ V.acc='a';
   }
   function applyPartner(doc,info){
     S.acc.b = doc.a || blankAccount(info&&info.name?info.name:'Outra conta');
+    S.peopleByOwner=S.peopleByOwner||{};
+    if(doc.people)S.peopleByOwner.b=doc.people;
+    else if(!S.peopleByOwner.b)S.peopleByOwner.b=(S.peopleByOwner.a||S.people).map(function(p){return Object.assign({},p,{showByOwner:{}})});
     if(info){ S.acc.b.pf=S.acc.b.pf||{}; if(info.name){S.acc.b.pf.n=info.name;S.acc.b.pf.dn=info.name;} }
     ['tx','cards','buys','loans'].forEach(function(n){
       S[n]=S[n].filter(function(x){return x.owner!=='b';})
@@ -864,6 +871,7 @@ V.acc='a';
   }
   function clearPartner(){
     S.acc.b=blankAccount('Outra conta');
+    S.peopleByOwner=S.peopleByOwner||{};S.peopleByOwner.b=null;
     ['tx','cards','buys','loans'].forEach(function(n){
       S[n]=S[n].filter(function(x){return x.owner!=='b';});
     });
@@ -878,7 +886,8 @@ V.acc='a';
       tx:S.tx.filter(f('b')).map(function(x){var y=Object.assign({},x);delete y.owner;return y;}),
       cards:S.cards.filter(f('b')).map(function(x){var y=Object.assign({},x);delete y.owner;return y;}),
       buys:S.buys.filter(f('b')).map(function(x){var y=Object.assign({},x);delete y.owner;return y;}),
-      loans:S.loans.filter(f('b')).map(function(x){var y=Object.assign({},x);delete y.owner;return y;})};
+      loans:S.loans.filter(f('b')).map(function(x){var y=Object.assign({},x);delete y.owner;return y;}),
+      people:S.peopleByOwner.b||S.people};
   }
   async function pushPartner(silent){
     if(!ME||!sb||!PARTNER||!hasPartner)return;
@@ -892,6 +901,7 @@ V.acc='a';
     }
   }
   window.__supaSave=function(){
+    S.peopleByOwner=S.peopleByOwner||{};S.peopleByOwner[V.acc]=S.people.map(function(p){return Object.assign({},p,{showByOwner:Object.assign({},p.showByOwner||{})})});
     if(!ME)return;
     clearTimeout(savePT);
     savePT=setTimeout(function(){if(V.acc==='b'&&hasPartner)pushPartner(true);else pushMine(true);},600);
@@ -908,6 +918,7 @@ V.acc='a';
       await pushMine(true);
     }
     await loadPartner();
+    S.peopleByOwner=S.peopleByOwner||{};S.people=(S.peopleByOwner[V.acc]||S.peopleByOwner.a||S.people||[]).map(function(p){return Object.assign({},p,{showByOwner:Object.assign({},p.showByOwner||{})})});
   }
   async function loadPartner(){
     hasPartner=false; PARTNER=null;
