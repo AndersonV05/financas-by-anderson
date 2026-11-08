@@ -473,6 +473,39 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .wallet-filter{margin:.65rem 0}
 @media(max-width:1120px){.wallet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.wallet-grid{grid-template-columns:1fr}.wallet-plastic{height:154px}.wallet-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Refinamento visual da aba Cartões */
+.wallet-hero{padding:1.05rem 1.25rem;border-radius:18px;box-shadow:0 6px 20px #00000012}
+.wallet-overview{grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem;margin-bottom:1.05rem}
+.wallet-overview .card-metric{padding:.8rem .9rem;border-radius:14px;box-shadow:0 3px 12px #0000000b}
+.wallet-overview .card-metric>span{width:34px;height:34px;flex-basis:34px;border-radius:10px;font-size:1rem}
+.wallet-overview .card-metric b{font-size:1rem}
+.wallet-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem;align-items:stretch}
+.wallet-card{display:grid;grid-template-columns:minmax(190px,.82fr) minmax(0,1.18fr);align-items:stretch;border-radius:17px;box-shadow:0 5px 18px #00000012}
+.wallet-plastic{height:auto;min-height:100%;aspect-ratio:auto;justify-content:space-between;padding:1rem;gap:.6rem;border-radius:0;cursor:pointer}
+.wallet-plastic:hover{filter:brightness(1.06)}
+.wallet-plastic:focus-visible,.wallet-actions button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wallet-chipline{gap:.4rem}
+.wallet-chipline>span{font-size:.78rem}
+.wallet-number{font-size:.78rem;letter-spacing:.08em}
+.wallet-info{padding:.85rem .9rem;min-width:0}
+.wallet-balance b{font-size:1.12rem}
+.wallet-stats,.wallet-dates{font-size:.68rem}
+.wallet-bill{padding:.55rem 0;margin:.5rem 0}
+.wallet-bill b{font-size:.9rem}
+.wallet-actions{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.wallet-actions .btn{min-width:0;padding:.45rem .5rem;font-size:.72rem}
+.wallet-actions .btn:last-child{grid-column:1/-1}
+.wallet-detail{scroll-margin-top:24px}
+.cp-overview-combined{margin:1rem 0 1.1rem;padding:1.15rem;border:1px solid var(--bd);border-radius:19px;background:linear-gradient(135deg,var(--panel),var(--bg2,var(--panel)));box-shadow:0 7px 22px #0000000d}
+.cp-overview-combined>header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.9rem}
+.cp-overview-combined h2{margin:.18rem 0;font-size:1.12rem}
+.cp-overview-combined p{margin:.2rem 0 0;color:var(--mu);font-size:.8rem}
+.cp-overview-combined .cp-stats{margin:0;gap:.65rem}
+.cp-overview-combined .cp-stat{min-width:0;padding:.8rem;border:1px solid var(--bd);border-radius:13px;background:var(--panel)}
+@media(max-width:1100px){.wallet-grid{grid-template-columns:1fr}.wallet-card{grid-template-columns:minmax(180px,.72fr) minmax(0,1.28fr)}}
+@media(max-width:680px){.wallet-overview{grid-template-columns:repeat(2,minmax(0,1fr))}.wallet-card{grid-template-columns:1fr}.wallet-plastic{height:142px;min-height:142px}.wallet-actions{grid-template-columns:1fr 1fr}.cp-overview-combined>header{flex-direction:column}.cp-overview-combined .cp-stats{grid-template-columns:1fr 1fr}}
+
 </style></head><body>
 <div class="app"><div class="tb"><button class="mb" id="mb" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><b class="bt">Finanças <em>By Anderson</em></b><div class="mo" id="mo"></div><div class="acc" id="acc"></div></div><main id="main"></main></div>
 <div class="scrim" id="sc"></div><aside class="side" id="nav"></aside>
@@ -790,12 +823,11 @@ function vCpl(){
   const splitRows=dv.slice(0,8).map(i=>`<div class="cp-activity"><div class="cp-activityicon">${ct(i.cat,i.p).e}</div><div class="cp-activitymain"><b>${esc(i.desc)}</b><span>${D(i.date)} · ${esc(i.cat||'Sem categoria')} · pago por ${pn(i.p)}</span><small>Divisão ${i.sp}% / ${100-i.sp}%</small></div><div class="cp-activityvalue"><b>${R(i.amt)}</b><button class="tag ${i.ac?'p':''}" data-a="stl" data-id="${i.id}">${i.ac?'✓ Acertado':'Marcar acerto'}</button></div></div>`).join('');
   const progress=all.desp?Math.min(100,all.paid/all.desp*100):0;
   return ctl()+`<section class="cp-welcome"><div class="cp-welcome-copy"><span class="cp-kicker">FINANÇAS COMPARTILHADAS</span><h2>Planejando lado a lado.</h2><p>Uma visão clara do que cada um recebe, gasta e mantém em aberto — sem misturar despesas comuns com compras no cartão.</p><div class="cp-welcome-meta"><span>◷ ${r.l}</span><span>● ${its.length} lançamentos considerados</span></div></div><div class="cp-welcome-art"><div class="cp-orbit cp-orbit1"></div><div class="cp-orbit cp-orbit2"></div><div class="cp-couple-emoji">♡</div><span class="cp-spark cp-s1">✦</span><span class="cp-spark cp-s2">✧</span></div></section>
-  <div class="cp-sectionhead"><div><span class="cp-kicker">VISÃO GERAL DOS DOIS</span><h2>Resumo financeiro do período</h2><p class="k">Os valores abaixo somam a parte de Anderson e a parte de Sabrina.</p></div><span class="cp-period">${r.l}</span></div>
-<div class="cp-sectionhead"><div><span class="cp-kicker">DETALHAMENTO POR PARTICIPANTE</span><h2>O seu e o dela, lado a lado</h2></div></div>
+  <div class="cp-sectionhead"><div><span class="cp-kicker">DETALHAMENTO POR PARTICIPANTE</span><h2>O seu e o dela, lado a lado</h2></div></div>
   <div class="cp-people">${personCard('a',A)}${personCard('b',B)}</div>
   <div class="cp-lowergrid"><section class="cp-panel"><div class="cp-panelhead"><div><span class="cp-kicker">ACOMPANHAMENTO</span><h2>Despesas comuns</h2><p class="k">Não inclui compras no cartão.</p></div><span class="cp-mini-pill">${Math.round(progress)}% pagas</span></div><div class="cp-progress"><i style="width:${progress}%"></i></div><div class="cp-progresslegend"><span>Pago <b>${R(all.paid)}</b></span><span>Total <b>${R(all.desp)}</b></span></div><div class="cp-minirow"><div><span>Receitas recebidas</span><b class="ok">${R(all.rec)}</b></div><div><span>Despesas em aberto</span><b class="wr">${R(all.ap)}</b></div></div></section>
   <section class="cp-panel cp-settle"><div class="cp-panelhead"><div><span class="cp-kicker">DIVISÃO E EQUILÍBRIO</span><h2>Acerto entre vocês</h2></div><span class="cp-settleicon">⚖️</span></div><div class="cp-settlemain">${net?`<span class="k">Para equilibrar as despesas divididas</span><strong>${pn(who)} deve ${R(Math.abs(net))}</strong><span class="cp-settlehint">a ${pn(who==='a'?'b':'a')}</span>`:'<strong class="ok">Tudo em equilíbrio!</strong><span class="cp-settlehint">Não há valores pendentes de acerto.</span>'}</div><div class="cp-settlefoot"><span>Dividido <b>${R(totalShared)}</b></span><span>Em aberto <b>${R(openShared)}</b></span></div></section></div>
-  <div class="cp-stats cp-stats-after-panels">${kp('Saldo combinado',all.saldo,'Saldo dos dois após despesas pagas',all.saldo<0?'bad':'ok')}${kp('Receitas recebidas',all.rec,duo(A.rec,B.rec),'ok')}${kp('Despesas comuns',all.desp,duo(A.desp,B.desp),'bad')}${kp('Compras no cartão',all.cd,duo(A.cd,B.cd))}</div>
+  <section class="cp-overview-combined"><header><div><span class="cp-kicker">VISÃO GERAL DOS DOIS</span><h2>Resumo financeiro do período</h2><p>Os valores abaixo somam a parte de Anderson e a parte de Sabrina.</p></div><span class="cp-period">${r.l}</span></header><div class="cp-stats cp-stats-after-panels">${kp('Saldo combinado',all.saldo,'Saldo dos dois após despesas pagas',all.saldo<0?'bad':'ok')}${kp('Receitas recebidas',all.rec,duo(A.rec,B.rec),'ok')}${kp('Despesas comuns',all.desp,duo(A.desp,B.desp),'bad')}${kp('Compras no cartão',all.cd,duo(A.cd,B.cd))}</div></section>
   <section class="cp-panel cp-activitypanel"><div class="cp-panelhead"><div><span class="cp-kicker">HISTÓRICO COMPARTILHADO</span><h2>Despesas divididas</h2><p class="k">Acompanhe quem pagou e o andamento de cada acerto.</p></div><span class="cp-mini-pill">${dv.length} registro${dv.length===1?'':'s'}</span></div>${splitRows?`<div class="cp-activitylist">${splitRows}</div>`:'<div class="cp-empty"><span>🧾</span><b>Nenhuma despesa dividida neste período</b><p>Ao registrar uma despesa, escolha “Dividir com o casal” para acompanhar o acerto aqui.</p></div>'}</section>`;
 }
 const FLG=f=>f==='Mastercard'?'<span class="mc"><i></i><i></i></span>':f==='Visa'?'<span class="vs">VISA</span>':f==='Elo'?'<span class="elo"><i style="color:#ffd400">e</i><i style="color:#35b7ff">l</i><i style="color:#ff5a3c">o</i></span>':f==='Amex'?'<span class="amx">AMERICAN<br>EXPRESS</span>':'<span class="vs" style="color:#ff6b6b">Hipercard</span>';
@@ -877,7 +909,7 @@ const A={stl:(v,id)=>{const t=S.tx.find(x=>x.id===id);if(t){t.settled=!t.settled
   save();draw()},
  ac:()=>form('Novo cartão',cardF(),{limit:0,close:1,due:10},o=>S.cards.push({id:uid(),owner:V.acc,...o})),
  ce:v=>{const c=S.cards.find(x=>x.id===v);form('Editar cartão',cardF(),c,o=>Object.assign(c,o),()=>{S.cards=S.cards.filter(x=>x!==c);S.buys=S.buys.filter(b=>b.card!==c.id)})},
- cv:v=>{V.card=V.card===v?null:v;draw();if(V.card)requestAnimationFrame(()=>{const el=main.querySelector('.wallet-detail');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})})},eb0:()=>buyForm({date:td(),n:1,cat:'Compras'}),eb:v=>buyForm(S.buys.find(b=>b.id===v)),
+ cv:v=>{if(!S.cards.some(c=>c.id===v&&c.owner===V.acc)){toast('Não foi possível localizar este cartão nesta conta');return}V.tab='cards';V.card=V.card===v?null:v;draw();if(V.card)requestAnimationFrame(()=>requestAnimationFrame(()=>{const el=main.querySelector('.wallet-detail');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});else toast('Não há compras deste cartão no período selecionado')}))},eb0:()=>buyForm({date:td(),n:1,cat:'Compras'}),eb:v=>buyForm(S.buys.find(b=>b.id===v)),
  pf:async v=>{const c=S.cards.find(x=>x.id===v),ys=rg().y,its=items(ys).filter(i=>i.card===v&&!i.paid),t=sum(its,i=>i.amt);if(await cf('Pagar fatura · '+c.name,'Marcar '+R(t)+' como pago?')){its.forEach(i=>S.buys.find(b=>b.id===i.id).pd.push(i.i));save();draw();toast('Fatura paga')}},
  al:()=>loanF({n:12,first:td()}),el:v=>loanF(S.loans.find(l=>l.id===v)),
  pl:v=>{const l=S.loans.find(x=>x.id===v);for(let i=0;i<l.n;i++)if(!l.pd.includes(i)){l.pd.push(i);break}save();draw();toast('Parcela paga')},
