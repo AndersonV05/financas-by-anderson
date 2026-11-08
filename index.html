@@ -428,6 +428,42 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 
 /* Correções funcionais das preferências de Cartões */
 .py-menu{position:relative;display:inline-flex;align-items:center}.py-menu>summary{list-style:none;cursor:pointer}.py-menu>summary::-webkit-details-marker{display:none}.py-menu-pop{position:absolute;right:0;top:calc(100% + 6px);z-index:50;min-width:175px;padding:.35rem;border:1px solid var(--bd);border-radius:11px;background:var(--panel);box-shadow:0 12px 28px #0005}.py-menu-pop button{display:block;width:100%;padding:.6rem .7rem;border:0;border-radius:8px;background:transparent;color:var(--tx);text-align:left;font-size:.75rem;cursor:pointer}.py-menu-pop button:hover{background:var(--accent-soft)}.bcard.cv-compact .bc-s,.bcard.cv-compact .bc-sub{display:none}.bcard.cv-detailed .bc-s,.bcard.cv-detailed .bc-sub{display:block}.wallet-purchase.cv-compact small{display:none}.wallet-purchase.cv-detailed small{display:block}.wallet-purchase.cv-detailed{padding:1rem}.wallet-purchase.cv-compact{padding:.6rem .75rem}
+
+/* Refinamento da aba Cartão: cartões menores e área de detalhes objetiva. */
+.wallet-hero{padding:1rem 1.2rem;margin-bottom:.8rem;border-radius:18px}
+.wallet-hero h2{font-size:1.32rem}
+.wallet-hero p{font-size:.8rem}
+.wallet-overview{gap:.55rem;margin-bottom:1rem}
+.card-metric{padding:.72rem .8rem;border-radius:14px;gap:.6rem}
+.card-metric>span{flex-basis:32px;width:32px;height:32px;border-radius:10px;font-size:1rem}
+.card-metric small{font-size:.68rem}
+.card-metric b{font-size:.98rem}
+.card-metric i{font-size:.64rem}
+.wallet-section-title{margin:.85rem 0 .6rem}
+.wallet-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;align-items:start}
+.wallet-card{border-radius:16px;box-shadow:0 5px 18px #0002}
+.wallet-plastic{aspect-ratio:auto;height:148px;min-height:148px;padding:.85rem .95rem;gap:.55rem;border-radius:0;font-size:.9rem}
+.wallet-plastic:after{width:145px;height:145px;border-width:20px;right:-45px;bottom:-90px}
+.wallet-credit{font-size:.56rem}
+.wallet-chipline>span{font-size:.72rem}
+.wallet-number{font-size:.82rem;letter-spacing:.11em}
+.wallet-bottom{font-size:.62rem}
+.wallet-bottom small{font-size:.5rem}
+.wallet-bottom b{font-size:.65rem}
+.wallet-info{padding:.75rem .85rem .8rem}
+.wallet-balance b{font-size:1.08rem}
+.wallet-progress{margin:.45rem 0 .35rem;height:6px}
+.wallet-stats,.wallet-dates{font-size:.66rem}
+.wallet-bill{gap:.45rem;padding:.55rem 0;margin:.5rem 0}
+.wallet-bill b{font-size:.88rem}
+.wallet-actions{gap:.3rem;margin-top:.6rem}
+.wallet-actions .btn{font-size:.72rem;padding:.42rem .48rem;min-height:32px}
+.wallet-detail{margin-top:1rem;padding:1rem;border-radius:17px;scroll-margin-top:18px}
+.wallet-detail-metrics{gap:.55rem;margin:.75rem 0}
+.wallet-detail .card-metric{padding:.65rem .75rem}
+.wallet-filter{margin:.65rem 0}
+@media(max-width:1120px){.wallet-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.wallet-grid{grid-template-columns:1fr}.wallet-plastic{height:154px}.wallet-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head><body>
 <div class="app"><div class="tb"><button class="mb" id="mb" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><b class="bt">Finanças <em>By Anderson</em></b><div class="mo" id="mo"></div><div class="acc" id="acc"></div></div><main id="main"></main></div>
 <div class="scrim" id="sc"></div><aside class="side" id="nav"></aside>
@@ -668,14 +704,14 @@ function vRep(){
  const fatBox=cards.length?`<div class="rep-card-grid">${cards.map(fcard).join('')}</div><div class="rep-total-open"><span><small>Compromissos em aberto</small><b>Todos os cartões</b></span><strong>${R(totOp)}</strong></div>`:'<div class="rep-empty-state"><span>💳</span><b>Nenhum cartão cadastrado</b><small>Cadastre um cartão para acompanhar suas faturas aqui.</small></div>';
  const charts=AC().set.showCharts?`<section class="rep-section"><div class="rep-section-head"><div><span class="rep-eyebrow">ANÁLISE VISUAL</span><h2>Entenda seus números</h2><p>Compare categorias e acompanhe a evolução financeira.</p></div></div><div class="rep-chart-grid"><article class="rep-chart-card"><div class="rep-chart-head"><span class="rep-chart-icon">▥</span><div><b>Despesas por categoria</b><small>Distribuição dos gastos no período</small></div></div>${catBars(its,s,8,i=>pOK(i,s,'reports')?scv(i,s):0)}</article><article class="rep-chart-card"><div class="rep-chart-head"><span class="rep-chart-icon">⌁</span><div><b>Evolução mensal</b><small>Receitas e despesas dos últimos meses</small></div></div>${evo(s,i=>pOK(i,s,'reports')?scv(i,s):0)}</article></div></section>`:'';
  return ctl()+`<section class="rep-hero"><div class="rep-hero-copy"><span class="rep-eyebrow">CENTRAL DE ANÁLISES</span><h2>Seu dinheiro, em perspectiva.</h2><p>Um panorama organizado das receitas, despesas, cartões e resultados de ${esc(AC().pf.dn||AC().pf.n)}.</p><div class="rep-hero-meta"><span>◷ ${r.l}</span><span>▤ ${its.length} lançamentos analisados</span></div></div><div class="rep-hero-art"><span>↗</span><i></i><b>R$</b></div></section>
- <section class="rep-section"><div class="rep-section-head"><div><span class="rep-eyebrow">RESUMO DO PERÍODO</span><h2>Visão geral</h2><p>Indicadores calculados a partir dos lançamentos visíveis nesta conta.</p></div><span class="rep-period">${r.l}</span></div><div class="rep-metrics">
+ <section class="rep-section"><div class="rep-section-head"><div><span class="rep-eyebrow">ACOMPANHAMENTO DE FATURAS</span><h2>Cartões e faturas</h2><p>Veja o valor das faturas, quanto já foi pago e o que ainda está em aberto.</p></div></div>${fatBox}</section>
+ <section class="rep-section rep-summary-after-cards"><div class="rep-section-head"><div><span class="rep-eyebrow">RESUMO DO PERÍODO</span><h2>Visão geral</h2><p>Indicadores calculados a partir dos lançamentos visíveis nesta conta.</p></div><span class="rep-period">${r.l}</span></div><div class="rep-metrics">
  ${metric('Receitas',T.rec+T.pend,'Recebidas e previstas','↗','rep-income')}
  ${metric('Despesas',T.desp,'Despesas registradas','↘','rep-expense')}
  ${metric('Compras no cartão',T.cd,'Compras do período','▣','rep-cardmetric')}
  ${metric('Empréstimos',T.ln,'Parcelas consideradas','⌁','rep-loan')}
  ${metric('Saldo do período',T.saldo,T.saldo<0?'Resultado negativo':'Resultado positivo','◉',T.saldo<0?'rep-negative':'rep-positive')}
- </div></section>
- <section class="rep-section"><div class="rep-section-head"><div><span class="rep-eyebrow">ACOMPANHAMENTO DE FATURAS</span><h2>Cartões e faturas</h2><p>Veja o valor das faturas, quanto já foi pago e o que ainda está em aberto.</p></div></div>${fatBox}</section>${charts}`;
+ </div></section>${charts}`;
 }
 function vNotif(){const t=td(),w=V.acc,r=rg(),a=AC(),pk=r.y.join();a.read=a.read||{};a.ndel=a.ndel||{};
  const its=items(r.y).filter(i=>i.p===w),notes=[],late=its.filter(i=>i.k!=='inc'&&!i.paid&&i.cat!=='Dinheiro guardado'&&isLate(i)),gr={};
@@ -739,11 +775,11 @@ function vCpl(){
   const progress=all.desp?Math.min(100,all.paid/all.desp*100):0;
   return ctl()+`<section class="cp-welcome"><div class="cp-welcome-copy"><span class="cp-kicker">FINANÇAS COMPARTILHADAS</span><h2>Planejando lado a lado.</h2><p>Uma visão clara do que cada um recebe, gasta e mantém em aberto — sem misturar despesas comuns com compras no cartão.</p><div class="cp-welcome-meta"><span>◷ ${r.l}</span><span>● ${its.length} lançamentos considerados</span></div></div><div class="cp-welcome-art"><div class="cp-orbit cp-orbit1"></div><div class="cp-orbit cp-orbit2"></div><div class="cp-couple-emoji">♡</div><span class="cp-spark cp-s1">✦</span><span class="cp-spark cp-s2">✧</span></div></section>
   <div class="cp-sectionhead"><div><span class="cp-kicker">VISÃO GERAL DOS DOIS</span><h2>Resumo financeiro do período</h2><p class="k">Os valores abaixo somam a parte de Anderson e a parte de Sabrina.</p></div><span class="cp-period">${r.l}</span></div>
-  <div class="cp-stats">${kp('Saldo combinado',all.saldo,'Saldo dos dois após despesas pagas',all.saldo<0?'bad':'ok')}${kp('Receitas recebidas',all.rec,duo(A.rec,B.rec),'ok')}${kp('Despesas comuns',all.desp,duo(A.desp,B.desp),'bad')}${kp('Compras no cartão',all.cd,duo(A.cd,B.cd))}</div>
 <div class="cp-sectionhead"><div><span class="cp-kicker">DETALHAMENTO POR PARTICIPANTE</span><h2>O seu e o dela, lado a lado</h2></div></div>
   <div class="cp-people">${personCard('a',A)}${personCard('b',B)}</div>
   <div class="cp-lowergrid"><section class="cp-panel"><div class="cp-panelhead"><div><span class="cp-kicker">ACOMPANHAMENTO</span><h2>Despesas comuns</h2><p class="k">Não inclui compras no cartão.</p></div><span class="cp-mini-pill">${Math.round(progress)}% pagas</span></div><div class="cp-progress"><i style="width:${progress}%"></i></div><div class="cp-progresslegend"><span>Pago <b>${R(all.paid)}</b></span><span>Total <b>${R(all.desp)}</b></span></div><div class="cp-minirow"><div><span>Receitas recebidas</span><b class="ok">${R(all.rec)}</b></div><div><span>Despesas em aberto</span><b class="wr">${R(all.ap)}</b></div></div></section>
   <section class="cp-panel cp-settle"><div class="cp-panelhead"><div><span class="cp-kicker">DIVISÃO E EQUILÍBRIO</span><h2>Acerto entre vocês</h2></div><span class="cp-settleicon">⚖️</span></div><div class="cp-settlemain">${net?`<span class="k">Para equilibrar as despesas divididas</span><strong>${pn(who)} deve ${R(Math.abs(net))}</strong><span class="cp-settlehint">a ${pn(who==='a'?'b':'a')}</span>`:'<strong class="ok">Tudo em equilíbrio!</strong><span class="cp-settlehint">Não há valores pendentes de acerto.</span>'}</div><div class="cp-settlefoot"><span>Dividido <b>${R(totalShared)}</b></span><span>Em aberto <b>${R(openShared)}</b></span></div></section></div>
+  <div class="cp-stats cp-stats-after-panels">${kp('Saldo combinado',all.saldo,'Saldo dos dois após despesas pagas',all.saldo<0?'bad':'ok')}${kp('Receitas recebidas',all.rec,duo(A.rec,B.rec),'ok')}${kp('Despesas comuns',all.desp,duo(A.desp,B.desp),'bad')}${kp('Compras no cartão',all.cd,duo(A.cd,B.cd))}</div>
   <section class="cp-panel cp-activitypanel"><div class="cp-panelhead"><div><span class="cp-kicker">HISTÓRICO COMPARTILHADO</span><h2>Despesas divididas</h2><p class="k">Acompanhe quem pagou e o andamento de cada acerto.</p></div><span class="cp-mini-pill">${dv.length} registro${dv.length===1?'':'s'}</span></div>${splitRows?`<div class="cp-activitylist">${splitRows}</div>`:'<div class="cp-empty"><span>🧾</span><b>Nenhuma despesa dividida neste período</b><p>Ao registrar uma despesa, escolha “Dividir com o casal” para acompanhar o acerto aqui.</p></div>'}</section>`;
 }
 const FLG=f=>f==='Mastercard'?'<span class="mc"><i></i><i></i></span>':f==='Visa'?'<span class="vs">VISA</span>':f==='Elo'?'<span class="elo"><i style="color:#ffd400">e</i><i style="color:#35b7ff">l</i><i style="color:#ff5a3c">o</i></span>':f==='Amex'?'<span class="amx">AMERICAN<br>EXPRESS</span>':'<span class="vs" style="color:#ff6b6b">Hipercard</span>';
@@ -825,7 +861,7 @@ const A={stl:(v,id)=>{const t=S.tx.find(x=>x.id===id);if(t){t.settled=!t.settled
   save();draw()},
  ac:()=>form('Novo cartão',cardF(),{limit:0,close:1,due:10},o=>S.cards.push({id:uid(),owner:V.acc,...o})),
  ce:v=>{const c=S.cards.find(x=>x.id===v);form('Editar cartão',cardF(),c,o=>Object.assign(c,o),()=>{S.cards=S.cards.filter(x=>x!==c);S.buys=S.buys.filter(b=>b.card!==c.id)})},
- cv:v=>{V.card=V.card===v?null:v;draw()},eb0:()=>buyForm({date:td(),n:1,cat:'Compras'}),eb:v=>buyForm(S.buys.find(b=>b.id===v)),
+ cv:v=>{V.card=V.card===v?null:v;draw();if(V.card)requestAnimationFrame(()=>{const el=main.querySelector('.wallet-detail');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})})},eb0:()=>buyForm({date:td(),n:1,cat:'Compras'}),eb:v=>buyForm(S.buys.find(b=>b.id===v)),
  pf:async v=>{const c=S.cards.find(x=>x.id===v),ys=rg().y,its=items(ys).filter(i=>i.card===v&&!i.paid),t=sum(its,i=>i.amt);if(await cf('Pagar fatura · '+c.name,'Marcar '+R(t)+' como pago?')){its.forEach(i=>S.buys.find(b=>b.id===i.id).pd.push(i.i));save();draw();toast('Fatura paga')}},
  al:()=>loanF({n:12,first:td()}),el:v=>loanF(S.loans.find(l=>l.id===v)),
  pl:v=>{const l=S.loans.find(x=>x.id===v);for(let i=0;i<l.n;i++)if(!l.pd.includes(i)){l.pd.push(i);break}save();draw();toast('Parcela paga')},
