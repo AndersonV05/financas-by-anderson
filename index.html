@@ -550,6 +550,30 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .cfg-preview-identity small{font-size:.62rem;color:var(--mu);letter-spacing:.06em}
 .cfg-preview-identity b{font-size:.82rem;overflow-wrap:anywhere}
 @media(max-width:620px){.wallet-grid{grid-template-columns:1fr!important}.wallet-plastic{aspect-ratio:1.8!important}.wallet-actions{grid-template-columns:1fr 1fr!important}.wallet-actions .btn:last-child{grid-column:1/-1}}
+
+/* Reestruturação integral da aba Cartões */
+.wallet-grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,390px),1fr))!important;gap:16px!important;align-items:start!important}
+.wallet-card{display:flex!important;flex-direction:column!important;overflow:hidden!important;border:1px solid var(--bd)!important;border-radius:18px!important;background:var(--panel)!important;min-width:0!important}
+.wallet-plastic{display:flex!important;position:relative!important;width:100%!important;min-height:0!important;height:auto!important;aspect-ratio:1.95!important;padding:16px 18px!important;border:0!important;border-radius:0!important;box-shadow:none!important;cursor:default!important;text-align:left!important}
+.wallet-info{padding:14px 16px 16px!important;min-width:0!important}
+.wallet-balance b{font-size:1.12rem!important}
+.wallet-progress{height:7px!important;margin:9px 0 6px!important}
+.wallet-stats,.wallet-dates{font-size:.72rem!important}
+.wallet-bill{margin:10px 0!important;padding:10px 0!important}
+.wallet-bill b{font-size:1rem!important}
+.wallet-actions{display:grid!important;grid-template-columns:1.2fr .8fr 1fr!important;gap:8px!important;margin-top:12px!important}
+.wallet-actions .btn{min-width:0!important;justify-content:center!important;padding:.65rem .45rem!important;font-size:.78rem!important;white-space:nowrap!important}
+.wallet-card.selected{border-color:var(--accent)!important;box-shadow:0 0 0 1px var(--accent-soft)!important}
+.wallet-detail{display:block!important;margin-top:20px!important;padding:18px!important;scroll-margin-top:18px!important}
+.wallet-detail header{display:flex!important;align-items:center!important}
+.wallet-detail-metrics{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
+.wallet-detail .wallet-filter{display:flex!important;align-items:center!important;gap:8px!important;padding:10px 0!important}
+.wallet-detail .wallet-filter select{min-width:145px!important;max-width:220px!important}
+.wallet-detail .wallet-filter .k{margin-right:auto!important}
+.wallet-detail .wallet-empty{margin-top:12px!important}
+.cfg-preview-identity{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+@media(max-width:760px){.wallet-grid{grid-template-columns:1fr!important}.wallet-detail-metrics{grid-template-columns:1fr!important}.wallet-detail .wallet-filter select{max-width:none!important;flex:1 1 100%!important}.wallet-actions{grid-template-columns:1fr 1fr!important}.wallet-actions .btn:last-child{grid-column:1/-1!important}}
+@media(max-width:460px){.wallet-plastic{aspect-ratio:1.65!important;padding:13px!important}.wallet-bottom b{font-size:.62rem!important}.wallet-actions .btn{font-size:.7rem!important}}
 </style></head><body>
 <div class="app"><div class="tb"><button class="mb" id="mb" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><b class="bt">Finanças <em>By Anderson</em></b><div class="mo" id="mo"></div><div class="acc" id="acc"></div></div><main id="main"></main></div>
 <div class="scrim" id="sc"></div><aside class="side" id="nav"></aside>
@@ -756,28 +780,101 @@ function cvPreview(cfg){
  const identity=`<div class="cfg-preview-identity"><span><small>RESPONSÁVEL</small><b>${cfg.show.who?(cfg.whoMode==='avatar'?'🧑':cfg.whoMode==='both'?'🧑 Anderson':'Anderson'):'Oculto'}</b></span><span><small>CARTÃO</small><b>${cfg.show.card?(cfg.cardMode==='icon'?'💳':cfg.cardMode==='both'?'💳 Banco do Brasil':'Banco do Brasil'):'Oculto'}</b></span></div>`;
  return `<div class="cfg-preview-results"><div class="cfg-preview-state"><span class="cfg-eyebrow">COMPRA DE EXEMPLO</span>${render(pending)}${identity}</div></div>`;
 }
+
 function vCards(){
- const r=rg(),w=String(V.acc),its=items(r.y).filter(i=>!r.a||i.date===r.a),cs=S.cards.filter(c=>String(c.owner??'')===w);
- const used=c=>sum(S.buys.filter(b=>String(b.card)===String(c.id)&&(b.owner===undefined||b.owner===null||b.owner===''||String(b.owner)===String(w))),b=>{let x=0;for(let i=0;i<b.n;i++)if(!bpaid(b,i))x+=inst(b,i);return x}),
- fat=c=>sum(its.filter(i=>i.card===c.id),i=>i.amt),op=c=>sum(its.filter(i=>i.card===c.id&&!i.paid),i=>i.amt),
- T={f:sum(cs,fat),u:sum(cs,used),l:sum(cs,c=>+c.limit)},
- metric=(t,v,sub,ic)=>`<article class="card-metric"><span>${ic}</span><div><small>${t}</small><b>${R(v)}</b><i>${sub}</i></div></article>`;
- const card=c=>{const u=used(c),pct=Math.min(100,c.limit?u/c.limit*100:0),l4=String(c.last4||'').replace(/\D/g,'').slice(-4)||'••••',ac=bankAc(c),lg=BLG[c.bank],nm=esc((AC(c.owner).pf.n||'').toUpperCase()),logo=lg?`<span class="bl bl-${lg[1]}">${lg[0]}</span>`:`<span class="bl">${esc(c.em||'💳')} ${esc(c.bank||c.name)}</span>`,active=V.card===c.id;
- const thisBill=fat(c),openBill=op(c),available=Math.max(0,(+c.limit||0)-u);
- return `<article class="wallet-card ${active?'selected':''}"><button class="wallet-plastic" type="button" data-a="cv" data-v="${c.id}" style="background:${bankBg(c)}"><span class="wallet-top">${logo}<span class="wallet-credit">CRÉDITO</span></span><span class="wallet-chipline"><i class="bkchip"></i><span>${esc(c.name)}</span></span><span class="wallet-number">•••• •••• •••• ${l4}</span><span class="wallet-bottom"><span><small>TITULAR</small><b>${nm}</b></span><span><small>VALIDADE</small><b>${esc(c.val||'••/••')}</b></span>${FLG(c.flag||'Mastercard')}</span></button>
- <div class="wallet-info"><div class="wallet-balance"><div><small>Limite disponível</small><b>${R(available)}</b></div><span>${pct.toFixed(0)}% utilizado</span></div><div class="wallet-progress"><i style="width:${pct}%;background:${ac}"></i></div><div class="wallet-stats"><span>Limite <b>${R(c.limit)}</b></span><span>Utilizado <b>${R(u)}</b></span></div><div class="wallet-bill"><div><small>Fatura do período</small><b>${R(thisBill)}</b></div><div><small>Em aberto</small><b class="${openBill?'wallet-warn':''}">${R(openBill)}</b></div></div><div class="wallet-dates"><span>Fecha dia <b>${esc(c.close)}</b></span><span>Vence dia <b>${esc(c.due)}</b></span></div><div class="wallet-actions"><button class="btn ${active?'':'g'} s" data-a="${active?'cvclose':'cv'}" data-v="${c.id}">${active?'Ocultar compras':'Ver compras'}</button><button class="btn g s" data-a="ce" data-v="${c.id}">Editar</button><button class="btn s" data-a="pf" data-v="${c.id}" ${openBill?'':'disabled'}>Pagar fatura</button></div></div></article>`};
- let det='';const c=cs.find(x=>String(x.id)===String(V.card));
- if(c){const cfg=cvSaved(),cf2=V.cvf||(V.cvf={sort:'recent',person:'',cat:''}),inP=b=>[...Array(b.n).keys()].some(i=>r.y.includes(addM(stm(b),i))),rem=b=>{let x=0;for(let i=0;i<b.n;i++)if(!bpaid(b,i))x++;return x};let bs=S.buys.filter(b=>String(b.card??b.cardId??'')===String(c.id)&&(b.owner===undefined||b.owner===null||b.owner===''||String(b.owner)===w));const allN=bs.length;const paidCount=bs.filter(b=>[...Array(b.n).keys()].every(i=>bpaid(b,i))).length;if(cf2.person)bs=bs.filter(b=>(b.person||'')===cf2.person);if(cf2.cat)bs=bs.filter(b=>b.cat===cf2.cat);
- const srt={recent:(a,b)=>a.date<b.date?1:-1,old:(a,b)=>a.date>b.date?1:-1,high:(a,b)=>(b.total||0)-(a.total||0),low:(a,b)=>(a.total||0)-(b.total||0),rem:(a,b)=>rem(b)-rem(a),cat:(a,b)=>String(a.cat||'').localeCompare(String(b.cat||''))};bs=bs.slice().sort(srt[cf2.sort]||srt.recent);const parts=bs.map(b=>cvRow(b,c,r,cfg));
- const sel=(k,ph,opts)=>`<select data-cvf="${k}"><option value="">${ph}</option>${opts.map(x=>`<option value="${esc(x[0])}" ${cf2[k]===x[0]?'selected':''}>${esc(x[1])}</option>`).join('')}</select>`;
- const sortSel=`<select data-cvf="sort">${[['recent','Mais recentes'],['old','Mais antigas'],['high','Maior valor'],['low','Menor valor'],['rem','Mais parcelas a pagar'],['cat','Por categoria']].map(x=>`<option value="${x[0]}" ${cf2.sort===x[0]?'selected':''}>${x[1]}</option>`).join('')}</select>`;
- const controls=allN?`<div class="wallet-filter"><span class="k">Histórico completo · ${paidCount} compra(s) totalmente pagas</span>${sortSel}${sel('person','Todas as pessoas',S.people.map(pp=>[pp.id,(pp.e||'🧑')+' '+pp.name]))}${sel('cat','Todas as categorias',AC().cats.map(x=>[x.n,x.n]))}<button class="btn s" data-a="eb0">＋ Nova compra</button></div>`:`<div class="wallet-empty"><span>🛍️</span><b>Nenhuma compra neste cartão neste período</b><button class="btn" data-a="eb0">＋ Adicionar compra</button></div>`;
- const renderParts=arr=>cfg.fmt==='card'?`<div class="bcards">${arr.map(p=>buyCardHTML(p)).join('')}</div>`:cfg.fmt==='list'?`<div class="wallet-purchase-list">${arr.map(p=>`<div class="wallet-purchase cv-${p.detailMode||'compact'}"><div>${p.ico}<span><b>${p.desc||'Compra'}</b><small>${[p.date,p.who,p.card].filter(Boolean).join(' · ')}</small></span></div><strong>${p.inst||p.total||''}</strong>${p.parcMain?`<span>${p.parcMain}</span>`:''}${p.status||''}${p.pay||''}</div>`).join('')}</div>`:buyTableHTML(arr,cfg);const paidParts=parts.filter((p,i)=>[...Array(bs[i]?.n||0).keys()].every(j=>bpaid(bs[i],j))),openParts=parts.filter((p,i)=>![...Array(bs[i]?.n||0).keys()].every(j=>bpaid(bs[i],j)));const body=allN?(bs.length?(cfg.paidMode==='collapse'&&paidParts.length?`${renderParts(openParts)}<details class="wallet-paid-history"><summary>Mostrar ${paidParts.length} compra(s) totalmente pagas</summary>${renderParts(paidParts)}</details>`:renderParts(parts)):'<div class="wallet-empty">Nenhuma compra corresponde aos filtros.</div>'):'';
- det=`<section class="wallet-detail"><header><div><span class="cfg-eyebrow">VISÃO INDIVIDUAL DO CARTÃO</span><h2>${esc(c.name)}</h2><p>Histórico de compras, parcelas e pagamentos deste cartão · todos os períodos.</p></div><button class="btn" data-a="eb0">＋ Nova compra</button></header><div class="wallet-detail-metrics">${metric('Compras no período',allN,'lançamentos','🛍️')}${metric('Parcelas em aberto',remTotal(bs),'parcelas restantes','⏳')}${metric('Valor em aberto',sum(S.buys.filter(b=>String(b.card??b.cardId??'')===String(c.id)&&(b.owner==null||b.owner===''||String(b.owner)===w)),b=>{let z=0;for(let i=0;i<b.n;i++)if(!bpaid(b,i))z+=inst(b,i);return z}),'considerando todas as parcelas','💳')}</div><div class="wallet-purchases-head"><div><h3>Compras deste cartão</h3><p>As alterações visuais seguem as preferências em Configurações → Cartões.</p></div></div>${controls}${body}</section>`;
+ const account=String(V.acc);
+ const cards=S.cards.filter(c=>String(c.owner??'')===account);
+ const cfg=cvSaved();
+ const money=n=>R(Number(n)||0);
+ const normId=x=>String(x??'');
+ const belongs=(b,c)=>normId(b.card??b.cardId??b.creditCardId)===normId(c.id) &&
+   (b.owner==null||b.owner===''||String(b.owner)===account);
+ const purchasesFor=c=>S.buys.filter(belongs.bind(null,undefined,c)); // replaced below for clarity
+ const getPurchases=c=>S.buys.filter(b=>belongs(b,c));
+ const installmentCount=b=>Math.max(1,Number(b.n)||1);
+ const remaining=b=>{let n=0;for(let i=0;i<installmentCount(b);i++)if(!bpaid(b,i))n++;return n};
+ const outstanding=b=>{let total=0;for(let i=0;i<installmentCount(b);i++)if(!bpaid(b,i))total+=Number(inst(b,i))||0;return total};
+ const used=c=>getPurchases(c).reduce((n,b)=>n+outstanding(b),0);
+ const periodItems=items(rg().y);
+ const bill=c=>periodItems.filter(i=>normId(i.card)===normId(c.id)).reduce((n,i)=>n+(Number(i.amt)||0),0);
+ const openBill=c=>periodItems.filter(i=>normId(i.card)===normId(c.id)&&!i.paid).reduce((n,i)=>n+(Number(i.amt)||0),0);
+ const totalLimit=cards.reduce((n,c)=>n+(Number(c.limit)||0),0);
+ const totalUsed=cards.reduce((n,c)=>n+used(c),0);
+ const totalBills=cards.reduce((n,c)=>n+bill(c),0);
+ const metric=(label,value,note,icon)=>`<article class="card-metric"><span>${icon}</span><div><small>${label}</small><b>${money(value)}</b><i>${note}</i></div></article>`;
+ const cardMarkup=c=>{
+   const list=getPurchases(c),u=used(c),limit=Number(c.limit)||0,pct=limit?Math.min(100,u/limit*100):0;
+   const active=normId(V.card)===normId(c.id);
+   const brand=BLG[c.bank];
+   const logo=brand?`<span class="bl bl-${brand[1]}">${brand[0]}</span>`:`<span class="bl">${esc(c.em||'💳')} ${esc(c.bank||c.name||'Cartão')}</span>`;
+   const last4=String(c.last4||'').replace(/\D/g,'').slice(-4)||'••••';
+   const available=limit-u;
+   return `<article class="wallet-card ${active?'selected':''}">
+     <div class="wallet-plastic" style="background:${bankBg(c)}">
+       <span class="wallet-top">${logo}<span class="wallet-credit">CRÉDITO</span></span>
+       <span class="wallet-chipline"><i class="bkchip"></i><span>${esc(c.name||'Cartão')}</span></span>
+       <span class="wallet-number">•••• •••• •••• ${last4}</span>
+       <span class="wallet-bottom"><span><small>TITULAR</small><b>${esc(AC(account).pf.dn||AC(account).pf.n||'')}</b></span><span><small>VENCIMENTO</small><b>Dia ${esc(c.due??'—')}</b></span>${FLG(c.flag||'Mastercard')}</span>
+     </div>
+     <div class="wallet-info">
+       <div class="wallet-balance"><div><small>Limite disponível</small><b>${money(available)}</b></div><span>${pct.toFixed(0)}% utilizado</span></div>
+       <div class="wallet-progress"><i style="width:${pct}%;background:${bankAc(c)}"></i></div>
+       <div class="wallet-stats"><span>Limite <b>${money(limit)}</b></span><span>Utilizado <b>${money(u)}</b></span></div>
+       <div class="wallet-bill"><div><small>Fatura do período</small><b>${money(bill(c))}</b></div><div><small>Em aberto</small><b class="${openBill(c)?'wallet-warn':''}">${money(openBill(c))}</b></div></div>
+       <div class="wallet-dates"><span>Fecha dia <b>${esc(c.close??'—')}</b></span><span>Vence dia <b>${esc(c.due??'—')}</b></span></div>
+       <div class="wallet-actions">
+         <button type="button" class="btn ${active?'':'g'} s" data-open-card="${esc(normId(c.id))}">${active?'Cartão selecionado':'Ver compras ('+list.length+')'}</button>
+         <button type="button" class="btn g s" data-a="ce" data-v="${esc(normId(c.id))}">Editar</button>
+         <button type="button" class="btn s" data-a="pf" data-v="${esc(normId(c.id))}" ${openBill(c)>0?'':'disabled'}>Pagar fatura</button>
+       </div>
+     </div>
+   </article>`;
+ };
+ let detail='';
+ const selected=cards.find(c=>normId(c.id)===normId(V.card));
+ if(selected){
+   const all=getPurchases(selected);
+   const filters=V.cvf||(V.cvf={sort:'recent',person:'',cat:''});
+   let shown=all.slice();
+   if(filters.person)shown=shown.filter(b=>String(b.person||'')===String(filters.person));
+   if(filters.cat)shown=shown.filter(b=>String(b.cat||'')===String(filters.cat));
+   const count=b=>installmentCount(b);
+   const sorters={
+     recent:(a,b)=>String(b.date||'').localeCompare(String(a.date||'')),
+     old:(a,b)=>String(a.date||'').localeCompare(String(b.date||'')),
+     high:(a,b)=>(Number(b.total)||0)-(Number(a.total)||0),
+     low:(a,b)=>(Number(a.total)||0)-(Number(b.total)||0),
+     rem:(a,b)=>remaining(b)-remaining(a),
+     cat:(a,b)=>String(a.cat||'').localeCompare(String(b.cat||''))
+   };
+   shown.sort(sorters[filters.sort]||sorters.recent);
+   const rendered=shown.map(b=>cvRow(b,selected,rg(),cfg));
+   const renderRows=rows=>cfg.fmt==='card'
+     ?`<div class="bcards">${rows.map(buyCardHTML).join('')}</div>`
+     :cfg.fmt==='list'
+       ?`<div class="wallet-purchase-list">${rows.map(p=>`<div class="wallet-purchase cv-${p.detailMode||'compact'}"><div>${p.ico}<span><b>${p.desc||'Compra'}</b><small>${[p.date,p.who,p.card].filter(Boolean).join(' · ')}</small></span></div><strong>${p.inst||p.total||''}</strong>${p.parcMain?`<span>${p.parcMain}</span>`:''}${p.status||''}${p.pay||''}</div>`).join('')}</div>`
+       :buyTableHTML(rows,cfg);
+   const selector=(key,label,options)=>`<select data-cvf="${key}"><option value="">${label}</option>${options.map(o=>`<option value="${esc(o[0])}" ${String(filters[key]||'')===String(o[0])?'selected':''}>${esc(o[1])}</option>`).join('')}</select>`;
+   const controls=`<div class="wallet-filter"><span class="k">${all.length} compra(s) vinculada(s) a este cartão</span>
+     <select data-cvf="sort">${[['recent','Mais recentes'],['old','Mais antigas'],['high','Maior valor'],['low','Menor valor'],['rem','Mais parcelas em aberto'],['cat','Categoria']].map(o=>`<option value="${o[0]}" ${filters.sort===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select>
+     ${selector('person','Todas as pessoas',S.people.map(p=>[p.id,(p.e||'🧑')+' '+p.name]))}
+     ${selector('cat','Todas as categorias',AC().cats.map(c=>[c.n,c.n]))}
+     <button type="button" class="btn s" data-a="eb0">＋ Nova compra</button></div>`;
+   const outstandingTotal=all.reduce((n,b)=>n+outstanding(b),0);
+   detail=`<section class="wallet-detail" id="wallet-detail" tabindex="-1">
+     <header><div><span class="cfg-eyebrow">CARTÃO SELECIONADO</span><h2>${esc(selected.name||'Cartão')}</h2><p>Histórico completo de compras, parcelas e pagamentos deste cartão.</p></div><button type="button" class="btn g s" data-close-card>Fechar</button></header>
+     <div class="wallet-detail-metrics">${metric('Compras cadastradas',all.length,'neste cartão','🛍️')}${metric('Parcelas em aberto',all.reduce((n,b)=>n+remaining(b),0),'em todas as compras','⏳')}${metric('Valor em aberto',outstandingTotal,'parcelas ainda não pagas','💳')}</div>
+     ${controls}
+     ${shown.length?renderRows(rendered):`<div class="wallet-empty"><span>🛍️</span><b>${all.length?'Nenhuma compra corresponde aos filtros.':'Nenhuma compra vinculada a este cartão.'}</b><p>${all.length?'Limpe os filtros para ver o histórico completo.':'Cadastre uma compra e selecione este cartão no formulário.'}</p><button type="button" class="btn" data-a="eb0">＋ Nova compra</button></div>`}
+   </section>`;
  }
- function remTotal(arr){return arr.reduce((n,b)=>n+rem(b),0)}
- return `<section class="wallet-hero"><div><span class="cfg-eyebrow">CONTROLE DE CRÉDITO</span><h2>Meus cartões</h2><p>Acompanhe limite disponível, utilização e faturas de cada cartão cadastrado nesta conta.</p></div><button class="btn" data-a="ac">＋ Adicionar cartão</button></section><div class="wallet-overview">${metric('Faturas do período',T.f,'somatório dos cartões','🧾')}${metric('Total utilizado',T.u,'parcelas ainda não pagas','💳')}${metric('Limite disponível',T.l-T.u,'em todos os cartões','✦')}${metric('Limite total',T.l,'limites cadastrados','▤')}</div><div class="wallet-section-title"><div><h3>Seus cartões</h3><p>${cs.length} ${cs.length===1?'cartão cadastrado':'cartões cadastrados'} nesta conta</p></div><span>🔐 Dados separados por conta</span></div>${cs.length?`<div class="wallet-grid">${cs.map(card).join('')}</div>`:`<div class="wallet-empty wallet-empty-main"><span>💳</span><b>Você ainda não cadastrou cartões</b><p>Adicione Banco do Brasil, Caixa ou qualquer outro cartão para acompanhar seus limites e faturas individualmente.</p><button class="btn" data-a="ac">＋ Cadastrar primeiro cartão</button></div>`}${det}`;
+ return `<section class="wallet-hero"><div><span class="cfg-eyebrow">CONTROLE DE CRÉDITO</span><h2>Meus cartões</h2><p>Limites, utilização e faturas separados por cartão.</p></div><button type="button" class="btn" data-a="ac">＋ Adicionar cartão</button></section>
+ <div class="wallet-overview">${metric('Faturas do período',totalBills,'somatório dos cartões','🧾')}${metric('Total utilizado',totalUsed,'parcelas ainda não pagas','💳')}${metric('Limite disponível',totalLimit-totalUsed,'em todos os cartões','✦')}${metric('Limite total',totalLimit,'limites cadastrados','▤')}</div>
+ <div class="wallet-section-title"><div><h3>Seus cartões</h3><p>${cards.length} ${cards.length===1?'cartão cadastrado':'cartões cadastrados'} nesta conta</p></div><span>🔐 Dados separados por conta</span></div>
+ ${cards.length?`<div class="wallet-grid">${cards.map(cardMarkup).join('')}</div>`:`<div class="wallet-empty wallet-empty-main"><span>💳</span><b>Nenhum cartão cadastrado</b><p>Adicione Banco do Brasil, Caixa ou outro cartão para acompanhar seus limites e faturas.</p><button class="btn" data-a="ac">＋ Adicionar cartão</button></div>`}
+ ${detail}`;
 }
+
 function vLoans(){const w=V.acc,ls=S.loans.filter(l=>l.owner===w);
  return`<div class="top" style="justify-content:flex-end"><button class="btn" data-a="al">+ Novo empréstimo</button></div>${ls.length?`<div class="grid g2">${ls.map(l=>{const left=l.n-l.pd.length,cd=S.cards.find(c=>c.id===l.card);return`<div class="box"><div style="display:flex;justify-content:space-between"><b>🏦 ${esc(l.name)}</b><span class="k">${cd?'💳 '+esc(cd.name):''}</span></div><div class="v">${R(l.value)}<span class="k"> /parcela</span></div><div class="br" style="grid-template-columns:1fr"><div><i style="width:${l.n?l.pd.length/l.n*100:0}%;background:linear-gradient(90deg,var(--c1),var(--c2))"></i></div></div><div class="sub">${l.pd.length}/${l.n} pagas · restam ${R(left*l.value)} · 1º venc. ${D(l.first)}</div>${l.obs?`<div class="sub">${esc(l.obs)}</div>`:''}<div class="acts"><button class="btn g" data-a="el" data-v="${l.id}">Editar</button><button class="btn" data-a="pl" data-v="${l.id}" ${left?'':'disabled'}>Pagar parcela</button></div></div>`}).join('')}</div>`:'<div class="box empty">Nenhum empréstimo.</div>'}`}
 function vRep(){
@@ -961,7 +1058,7 @@ const A={stl:(v,id)=>{const t=S.tx.find(x=>x.id===id);if(t){t.settled=!t.settled
   save();draw()},
  ac:()=>form('Novo cartão',cardF(),{limit:0,close:1,due:10},o=>S.cards.push({id:uid(),owner:V.acc,...o})),
  ce:v=>{const c=S.cards.find(x=>x.id===v);form('Editar cartão',cardF(),c,o=>Object.assign(c,o),()=>{S.cards=S.cards.filter(x=>x!==c);S.buys=S.buys.filter(b=>b.card!==c.id)})},
- cv:v=>{const id=String(v||'');const card=S.cards.find(c=>String(c.id)===id&&String(c.owner??'')===String(V.acc));if(!card){toast('Não foi possível localizar este cartão nesta conta');return}V.tab='cards';V.card=id;V.cvf=V.cvf||{sort:'recent',person:'',cat:''};draw();requestAnimationFrame(()=>requestAnimationFrame(()=>{const el=main.querySelector('.wallet-detail');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.add('wallet-detail-open');}else toast('O painel de compras não foi carregado. Tente selecionar o cartão novamente.')}))},cvclose:()=>{V.card=null;draw()},eb0:()=>buyForm({date:td(),n:1,cat:'Compras'}),eb:v=>buyForm(S.buys.find(b=>b.id===v)),
+ cv:v=>{const id=String(v||'');const card=S.cards.find(c=>String(c.id)===id&&String(c.owner??'')===String(V.acc));if(!card){toast('Não foi possível localizar este cartão nesta conta');return}V.tab='cards';V.card=String(card.id);V.cvf={sort:'recent',person:'',cat:''};draw()},cvclose:()=>{V.card=null;draw()},eb0:()=>buyForm({date:td(),n:1,cat:'Compras'}),eb:v=>buyForm(S.buys.find(b=>b.id===v)),
  pf:async v=>{const c=S.cards.find(x=>x.id===v),ys=rg().y,its=items(ys).filter(i=>i.card===v&&!i.paid),t=sum(its,i=>i.amt);if(await cf('Pagar fatura · '+c.name,'Marcar '+R(t)+' como pago?')){its.forEach(i=>S.buys.find(b=>b.id===i.id).pd.push(i.i));save();draw();toast('Fatura paga')}},
  al:()=>loanF({n:12,first:td()}),el:v=>loanF(S.loans.find(l=>l.id===v)),
  pl:v=>{const l=S.loans.find(x=>x.id===v);for(let i=0;i<l.n;i++)if(!l.pd.includes(i)){l.pd.push(i);break}save();draw();toast('Parcela paga')},
@@ -1000,7 +1097,34 @@ function draw(){accUI();mUI();nv.innerHTML=navHTML();
 function menu(o){nv.classList.toggle('open',o);sc.classList.toggle('on',o);mb.classList.toggle('open',o);mb.setAttribute('aria-expanded',o)}
 mb.onclick=()=>menu(!nv.classList.contains('open'));sc.onclick=()=>menu(false);addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
 nv.onclick=e=>{if(e.target.closest('[data-col]')){const v=!document.documentElement.classList.contains('col');document.documentElement.classList.toggle('col',v);try{localStorage.setItem('fin-sb',v?'1':'0')}catch(x){}return}const b=e.target.closest('[data-tab]');if(b){V.tab=b.dataset.tab;V.f={cat:'',st:'',pay:''};anim=1;menu(false);draw()}};
-main.onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;const action=b.dataset.a;if(action==='cv'||action==='cvclose'){e.preventDefault();if(action==='cvclose'){V.card=null;draw();return}const id=String(b.dataset.v||'');const card=S.cards.find(c=>String(c.id)===id&&String(c.owner??'')===String(V.acc));if(!card){toast('Não foi possível localizar este cartão nesta conta.');return}V.tab='cards';V.card=String(card.id);V.cvf=V.cvf||{sort:'recent',person:'',cat:''};draw();requestAnimationFrame(()=>requestAnimationFrame(()=>{const detail=main.querySelector('.wallet-detail');if(detail){detail.scrollIntoView({behavior:'smooth',block:'start'});detail.setAttribute('tabindex','-1');detail.focus({preventScroll:true})}else toast('A área de compras não foi renderizada. Verifique o cartão selecionado.')}));return}const f=A[action];if(f){if(b.tagName==='BUTTON')e.preventDefault();try{f(b.dataset.v,b.dataset.id,b.dataset.k)}catch(err){console.error('Ação:',action,err);toast('Não foi possível concluir esta ação. Verifique os dados e tente novamente.')}}};
+main.onclick=e=>{
+ const open=e.target.closest('[data-open-card]');
+ if(open){
+   e.preventDefault();
+   const id=String(open.dataset.openCard||'');
+   const card=S.cards.find(c=>String(c.id)===id&&String(c.owner??'')===String(V.acc));
+   if(!card){toast('Não foi possível localizar este cartão na conta atual.');return}
+   V.card=String(card.id);
+   V.tab='cards';
+   V.cvf={sort:'recent',person:'',cat:''};
+   draw();
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{
+     const panel=main.querySelector('#wallet-detail');
+     if(panel){panel.scrollIntoView({behavior:'smooth',block:'start'});panel.focus({preventScroll:true})}
+   }));
+   return;
+ }
+ if(e.target.closest('[data-close-card]')){e.preventDefault();V.card=null;draw();return}
+ const b=e.target.closest('[data-a]');
+ if(!b)return;
+ const action=b.dataset.a;
+ const f=A[action];
+ if(f){
+   if(b.tagName==='BUTTON')e.preventDefault();
+   try{f(b.dataset.v,b.dataset.id,b.dataset.k)}
+   catch(err){console.error('Ação:',action,err);toast('Não foi possível concluir esta ação. Verifique os dados e tente novamente.')}
+ }
+};
 main.onchange=e=>{const t=e.target;if(t.id==='bf'){const f=t.files&&t.files[0];if(!f)return;const rd=new FileReader();rd.onload=async()=>{let o;try{o=JSON.parse(rd.result)}catch(x){alert('Arquivo inválido. Envie um backup gerado por este app (.json).');return}const w=V.acc;if(o.who&&o.who!==w){alert('Este backup é da conta '+pn(o.who)+'. Troque de conta para restaurá-lo.');return}if(!o.a){alert('Arquivo não parece um backup válido.');return}if(await cf('Importar backup?','Os dados desta conta serão substituídos pelos do arquivo.',1)){if(!o.v)toC(o,[o.a]);S.acc[w]=o.a;['tx','cards','buys','loans'].forEach(n=>S[n]=S[n].filter(x=>x.owner!==w).concat((o[n]||[]).map(x=>({...x,owner:w}))));save();applySet();draw();toast('Backup importado')}};rd.readAsText(f);return}if(t.id==='cc'||t.id==='ch'){const v=(t.value||'').trim();if(/^#[0-9a-f]{6}$/i.test(v)){AC().set.accent=v;save();applySet();draw()}else toast('Use o formato #RRGGBB')}else if(t.dataset.nt){const x=AC().set;x.n=x.n||{};x.n[t.dataset.nt]=t.checked?1:0;save()}else if(t.dataset.personScope){const pp=S.people.find(x=>x.id===t.dataset.personScope),scope=t.dataset.scope;if(pp&&['charts','panel','reports'].includes(scope)){pp.showByOwner=pp.showByOwner||{};const old=pp.showByOwner[V.acc],cfg=typeof old==='object'&&old?{charts:old.charts!==false,panel:old.panel!==false,reports:old.reports!==false}:{charts:old!==false,panel:old!==false,reports:old!==false};cfg[scope]=t.checked;pp.showByOwner[V.acc]=cfg;S.peopleByOwner=S.peopleByOwner||{};S.peopleByOwner[V.acc]=S.people.map(x=>({...x,showByOwner:{...(x.showByOwner||{})}}));save();draw();toast((t.checked?'Exibição ativada em ':'Exibição desativada em ')+({charts:'Gráficos',panel:'Painel',reports:'Relatórios'}[scope]))}}else if(t.dataset.set){AC().set[t.dataset.set]=t.checked;save();draw()}else if(t.dataset.f){V.f[t.dataset.f]=t.value;draw()}else if(t.dataset.cvf){V.cvf=V.cvf||{sort:'recent',person:'',cat:''};V.cvf[t.dataset.cvf]=t.value;draw()}else if(t.dataset.cvtog){const dd=cvDraft();dd.show[t.dataset.cvtog]=t.checked?1:0;draw()}else if(t.id==='th'){AC().set.theme=t.value;save();applySet()}else if(t.id==='screenScale'){AC().set.screenScale=+t.value;save();applySet();draw();toast('Tamanho da interface atualizado')}else if(t.id==='au'){AC().set.auto=t.checked;save()}};
 main.oninput=e=>{if(e.target.id==='cc'){AC().set.accent=e.target.value;applySet();const h=document.getElementById('ch');if(h)h.value=e.target.value}else if(e.target.id==='fs'){AC().set.font=+e.target.value;save();applySet();e.target.previousElementSibling.textContent='Tamanho da letra: '+AC().set.font+'px'}};
 const fabw=document.getElementById('fabw'),fabBtn=document.getElementById('fab'),fabCl=()=>{fabw.classList.remove('open');fabBtn.setAttribute('aria-expanded','false')};
