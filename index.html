@@ -574,124 +574,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .cfg-preview-identity{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 @media(max-width:760px){.wallet-grid{grid-template-columns:1fr!important}.wallet-detail-metrics{grid-template-columns:1fr!important}.wallet-detail .wallet-filter select{max-width:none!important;flex:1 1 100%!important}.wallet-actions{grid-template-columns:1fr 1fr!important}.wallet-actions .btn:last-child{grid-column:1/-1!important}}
 @media(max-width:460px){.wallet-plastic{aspect-ratio:1.65!important;padding:13px!important}.wallet-bottom b{font-size:.62rem!important}.wallet-actions .btn{font-size:.7rem!important}}
-/* ===== Aba Cartões — layout novo (classes cx-*, independente dos estilos antigos .wallet-*) ===== */
-.cx{--cx-r:18px;--cx-pn:color-mix(in srgb,var(--sf) 100%,transparent);display:flex;flex-direction:column;gap:20px;min-width:0}
-.cx *{box-sizing:border-box}
-.cx h2,.cx h3,.cx p{margin:0}
-.cx-eyebrow{display:block;font-size:.66rem;font-weight:800;letter-spacing:.14em;color:var(--accent-light,var(--c1));margin-bottom:.35rem}
-.cx-hero{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px 24px;border:1px solid var(--ln);border-radius:20px;background:radial-gradient(120% 140% at 100% 0,var(--accent-soft),transparent 55%),var(--sf)}
-.cx-hero h2{font-size:1.6rem;font-weight:800;letter-spacing:-.03em}
-.cx-hero p{margin-top:.25rem;color:var(--mu);font-size:.9rem}
-.cx-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:40px;padding:.55rem 1rem;border:1px solid var(--ln);border-radius:12px;background:var(--s2);color:var(--tx);font-weight:700;font-size:.82rem;line-height:1;cursor:pointer;white-space:nowrap;transition:transform .18s var(--e),background .2s,border-color .2s,filter .2s}
-.cx-btn:hover{transform:translateY(-1px);border-color:var(--accent-border)}
-.cx-btn:active{transform:scale(.97)}
-.cx-btn:focus-visible,.cx-row:focus-visible,.cx-sel select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.cx-btn:disabled{opacity:.4;pointer-events:none}
-.cx-primary{background:linear-gradient(90deg,var(--c1),var(--c2));color:#06101a;border-color:transparent}
-.cx-primary:hover{filter:brightness(1.08);border-color:transparent}
-.cx-ghost{background:transparent;color:var(--accent-light,var(--tx));border-color:var(--accent-border)}
-.cx-count{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:#06101a2e;font-size:.72rem}
-/* indicadores */
-.cx-kpis,.cx-dkpis{display:grid;gap:12px;grid-template-columns:repeat(4,minmax(0,1fr))}
-.cx-dkpis{grid-template-columns:repeat(3,minmax(0,1fr))}
-.cx-kpi{display:flex;align-items:center;gap:12px;min-width:0;padding:14px 16px;border:1px solid var(--ln);border-radius:16px;background:var(--sf)}
-.cx-kpi-ico{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:12px;background:var(--s2);font-size:1.05rem}
-.cx-kpi div{min-width:0;display:flex;flex-direction:column;gap:2px}
-.cx-kpi small{color:var(--mu);font-size:.72rem;font-weight:600}
-.cx-kpi b{font-size:1.18rem;font-weight:800;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cx-kpi i{font-style:normal;color:var(--mu);font-size:.68rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cx-kpi.is-warn b{color:var(--wr)}.cx-kpi.is-ok b{color:var(--ok)}.cx-kpi.is-accent b{color:var(--accent-light,var(--c1))}
-.cx-sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:4px}
-.cx-sechead h3{font-size:1.1rem;font-weight:800}
-.cx-sechead p{margin-top:.15rem;color:var(--mu);font-size:.8rem}
-/* grade de cartões */
-.cx-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));align-items:start}
-.cx-card{display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid var(--ln);border-radius:var(--cx-r);background:var(--sf);transition:border-color .2s,box-shadow .2s,transform .2s var(--e)}
-.cx-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--cx-ac) 55%,var(--ln))}
-.cx-card.is-active{border-color:var(--cx-ac);box-shadow:0 0 0 1px var(--cx-ac),0 14px 34px -14px var(--cx-ac)}
-.cx-plastic{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:10px;aspect-ratio:1.75;min-height:176px;padding:18px 20px;color:#fff;overflow:hidden}
-.cx-plastic::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,#ffffff1f 0,transparent 38%,transparent 100%)}
-.cx-plastic>*{position:relative;z-index:1}
-.cx-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.cx-tag{font-size:.6rem;font-weight:800;letter-spacing:.16em;opacity:.85}
-.cx-mid{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.cx-mid .bkchip{position:relative;flex:none}
-.cx-cname{font-size:.85rem;font-weight:700;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 2px #0005}
-.cx-num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:1.02rem;letter-spacing:.14em;text-shadow:0 1px 3px #0006}
-.cx-bot{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
-.cx-bot>span{display:flex;flex-direction:column;min-width:0}
-.cx-bot small{font-size:.54rem;font-weight:700;letter-spacing:.12em;opacity:.7}
-.cx-bot b{font-size:.76rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cx-bot>.cx-flag{flex-direction:row;align-items:center;margin-left:auto}
-.cx-body{display:flex;flex-direction:column;gap:10px;padding:16px 18px 18px;min-width:0}
-.cx-limit{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
-.cx-limit small,.cx-facts dt{color:var(--mu);font-size:.7rem;font-weight:600}
-.cx-limit b{display:block;font-size:1.4rem;font-weight:800;letter-spacing:-.03em;margin-top:2px}
-.cx-pill{padding:.28rem .6rem;border-radius:99px;font-size:.68rem;font-weight:800;white-space:nowrap;background:var(--s2)}
-.cx-pill.is-low{color:var(--ok);background:#34d39918}.cx-pill.is-mid{color:var(--wr);background:#fbbf2418}.cx-pill.is-high{color:var(--bad);background:#f8717118}
-.cx-bar{height:8px;border-radius:99px;background:var(--s2);overflow:hidden}
-.cx-bar i{display:block;height:100%;border-radius:99px;background:var(--ok);transition:width .5s var(--e)}
-.cx-bar.is-mid i{background:var(--wr)}.cx-bar.is-high i{background:var(--bad)}
-.cx-limit-foot{display:flex;justify-content:space-between;gap:10px;color:var(--mu);font-size:.72rem}
-.cx-limit-foot b{color:var(--tx);font-weight:700}
-.cx-facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:4px 0 0;border:1px solid var(--ln);border-radius:14px;overflow:hidden;background:var(--ln)}
-.cx-facts>div{display:flex;flex-direction:column;gap:3px;padding:10px 12px;background:var(--bg)}
-.cx-facts dd{margin:0;font-size:.92rem;font-weight:800;letter-spacing:-.01em}
-.cx-facts dd.is-warn{color:var(--wr)}
-.cx-actions{display:grid;grid-template-columns:1.3fr .8fr 1fr;gap:8px;margin-top:4px}
-.cx-actions .cx-btn{min-width:0;padding-inline:.5rem}
-/* painel de compras */
-.cx-detail{display:flex;flex-direction:column;gap:16px;padding:22px;border:1px solid var(--ln);border-top:3px solid var(--cx-ac,var(--accent));border-radius:20px;background:var(--sf);scroll-margin-top:84px;outline:0}
-.cx-dhead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
-.cx-dhead h2{font-size:1.4rem;font-weight:800;letter-spacing:-.03em}
-.cx-dhead p{margin-top:.2rem;color:var(--mu);font-size:.84rem}
-.cx-dhead-r{display:flex;gap:8px;flex-wrap:wrap}
-.cx-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.cx-found{color:var(--mu);font-size:.82rem;font-weight:600;padding-bottom:.55rem}
-.cx-filters{display:flex;gap:10px;flex-wrap:wrap}
-.cx-sel{display:flex;flex-direction:column;gap:4px;min-width:0}
-.cx-sel span{color:var(--mu);font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.cx-sel select{min-width:150px;height:40px;padding:0 .7rem;border:1px solid var(--ln);border-radius:11px;background:var(--bg);color:var(--tx);font-size:.82rem}
-.cx-list{display:flex;flex-direction:column;border:1px solid var(--ln);border-radius:16px;overflow:hidden;background:var(--bg)}
-.cx-row{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,1.2fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,1.3fr);align-items:center;gap:14px;padding:13px 16px;border-top:1px solid var(--ln);transition:background .15s}
-.cx-row:first-child{border-top:0}
-.cx-row[data-a]{cursor:pointer}.cx-row[data-a]:hover{background:var(--s2)}
-.cx-row-h{padding-block:10px;background:var(--s2);color:var(--mu);font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
-.cx-c{min-width:0}
-.cx-main{display:flex;align-items:center;gap:12px}
-.cx-main>div{display:flex;flex-direction:column;gap:2px;min-width:0}
-.cx-desc b{font-weight:700;font-size:.9rem;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cx-c small{color:var(--mu);font-size:.72rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cx-parc{display:flex;flex-direction:column;gap:5px;align-items:flex-start}
-.cx-parc b{font-size:.82rem}
-.cx-amt{display:flex;flex-direction:column;gap:2px;text-align:right;align-items:flex-end}
-.cx-amt b{font-size:.98rem;font-weight:800;letter-spacing:-.01em}
-.cx-st{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
-.cx-row-h .cx-amt,.cx-row-h .cx-st{align-items:flex-end}
-.cx-empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:36px 20px;border:1px dashed var(--ln);border-radius:16px;text-align:center}
-.cx-empty>span{font-size:2rem}.cx-empty b{font-size:1rem}.cx-empty p{max-width:380px;color:var(--mu);font-size:.84rem}.cx-empty .cx-btn{margin-top:6px}
-.cx-empty-main{background:var(--sf)}
-/* responsivo */
-@media(max-width:1020px){.cx-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:860px){
- .cx-row-h{display:none}
- .cx-row{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"main amt" "cat cat" "parc st";gap:10px 12px;padding:14px}
- .cx-main{grid-area:main}.cx-amt{grid-area:amt}.cx-cat{grid-area:cat}.cx-parc{grid-area:parc}.cx-st{grid-area:st}
- .cx-cat:empty{display:none}
-}
-@media(max-width:640px){
- .cx{gap:16px}
- .cx-hero{padding:18px}.cx-hero .cx-btn{width:100%}
- .cx-kpis,.cx-dkpis{gap:8px}
- .cx-dkpis{grid-template-columns:1fr 1fr}.cx-dkpis .cx-kpi:last-child{grid-column:1/-1}
- .cx-kpi{padding:11px 12px;gap:10px}.cx-kpi-ico{width:34px;height:34px}.cx-kpi b{font-size:1.02rem}
- .cx-detail{padding:16px}
- .cx-dhead-r{width:100%}.cx-dhead-r .cx-btn{flex:1}
- .cx-filters{width:100%}.cx-sel{flex:1 1 140px}.cx-sel select{width:100%;min-width:0}
- .cx-actions{grid-template-columns:1fr 1fr}.cx-actions .cx-primary{grid-column:1/-1}
-}
-@media(max-width:420px){.cx-kpi-ico{display:none}.cx-plastic{padding:15px}.cx-num{font-size:.92rem}}
-@media(prefers-reduced-motion:reduce){.cx *{transition:none!important}}
+
+.wallet-month-label{display:flex;align-items:center;gap:.55rem;margin:0;color:var(--mu);font-size:.8rem;font-weight:700}
+.wallet-month-label select{width:auto;min-width:145px}
+.wallet-month-heading{display:flex;align-items:baseline;justify-content:space-between;gap:.7rem;margin:.9rem 0 .55rem;padding-bottom:.55rem;border-bottom:1px solid var(--ln)}
+.wallet-month-heading h3{margin:0;font-size:1rem}
+.wallet-month-heading span{font-size:.75rem;color:var(--mu)}
+@media(max-width:520px){.wallet-month-label{width:100%;justify-content:space-between}.wallet-month-label select{flex:1}}
 </style></head><body>
 <div class="app"><div class="tb"><button class="mb" id="mb" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><b class="bt">Finanças <em>By Anderson</em></b><div class="mo" id="mo"></div><div class="acc" id="acc"></div></div><main id="main"></main></div>
 <div class="scrim" id="sc"></div><aside class="side" id="nav"></aside>
@@ -775,12 +664,8 @@ function pickEmoji(cb,sug){const d=document.getElementById('edlg'),inp=d.querySe
   else if(k){c=+k.dataset.c;q='';inp.value='';paint()}else if(e.target.closest('[data-x]')||e.target===d)d.close()};
  paint();d.showModal()}
 // ---------- cálculo ----------
-// Localiza o cartão de uma compra comparando ids como texto (aceita 123 e "123"; aceita cardId/creditCardId de dados antigos).
-const cardOf=b=>S.cards.find(x=>String(x.id)===String(b.card??b.cardId??b.creditCardId));
-const stm=b=>{const c=cardOf(b),d=String(b.date||td());return +d.slice(8)>+(c&&c.close)?addM(d.slice(0,7),1):d.slice(0,7)};
-const bpaid=(b,i)=>(b.pd||[]).includes(i)||(AC(b.owner).set.auto&&addM(stm(b),i)<cur);
-// Normaliza compras antigas/importadas para o formato esperado (evita que um registro fora do padrão quebre a aba inteira).
-function fixData(){S.buys.forEach(b=>{if(!Array.isArray(b.pd))b.pd=[];if(b.card==null||b.card==='')b.card=b.cardId??b.creditCardId??b.card;const c=cardOf(b);if(c&&b.card!==c.id)b.card=c.id;if(!(+b.n>=1))b.n=1})}
+const stm=b=>{const c=S.cards.find(x=>x.id===b.card);return +b.date.slice(8)>+c.close?addM(b.date.slice(0,7),1):b.date.slice(0,7)};
+const bpaid=(b,i)=>b.pd.includes(i)||(AC(b.owner).set.auto&&addM(stm(b),i)<cur);
 function gen(){}
 function items(yms){const o=[];
  S.tx.forEach(t=>{
@@ -790,7 +675,7 @@ function items(yms){const o=[];
     o.push({k:t.kind,id:t.id+'@'+ym,rc:1,p:t.owner,person:(ov.person??t.person),c:shr==='c'?1:0,ac:0,sp:shr==='c'?(+((ov.sp??t.sp))||50):100,desc:(ov.desc??t.desc),amt:+(ov.amount??t.amount),date:d,cat:(ov.cat??t.cat),pay:(ov.pay??t.pay),paid})});
    return}
   const d=t.due||t.date;if(yms.includes(d.slice(0,7)))o.push({k:t.kind,id:t.id,p:t.owner,person:t.person,c:t.shr==='c'?1:0,ac:t.settled?1:0,sp:t.shr==='c'?(+t.sp||50):100,desc:t.of>1?`${t.desc} ${t.k+1}/${t.of}`:t.desc,amt:+t.amount,date:d,cat:t.cat,pay:t.pay,paid:t.status==='paid'})});
- S.buys.forEach(b=>{const c=cardOf(b);if(!c)return;for(let i=0;i<b.n;i++){const m=addM(stm(b),i);if(yms.includes(m))o.push({k:'card',id:b.id,i,p:b.owner,person:b.person,sp:50,desc:`${b.desc} ${i+1}/${b.n}`,amt:inst(b,i),date:m+'-'+pad(c.due),cat:b.cat,pay:'Crédito',card:c.id,paid:bpaid(b,i)})}});
+ S.buys.forEach(b=>{const c=S.cards.find(x=>x.id===b.card);if(!c)return;for(let i=0;i<b.n;i++){const m=addM(stm(b),i);if(yms.includes(m))o.push({k:'card',id:b.id,i,p:b.owner,person:b.person,sp:50,desc:`${b.desc} ${i+1}/${b.n}`,amt:inst(b,i),date:m+'-'+pad(c.due),cat:b.cat,pay:'Crédito',card:c.id,paid:bpaid(b,i)})}});
  S.loans.forEach(l=>{for(let i=0;i<l.n;i++){const d=nmo(l.first,i);if(yms.includes(d.slice(0,7)))o.push({k:'loan',id:l.id,i,p:l.owner,sp:50,desc:`${l.name} ${i+1}/${l.n}`,amt:+l.value,date:d,cat:'Empréstimo',pay:l.card?'Crédito':'Boleto',paid:l.pd.includes(i)})}});
  return o}
 function rg(){const m=V.mode;
@@ -889,7 +774,7 @@ function cvRow(b,c,r,cfg){
  const n=Math.max(1,+b.n||1),cp=[...Array(n).keys()].find(i=>r.y.includes(addM(stm(b),i))),idx=cp===undefined?0:cp,k=ct(b.cat,b.owner),paidIdx=[...Array(n).keys()].filter(i=>bpaid(b,i)),pd=bpaid(b,idx),dueD=addM(stm(b),idx)+'-'+pad(c.due),dueLabel=D(dueD),person=S.people.find(x=>x.id===b.person),personName=person?person.name:'',personAvatar=person?(person.e||'🧑'):'👤';
  const whoLabel=cfg.whoMode==='avatar'?personAvatar:cfg.whoMode==='both'?(personAvatar+(personName?' '+personName:'')):personName;
  const cardLabel=cfg.cardMode==='icon'?(c.em||'💳'):cfg.cardMode==='both'?((c.em||'💳')+' '+c.name):c.name;
- const d={id:b.id,n,cp:idx,pd,late:false,paidIdx,paidC:paidIdx.length,desc:b.desc,emoji:k.e,catName:k.n,catE:k.e,catC:k.c,dateStr:cfg.dateMode==='due'?dueLabel:(b.date?D(b.date):'—'),whoName:whoLabel,cardName:cardLabel,inst:inst(b,idx),total:Math.round(b.total),payAttr:`data-a="tg" data-k="card" data-id="${b.id}" data-v="${idx}"`};
+ const d={id:b.id,n,cp:idx,pd,late:false,paidIdx,paidC:paidIdx.length,desc:b.desc,emoji:k.e,catName:k.n,catE:k.e,catC:k.c,dateStr:cfg.dateMode==='due'?dueLabel:D(b.date),whoName:whoLabel,cardName:cardLabel,inst:inst(b,idx),total:Math.round(b.total),payAttr:`data-a="tg" data-k="card" data-id="${b.id}" data-v="${idx}"`};
  if(cfg.amountMode==='installment')d.total=0;else if(cfg.amountMode==='total')d.inst=0;
  return cvParts(d,cfg)
 }
@@ -911,6 +796,7 @@ function vCards(){
  const normId=x=>String(x??'');
  const belongs=(b,c)=>normId(b.card??b.cardId??b.creditCardId)===normId(c.id) &&
    (b.owner==null||b.owner===''||String(b.owner)===account);
+ const purchasesFor=c=>S.buys.filter(belongs.bind(null,undefined,c)); // replaced below for clarity
  const getPurchases=c=>S.buys.filter(b=>belongs(b,c));
  const installmentCount=b=>Math.max(1,Number(b.n)||1);
  const remaining=b=>{let n=0;for(let i=0;i<installmentCount(b);i++)if(!bpaid(b,i))n++;return n};
@@ -922,55 +808,47 @@ function vCards(){
  const totalLimit=cards.reduce((n,c)=>n+(Number(c.limit)||0),0);
  const totalUsed=cards.reduce((n,c)=>n+used(c),0);
  const totalBills=cards.reduce((n,c)=>n+bill(c),0);
- const totalOpen=cards.reduce((n,c)=>n+openBill(c),0);
- const totalPct=totalLimit?Math.min(100,totalUsed/totalLimit*100):0;
- const level=p=>p>=90?'is-high':p>=70?'is-mid':'is-low';
- const kpi=(label,value,note,icon,tone='')=>`<article class="cx-kpi ${tone}"><span class="cx-kpi-ico" aria-hidden="true">${icon}</span><div><small>${label}</small><b>${value}</b><i>${note}</i></div></article>`;
-
+ const metric=(label,value,note,icon)=>`<article class="card-metric"><span>${icon}</span><div><small>${label}</small><b>${money(value)}</b><i>${note}</i></div></article>`;
  const cardMarkup=c=>{
    const list=getPurchases(c),u=used(c),limit=Number(c.limit)||0,pct=limit?Math.min(100,u/limit*100):0;
    const active=normId(V.card)===normId(c.id);
    const brand=BLG[c.bank];
    const logo=brand?`<span class="bl bl-${brand[1]}">${brand[0]}</span>`:`<span class="bl">${esc(c.em||'💳')} ${esc(c.bank||c.name||'Cartão')}</span>`;
    const last4=String(c.last4||'').replace(/\D/g,'').slice(-4)||'••••';
-   const open=openBill(c);
-   return `<article class="cx-card ${active?'is-active':''}" style="--cx-ac:${bankAc(c)}">
-     <div class="cx-plastic" style="background:${bankBg(c)}">
-       <div class="cx-top">${logo}<span class="cx-tag">CRÉDITO</span></div>
-       <div class="cx-mid"><i class="bkchip"></i><span class="cx-cname">${esc(c.name||'Cartão')}</span></div>
-       <div class="cx-num">•••• •••• •••• ${last4}</div>
-       <div class="cx-bot"><span><small>TITULAR</small><b>${esc(AC(account).pf.dn||AC(account).pf.n||'')}</b></span><span><small>VENCE</small><b>Dia ${esc(c.due??'—')}</b></span><span class="cx-flag">${FLG(c.flag||'Mastercard')}</span></div>
+   const available=limit-u;
+   return `<article class="wallet-card ${active?'selected':''}">
+     <div class="wallet-plastic" style="background:${bankBg(c)}">
+       <span class="wallet-top">${logo}<span class="wallet-credit">CRÉDITO</span></span>
+       <span class="wallet-chipline"><i class="bkchip"></i><span>${esc(c.name||'Cartão')}</span></span>
+       <span class="wallet-number">•••• •••• •••• ${last4}</span>
+       <span class="wallet-bottom"><span><small>TITULAR</small><b>${esc(AC(account).pf.dn||AC(account).pf.n||'')}</b></span><span><small>VENCIMENTO</small><b>Dia ${esc(c.due??'—')}</b></span>${FLG(c.flag||'Mastercard')}</span>
      </div>
-     <div class="cx-body">
-       <div class="cx-limit">
-         <div><small>Limite disponível</small><b>${money(limit-u)}</b></div>
-         <span class="cx-pill ${level(pct)}">${pct.toFixed(0)}% usado</span>
-       </div>
-       <div class="cx-bar ${level(pct)}" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct.toFixed(0)}"><i style="width:${pct}%"></i></div>
-       <div class="cx-limit-foot"><span>Utilizado <b>${money(u)}</b></span><span>Limite <b>${money(limit)}</b></span></div>
-       <dl class="cx-facts">
-         <div><dt>Fatura do período</dt><dd>${money(bill(c))}</dd></div>
-         <div><dt>Em aberto</dt><dd class="${open?'is-warn':''}">${money(open)}</dd></div>
-         <div><dt>Fechamento</dt><dd>Dia ${esc(c.close??'—')}</dd></div>
-         <div><dt>Vencimento</dt><dd>Dia ${esc(c.due??'—')}</dd></div>
-       </dl>
-       <div class="cx-actions">
-         ${active
-           ?`<button type="button" class="cx-btn cx-primary" data-close-card>Ocultar compras</button>`
-           :`<button type="button" class="cx-btn cx-primary" data-open-card="${esc(normId(c.id))}">Ver compras <span class="cx-count">${list.length}</span></button>`}
-         <button type="button" class="cx-btn" data-a="ce" data-v="${esc(normId(c.id))}">Editar</button>
-         <button type="button" class="cx-btn cx-ghost" data-a="pf" data-v="${esc(normId(c.id))}" ${open>0?'':'disabled'}>Pagar fatura</button>
+     <div class="wallet-info">
+       <div class="wallet-balance"><div><small>Limite disponível</small><b>${money(available)}</b></div><span>${pct.toFixed(0)}% utilizado</span></div>
+       <div class="wallet-progress"><i style="width:${pct}%;background:${bankAc(c)}"></i></div>
+       <div class="wallet-stats"><span>Limite <b>${money(limit)}</b></span><span>Utilizado <b>${money(u)}</b></span></div>
+       <div class="wallet-bill"><div><small>Fatura do período</small><b>${money(bill(c))}</b></div><div><small>Em aberto</small><b class="${openBill(c)?'wallet-warn':''}">${money(openBill(c))}</b></div></div>
+       <div class="wallet-dates"><span>Fecha dia <b>${esc(c.close??'—')}</b></span><span>Vence dia <b>${esc(c.due??'—')}</b></span></div>
+       <div class="wallet-actions">
+         <button type="button" class="btn ${active?'':'g'} s" data-open-card="${esc(normId(c.id))}">${active?'Cartão selecionado':'Ver compras ('+list.length+')'}</button>
+         <button type="button" class="btn g s" data-a="ce" data-v="${esc(normId(c.id))}">Editar</button>
+         <button type="button" class="btn s" data-a="pf" data-v="${esc(normId(c.id))}" ${openBill(c)>0?'':'disabled'}>Pagar fatura</button>
        </div>
      </div>
    </article>`;
  };
-
  let detail='';
  const selected=cards.find(c=>normId(c.id)===normId(V.card));
  if(selected){
    const all=getPurchases(selected);
-   const filters=V.cvf||(V.cvf={sort:'recent',person:'',cat:''});
-   let shown=all.slice();
+   const filters=V.cvf||(V.cvf={sort:'recent',person:'',cat:'',month:V.ym});
+   if(!filters.month)filters.month=V.ym;
+   const monthSet=new Set();
+   all.forEach(b=>{for(let i=0;i<installmentCount(b);i++)monthSet.add(addM(stm(b),i))});
+   monthSet.add(filters.month);
+   const months=[...monthSet].sort((a,b)=>b.localeCompare(a));
+   const monthName=m=>MN[Number(m.slice(5))-1]+' '+m.slice(0,4);
+   let shown=all.filter(b=>[...Array(installmentCount(b)).keys()].some(i=>addM(stm(b),i)===filters.month));
    if(filters.person)shown=shown.filter(b=>String(b.person||'')===String(filters.person));
    if(filters.cat)shown=shown.filter(b=>String(b.cat||'')===String(filters.cat));
    const sorters={
@@ -982,49 +860,33 @@ function vCards(){
      cat:(a,b)=>String(a.cat||'').localeCompare(String(b.cat||''))
    };
    shown.sort(sorters[filters.sort]||sorters.recent);
-   const rows=shown.map(b=>cvRow(b,selected,rg(),cfg));
-   const rowHTML=p=>`<div class="cx-row" ${p.id?`data-a="eb" data-v="${esc(p.id)}" role="button" tabindex="0"`:''}>
-       <div class="cx-c cx-main">${p.ico}<div><span class="cx-desc">${p.desc||'Compra'}</span><small>${[p.date,p.who].filter(Boolean).join(' · ')}</small></div></div>
-       <div class="cx-c cx-cat" data-l="Categoria">${p.cat||''}</div>
-       <div class="cx-c cx-parc" data-l="Parcelas">${p.parcMain||''}${p.parcSub?`<small>${p.parcSub}</small>`:''}</div>
-       <div class="cx-c cx-amt" data-l="Valor"><b>${p.inst||p.total||''}</b>${p.inst&&p.total?`<small>total ${p.total}</small>`:''}</div>
-       <div class="cx-c cx-st">${p.status||''}${p.pay||''}</div>
-     </div>`;
-   const selector=(key,label,options)=>`<label class="cx-sel"><span>${label}</span><select data-cvf="${key}"><option value="">Todas</option>${options.map(o=>`<option value="${esc(o[0])}" ${String(filters[key]||'')===String(o[0])?'selected':''}>${esc(o[1])}</option>`).join('')}</select></label>`;
-   const sortSel=`<label class="cx-sel"><span>Ordenar</span><select data-cvf="sort">${[['recent','Mais recentes'],['old','Mais antigas'],['high','Maior valor'],['low','Menor valor'],['rem','Mais parcelas em aberto'],['cat','Categoria']].map(o=>`<option value="${o[0]}" ${filters.sort===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></label>`;
+   const period={y:[filters.month],l:monthName(filters.month)};
+   const rendered=shown.map(b=>cvRow(b,selected,period,cfg));
+   const renderRows=rows=>cfg.fmt==='card'
+     ?`<div class="bcards">${rows.map(buyCardHTML).join('')}</div>`
+     :cfg.fmt==='list'
+       ?`<div class="wallet-purchase-list">${rows.map(p=>`<div class="wallet-purchase cv-${p.detailMode||'compact'}"><div>${p.ico}<span><b>${p.desc||'Compra'}</b><small>${[p.date,p.who,p.card].filter(Boolean).join(' · ')}</small></span></div><strong>${p.inst||p.total||''}</strong>${p.parcMain?`<span>${p.parcMain}</span>`:''}${p.status||''}${p.pay||''}</div>`).join('')}</div>`
+       :buyTableHTML(rows,cfg);
+   const selector=(key,label,options)=>`<select data-cvf="${key}"><option value="">${label}</option>${options.map(o=>`<option value="${esc(o[0])}" ${String(filters[key]||'')===String(o[0])?'selected':''}>${esc(o[1])}</option>`).join('')}</select>`;
+   const controls=`<div class="wallet-filter">
+     <label class="wallet-month-label">Mês da fatura<select data-cvf="month">${months.map(m=>`<option value="${m}" ${filters.month===m?'selected':''}>${esc(monthName(m))}</option>`).join('')}</select></label>
+     <span class="k">${shown.length} compra(s) com parcela neste mês</span>
+     <select data-cvf="sort">${[['recent','Mais recentes'],['old','Mais antigas'],['high','Maior valor'],['low','Menor valor'],['rem','Mais parcelas em aberto'],['cat','Categoria']].map(o=>`<option value="${o[0]}" ${filters.sort===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select>
+     ${selector('person','Todas as pessoas',S.people.map(p=>[p.id,(p.e||'🧑')+' '+p.name]))}
+     ${selector('cat','Todas as categorias',AC().cats.map(c=>[c.n,c.n]))}
+     <button type="button" class="btn s" data-a="eb0">＋ Nova compra</button></div>`;
    const outstandingTotal=all.reduce((n,b)=>n+outstanding(b),0);
-   const openInstallments=all.reduce((n,b)=>n+remaining(b),0);
-   detail=`<section class="cx-detail" id="wallet-detail" tabindex="-1" style="--cx-ac:${bankAc(selected)}">
-     <header class="cx-dhead">
-       <div><span class="cx-eyebrow">COMPRAS DO CARTÃO</span><h2>${esc(selected.name||'Cartão')}</h2><p>Histórico de compras, parcelas e pagamentos deste cartão.</p></div>
-       <div class="cx-dhead-r"><button type="button" class="cx-btn cx-primary" data-a="eb0">＋ Nova compra</button><button type="button" class="cx-btn" data-close-card>Fechar</button></div>
-     </header>
-     <div class="cx-dkpis">
-       ${kpi('Compras cadastradas',all.length,'neste cartão','🛍️')}
-       ${kpi('Parcelas em aberto',openInstallments,'somando todas as compras','⏳')}
-       ${kpi('Valor em aberto',money(outstandingTotal),'parcelas ainda não pagas','💳','is-accent')}
-     </div>
-     <div class="cx-toolbar">
-       <span class="cx-found">${shown.length===all.length?`${all.length} compra${all.length===1?'':'s'}`:`${shown.length} de ${all.length} compras`}</span>
-       <div class="cx-filters">${sortSel}${selector('person','Pessoa',S.people.map(p=>[p.id,(p.e||'🧑')+' '+p.name]))}${selector('cat','Categoria',AC().cats.map(c=>[c.n,c.n]))}</div>
-     </div>
-     ${rows.length
-       ?`<div class="cx-list"><div class="cx-row cx-row-h" aria-hidden="true"><div class="cx-c">Compra</div><div class="cx-c">Categoria</div><div class="cx-c">Parcelas</div><div class="cx-c">Valor</div><div class="cx-c">Situação</div></div>${rows.map(rowHTML).join('')}</div>`
-       :`<div class="cx-empty"><span>🛍️</span><b>${all.length?'Nenhuma compra corresponde aos filtros.':'Nenhuma compra neste cartão ainda.'}</b><p>${all.length?'Limpe os filtros para ver o histórico completo.':'Cadastre uma compra e escolha este cartão para ela aparecer aqui.'}</p><button type="button" class="cx-btn cx-primary" data-a="eb0">＋ Nova compra</button></div>`}
+   detail=`<section class="wallet-detail" id="wallet-detail" tabindex="-1">
+     ${controls}
+     <div class="wallet-month-heading"><h3>${esc(monthName(filters.month))}</h3><span>Compras e parcelas deste mês</span></div>
+     ${shown.length?renderRows(rendered):`<div class="wallet-empty"><span>🛍️</span><b>${all.length?'Nenhuma compra corresponde aos filtros.':'Nenhuma compra vinculada a este cartão.'}</b><p>${all.length?'Limpe os filtros para ver o histórico completo.':'Cadastre uma compra e selecione este cartão no formulário.'}</p><button type="button" class="btn" data-a="eb0">＋ Nova compra</button></div>`}
    </section>`;
  }
- return `<div class="cx">
-   <section class="cx-hero"><div><span class="cx-eyebrow">CONTROLE DE CRÉDITO</span><h2>Meus cartões</h2><p>Limites, faturas e compras de cada cartão em um só lugar.</p></div><button type="button" class="cx-btn cx-primary" data-a="ac">＋ Adicionar cartão</button></section>
-   <div class="cx-kpis">
-     ${kpi('Fatura do período',money(totalBills),'soma de todos os cartões','🧾')}
-     ${kpi('Em aberto',money(totalOpen),'ainda não paga','⏳',totalOpen?'is-warn':'')}
-     ${kpi('Limite utilizado',money(totalUsed),`${totalPct.toFixed(0)}% do limite total`,'💳')}
-     ${kpi('Limite disponível',money(totalLimit-totalUsed),`de ${money(totalLimit)}`,'✦','is-ok')}
-   </div>
-   <div class="cx-sechead"><div><h3>Seus cartões</h3><p>${cards.length} ${cards.length===1?'cartão cadastrado':'cartões cadastrados'} nesta conta</p></div></div>
-   ${cards.length?`<div class="cx-grid">${cards.map(cardMarkup).join('')}</div>`:`<div class="cx-empty cx-empty-main"><span>💳</span><b>Nenhum cartão cadastrado</b><p>Adicione seu primeiro cartão para acompanhar limite, fatura e compras parceladas.</p><button type="button" class="cx-btn cx-primary" data-a="ac">＋ Adicionar cartão</button></div>`}
-   ${detail}
- </div>`;
+ return `<section class="wallet-hero"><div><span class="cfg-eyebrow">CONTROLE DE CRÉDITO</span><h2>Meus cartões</h2><p>Limites, utilização e faturas separados por cartão.</p></div><button type="button" class="btn" data-a="ac">＋ Adicionar cartão</button></section>
+ <div class="wallet-overview">${metric('Faturas do período',totalBills,'somatório dos cartões','🧾')}${metric('Total utilizado',totalUsed,'parcelas ainda não pagas','💳')}${metric('Limite disponível',totalLimit-totalUsed,'em todos os cartões','✦')}${metric('Limite total',totalLimit,'limites cadastrados','▤')}</div>
+ <div class="wallet-section-title"><div><h3>Seus cartões</h3><p>${cards.length} ${cards.length===1?'cartão cadastrado':'cartões cadastrados'} nesta conta</p></div><span>🔐 Dados separados por conta</span></div>
+ ${cards.length?`<div class="wallet-grid">${cards.map(cardMarkup).join('')}</div>`:`<div class="wallet-empty wallet-empty-main"><span>💳</span><b>Nenhum cartão cadastrado</b><p>Adicione Banco do Brasil, Caixa ou outro cartão para acompanhar seus limites e faturas.</p><button class="btn" data-a="ac">＋ Adicionar cartão</button></div>`}
+ ${detail}`;
 }
 
 function vLoans(){const w=V.acc,ls=S.loans.filter(l=>l.owner===w);
@@ -1210,7 +1072,7 @@ const A={stl:(v,id)=>{const t=S.tx.find(x=>x.id===id);if(t){t.settled=!t.settled
   save();draw()},
  ac:()=>form('Novo cartão',cardF(),{limit:0,close:1,due:10},o=>S.cards.push({id:uid(),owner:V.acc,...o})),
  ce:v=>{const c=S.cards.find(x=>x.id===v);form('Editar cartão',cardF(),c,o=>Object.assign(c,o),()=>{S.cards=S.cards.filter(x=>x!==c);S.buys=S.buys.filter(b=>b.card!==c.id)})},
- cv:v=>{const id=String(v||'');const card=S.cards.find(c=>String(c.id)===id&&String(c.owner??'')===String(V.acc));if(!card){toast('Não foi possível localizar este cartão nesta conta');return}V.tab='cards';V.card=String(card.id);V.cvf={sort:'recent',person:'',cat:''};draw()},cvclose:()=>{V.card=null;draw()},cvretry:()=>{V.card=null;V.cvf=null;draw()},eb0:()=>buyForm({date:td(),n:1,cat:'Compras'}),eb:v=>buyForm(S.buys.find(b=>b.id===v)),
+ cv:v=>{const id=String(v||'');const card=S.cards.find(c=>String(c.id)===id&&String(c.owner??'')===String(V.acc));if(!card){toast('Não foi possível localizar este cartão nesta conta');return}V.tab='cards';V.card=String(card.id);V.cvf={sort:'recent',person:'',cat:'',month:V.ym};draw()},cvclose:()=>{V.card=null;draw()},eb0:()=>buyForm({date:td(),n:1,cat:'Compras'}),eb:v=>buyForm(S.buys.find(b=>b.id===v)),
  pf:async v=>{const c=S.cards.find(x=>x.id===v),ys=rg().y,its=items(ys).filter(i=>i.card===v&&!i.paid),t=sum(its,i=>i.amt);if(await cf('Pagar fatura · '+c.name,'Marcar '+R(t)+' como pago?')){its.forEach(i=>S.buys.find(b=>b.id===i.id).pd.push(i.i));save();draw();toast('Fatura paga')}},
  al:()=>loanF({n:12,first:td()}),el:v=>loanF(S.loans.find(l=>l.id===v)),
  pl:v=>{const l=S.loans.find(x=>x.id===v);for(let i=0;i<l.n;i++)if(!l.pd.includes(i)){l.pd.push(i);break}save();draw();toast('Parcela paga')},
@@ -1245,9 +1107,7 @@ const navBtn=id=>{const t=TABS.find(x=>x[0]===id);return`<button class="${V.tab=
 const navHTML=()=>`<div class="sbh"><span class="lg">${svg(IC.logo)}</span><div class="lt"><b>Finanças</b><i>by Anderson</i></div></div>`+sec('MINHA CONTA',['home','inc','exp','cards','loans','goal'])+sec('CASAL',['cpl'])+sec('ANÁLISE',['notif','rep'])+`<div class="grow"></div>`+navBtn('set')+`<button class="cb" data-col="1" data-tip="Recolher / expandir" title="Recolher / expandir">${svg(IC.chev)}<span>Recolher</span></button>`;
 try{if(localStorage.getItem('fin-sb')==='1')document.documentElement.classList.add('col')}catch(e){}
 function draw(){accUI();mUI();nv.innerHTML=navHTML();
- main.className=anim?'fx':'';anim=0;const _t=TABS.find(t=>t[0]===V.tab),_g=PGM[V.tab]||['#22d3ee',''];
- let body;try{fixData();body=VW[V.tab]()}catch(err){console.error('Falha ao montar a aba',V.tab,err);body=`<div class="box empty" role="alert"><b>Não foi possível montar esta aba.</b><p class="k">Algum registro está fora do padrão esperado. Detalhe técnico: ${esc(err&&err.message||err)}</p><button type="button" class="btn g s" data-a="cvretry">Tentar novamente</button></div>`}
- main.innerHTML=`<div class="phd" style="--pc:${_g[0]};--ps:${_g[0]}22"><span class="phi">${_t[2]}</span><div><h1 class="pt">${_t[1]}</h1><div class="phs">${_g[1]}</div></div></div>`+body}
+ main.className=anim?'fx':'';anim=0;const _t=TABS.find(t=>t[0]===V.tab),_g=PGM[V.tab]||['#22d3ee',''];main.innerHTML=`<div class="phd" style="--pc:${_g[0]};--ps:${_g[0]}22"><span class="phi">${_t[2]}</span><div><h1 class="pt">${_t[1]}</h1><div class="phs">${_g[1]}</div></div></div>`+VW[V.tab]()}
 function menu(o){nv.classList.toggle('open',o);sc.classList.toggle('on',o);mb.classList.toggle('open',o);mb.setAttribute('aria-expanded',o)}
 mb.onclick=()=>menu(!nv.classList.contains('open'));sc.onclick=()=>menu(false);addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
 nv.onclick=e=>{if(e.target.closest('[data-col]')){const v=!document.documentElement.classList.contains('col');document.documentElement.classList.toggle('col',v);try{localStorage.setItem('fin-sb',v?'1':'0')}catch(x){}return}const b=e.target.closest('[data-tab]');if(b){V.tab=b.dataset.tab;V.f={cat:'',st:'',pay:''};anim=1;menu(false);draw()}};
@@ -1260,8 +1120,8 @@ main.onclick=e=>{
    if(!card){toast('Não foi possível localizar este cartão na conta atual.');return}
    V.card=String(card.id);
    V.tab='cards';
-   V.cvf={sort:'recent',person:'',cat:''};
-   try{draw()}catch(err){console.error('Ver compras:',err);toast('Não foi possível abrir as compras deste cartão.');return}
+   V.cvf={sort:'recent',person:'',cat:'',month:V.ym};
+   draw();
    requestAnimationFrame(()=>requestAnimationFrame(()=>{
      const panel=main.querySelector('#wallet-detail');
      if(panel){panel.scrollIntoView({behavior:'smooth',block:'start'});panel.focus({preventScroll:true})}
