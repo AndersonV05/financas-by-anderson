@@ -581,6 +581,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .wallet-month-heading h3{margin:0;font-size:1rem}
 .wallet-month-heading span{font-size:.75rem;color:var(--mu)}
 @media(max-width:520px){.wallet-month-label{width:100%;justify-content:space-between}.wallet-month-label select{flex:1}}
+
+/* Cartão realista (brilho, chip e número) na aba Cartões */
+.wallet-card .bk{margin:14px 14px 0;aspect-ratio:1.75;max-width:none;border-radius:16px;padding:16px 18px;cursor:default}
+.wallet-card .bk .bkn{font-size:.72rem}
+.wallet-card .bk .bknum{font-size:clamp(.95rem,2.2vw,1.2rem)}
+.wallet-card .bk .mono2{margin-left:4px;font-size:.7rem}
+@media(max-width:460px){.wallet-card .bk{margin:10px 10px 0;padding:13px 14px}}
 </style></head><body>
 <div class="app"><div class="tb"><button class="mb" id="mb" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><b class="bt">Finanças <em>By Anderson</em></b><div class="mo" id="mo"></div><div class="acc" id="acc"></div></div><main id="main"></main></div>
 <div class="scrim" id="sc"></div><aside class="side" id="nav"></aside>
@@ -817,11 +824,11 @@ function vCards(){
    const last4=String(c.last4||'').replace(/\D/g,'').slice(-4)||'••••';
    const available=limit-u;
    return `<article class="wallet-card ${active?'selected':''}">
-     <div class="wallet-plastic" style="background:${bankBg(c)}">
-       <span class="wallet-top">${logo}<span class="wallet-credit">CRÉDITO</span></span>
-       <span class="wallet-chipline"><i class="bkchip"></i><span>${esc(c.name||'Cartão')}</span></span>
-       <span class="wallet-number">•••• •••• •••• ${last4}</span>
-       <span class="wallet-bottom"><span><small>TITULAR</small><b>${esc(AC(account).pf.dn||AC(account).pf.n||'')}</b></span><span><small>VENCIMENTO</small><b>Dia ${esc(c.due??'—')}</b></span>${FLG(c.flag||'Mastercard')}</span>
+     <div class="bk" style="background:${bankBg(c)}">
+       <div class="bk1">${logo}<span class="cty">CRÉDITO</span></div>
+       <div class="bkm"><i class="bkchip"></i><svg class="nfc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6c3 3.5 3 8.5 0 12M12 4c4.5 5 4.5 11 0 16M16 2c6 6.5 6 13.5 0 20"/></svg><span class="mono2">${esc(c.name||'Cartão')}</span></div>
+       <div class="bknum">•••• •••• •••• ${last4}</div>
+       <div class="bk1"><div class="bkn"><small>TITULAR</small>${esc(String(AC(account).pf.dn||AC(account).pf.n||'').toUpperCase())}</div><div class="bkn"><small>VENCE DIA</small>${esc(c.due??'—')}</div>${FLG(c.flag||'Mastercard')}</div>
      </div>
      <div class="wallet-info">
        <div class="wallet-balance"><div><small>Limite disponível</small><b>${money(available)}</b></div><span>${pct.toFixed(0)}% utilizado</span></div>
