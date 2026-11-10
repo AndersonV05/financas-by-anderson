@@ -588,6 +588,47 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 .wallet-card .bk .bknum{font-size:clamp(.95rem,2.2vw,1.2rem)}
 .wallet-card .bk .mono2{margin-left:4px;font-size:.7rem}
 @media(max-width:460px){.wallet-card .bk{margin:10px 10px 0;padding:13px 14px}}
+
+/* ===== Aba Cartões: layout profissional (cartões compactos) ===== */
+.wcx-top{padding:1.1rem 1.25rem;margin-bottom:1.1rem;border:1px solid var(--ln);border-radius:18px;background:linear-gradient(135deg,var(--accent-soft),transparent 60%),var(--sf)}
+.wcx-toprow{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.wcx-toprow h2{font-size:1.25rem;margin:.25rem 0 .15rem}.wcx-toprow p{margin:0;color:var(--mu);font-size:.8rem}
+.wcx-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:1rem;border-top:1px solid var(--ln)}
+.wcx-kpi{display:flex;flex-direction:column;gap:.15rem;padding:.85rem 1rem 0 0;min-width:0}
+.wcx-kpi+.wcx-kpi{padding-left:1rem;border-left:1px solid var(--ln)}
+.wcx-kpi small{font-size:.68rem;color:var(--mu);letter-spacing:.03em}.wcx-kpi b{font-size:1.15rem;letter-spacing:-.02em;white-space:nowrap}.wcx-kpi i{font-style:normal;font-size:.64rem;color:var(--mu)}
+.wcx-title{display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap;margin:1.2rem 0 .75rem}.wcx-title h3{margin:0;font-size:1rem}.wcx-title span{font-size:.75rem;color:var(--mu)}
+.wcx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,330px));gap:1.1rem;justify-content:start;align-items:start}
+.wcx{display:flex;flex-direction:column;min-width:0;border:1px solid var(--ln);border-radius:18px;background:var(--sf);box-shadow:0 6px 22px #0002;transition:border-color .2s,transform .2s var(--e),box-shadow .2s}
+.wcx:hover{transform:translateY(-2px);box-shadow:0 12px 28px #0003}
+.wcx.is-selected{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent-soft),0 10px 26px #0003}
+.wcx-visual{padding:12px 12px 0}
+.wcx .bk{aspect-ratio:1.78;max-width:none;margin:0;padding:13px 15px;border-radius:13px;cursor:default;box-shadow:0 10px 20px -12px #000,inset 0 1px 0 #ffffff33}
+.wcx .bk:hover{transform:none}
+.wcx .bk .bkchip{width:34px;height:25px;border-radius:6px}
+.wcx .bk .nfc{width:20px;height:20px}
+.wcx .bk .bknum{font-size:.92rem;letter-spacing:.11em}
+.wcx .bk .bkn{font-size:.66rem}.wcx .bk .bkn small{font-size:.48rem}
+.wcx .bk .bl{font-size:.9rem}.wcx .bk .bl-nu{font-size:1.5rem}.wcx .bk .mc i{width:22px;height:22px}.wcx .bk .vs{font-size:.9rem}
+.wcx-body{padding:.9rem 1rem 1rem;display:flex;flex-direction:column;gap:.65rem}
+.wcx-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem}.wcx-head b{font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wcx-pill{flex:none;font-size:.62rem;font-weight:800;padding:.25rem .55rem;border-radius:99px}
+.wcx-pill.is-open{color:var(--wr);background:#fbbf2418}.wcx-pill.is-paid{color:var(--ok);background:#34d39918}
+.wcx-avail{display:flex;align-items:flex-end;justify-content:space-between;gap:.5rem}
+.wcx-avail small{display:block;font-size:.66rem;color:var(--mu)}.wcx-avail strong{font-size:1.35rem;letter-spacing:-.03em}.wcx-avail>span{font-size:.72rem;font-weight:700}
+.wcx-bar{height:6px;border-radius:99px;background:var(--s2);overflow:hidden;margin-top:-.15rem}.wcx-bar i{display:block;height:100%;border-radius:99px;transition:width .5s}
+.wcx-stats{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin:0}
+.wcx-stats>div{padding:.5rem .6rem;border-radius:10px;background:var(--s2);min-width:0}
+.wcx-stats dt{font-size:.62rem;color:var(--mu);margin:0}.wcx-stats dd{margin:.1rem 0 0;font-size:.82rem;font-weight:700;white-space:nowrap}
+.wcx-warn{color:var(--wr)}
+.wcx-dates{display:flex;justify-content:space-between;font-size:.7rem;color:var(--mu);padding-top:.55rem;border-top:1px solid var(--ln)}.wcx-dates b{color:var(--tx)}
+.wcx-actions{display:grid;grid-template-columns:1fr auto;gap:.4rem}
+.wcx-btn{border:1px solid var(--ln);background:var(--s2);color:var(--tx);border-radius:10px;padding:.5rem .7rem;font-size:.74rem;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s,transform .12s}
+.wcx-btn:hover{background:var(--accent-soft);border-color:var(--accent-border)}.wcx-btn:active{transform:scale(.97)}
+.wcx-btn.is-main{background:var(--accent-soft);border-color:var(--accent-border);color:var(--accent-light)}
+.wcx-btn.is-pay{grid-column:1/-1;background:linear-gradient(90deg,var(--c1),var(--c2));border:0;color:var(--on,#06101a)}
+.wcx-btn:disabled{opacity:.4;pointer-events:none}
+@media(max-width:760px){.wcx-kpis{grid-template-columns:1fr 1fr}.wcx-kpi:nth-child(3){padding-left:0;border-left:0}.wcx-kpi:nth-child(n+3){border-top:1px solid var(--ln);margin-top:.85rem}.wcx-grid{grid-template-columns:minmax(0,1fr)}}
 </style></head><body>
 <div class="app"><div class="tb"><button class="mb" id="mb" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><b class="bt">Finanças <em>By Anderson</em></b><div class="mo" id="mo"></div><div class="acc" id="acc"></div></div><main id="main"></main></div>
 <div class="scrim" id="sc"></div><aside class="side" id="nav"></aside>
@@ -823,23 +864,29 @@ function vCards(){
    const logo=brand?`<span class="bl bl-${brand[1]}">${brand[0]}</span>`:`<span class="bl">${esc(c.em||'💳')} ${esc(c.bank||c.name||'Cartão')}</span>`;
    const last4=String(c.last4||'').replace(/\D/g,'').slice(-4)||'••••';
    const available=limit-u;
-   return `<article class="wallet-card ${active?'selected':''}">
-     <div class="bk" style="background:${bankBg(c)}">
+   const ob=openBill(c),tone=pct>=85?'var(--bad)':pct>=60?'var(--wr)':'var(--ok)';
+   return `<article class="wcx ${active?'is-selected':''}">
+     <div class="wcx-visual"><div class="bk" style="background:${bankBg(c)}">
        <div class="bk1">${logo}<span class="cty">CRÉDITO</span></div>
-       <div class="bkm"><i class="bkchip"></i><svg class="nfc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6c3 3.5 3 8.5 0 12M12 4c4.5 5 4.5 11 0 16M16 2c6 6.5 6 13.5 0 20"/></svg><span class="mono2">${esc(c.name||'Cartão')}</span></div>
+       <div class="bkm"><i class="bkchip"></i><svg class="nfc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6c3 3.5 3 8.5 0 12M12 4c4.5 5 4.5 11 0 16M16 2c6 6.5 6 13.5 0 20"/></svg></div>
        <div class="bknum">•••• •••• •••• ${last4}</div>
        <div class="bk1"><div class="bkn"><small>TITULAR</small>${esc(String(AC(account).pf.dn||AC(account).pf.n||'').toUpperCase())}</div><div class="bkn"><small>VENCE DIA</small>${esc(c.due??'—')}</div>${FLG(c.flag||'Mastercard')}</div>
-     </div>
-     <div class="wallet-info">
-       <div class="wallet-balance"><div><small>Limite disponível</small><b>${money(available)}</b></div><span>${pct.toFixed(0)}% utilizado</span></div>
-       <div class="wallet-progress"><i style="width:${pct}%;background:${bankAc(c)}"></i></div>
-       <div class="wallet-stats"><span>Limite <b>${money(limit)}</b></span><span>Utilizado <b>${money(u)}</b></span></div>
-       <div class="wallet-bill"><div><small>Fatura do período</small><b>${money(bill(c))}</b></div><div><small>Em aberto</small><b class="${openBill(c)?'wallet-warn':''}">${money(openBill(c))}</b></div></div>
-       <div class="wallet-dates"><span>Fecha dia <b>${esc(c.close??'—')}</b></span><span>Vence dia <b>${esc(c.due??'—')}</b></span></div>
-       <div class="wallet-actions">
-         <button type="button" class="btn ${active?'':'g'} s" data-open-card="${esc(normId(c.id))}">${active?'Cartão selecionado':'Ver compras ('+list.length+')'}</button>
-         <button type="button" class="btn g s" data-a="ce" data-v="${esc(normId(c.id))}">Editar</button>
-         <button type="button" class="btn s" data-a="pf" data-v="${esc(normId(c.id))}" ${openBill(c)>0?'':'disabled'}>Pagar fatura</button>
+     </div></div>
+     <div class="wcx-body">
+       <div class="wcx-head"><b>${esc(c.name||'Cartão')}</b><span class="wcx-pill ${ob>0?'is-open':'is-paid'}">${ob>0?'Fatura em aberto':'Em dia'}</span></div>
+       <div class="wcx-avail"><div><small>Limite disponível</small><strong>${money(available)}</strong></div><span style="color:${tone}">${pct.toFixed(0)}% usado</span></div>
+       <div class="wcx-bar"><i style="width:${pct}%;background:${tone}"></i></div>
+       <dl class="wcx-stats">
+         <div><dt>Limite total</dt><dd>${money(limit)}</dd></div>
+         <div><dt>Utilizado</dt><dd>${money(u)}</dd></div>
+         <div><dt>Fatura do período</dt><dd>${money(bill(c))}</dd></div>
+         <div><dt>Em aberto</dt><dd class="${ob?'wcx-warn':''}">${money(ob)}</dd></div>
+       </dl>
+       <div class="wcx-dates"><span>Fecha dia <b>${esc(c.close??'—')}</b></span><span>Vence dia <b>${esc(c.due??'—')}</b></span></div>
+       <div class="wcx-actions">
+         <button type="button" class="wcx-btn is-main" data-open-card="${esc(normId(c.id))}">${active?'Cartão selecionado':'Ver compras ('+list.length+')'}</button>
+         <button type="button" class="wcx-btn" data-a="ce" data-v="${esc(normId(c.id))}">Editar</button>
+         <button type="button" class="wcx-btn is-pay" data-a="pf" data-v="${esc(normId(c.id))}" ${ob>0?'':'disabled'}>Pagar fatura</button>
        </div>
      </div>
    </article>`;
@@ -889,10 +936,10 @@ function vCards(){
      ${shown.length?renderRows(rendered):`<div class="wallet-empty"><span>🛍️</span><b>${all.length?'Nenhuma compra corresponde aos filtros.':'Nenhuma compra vinculada a este cartão.'}</b><p>${all.length?'Limpe os filtros para ver o histórico completo.':'Cadastre uma compra e selecione este cartão no formulário.'}</p><button type="button" class="btn" data-a="eb0">＋ Nova compra</button></div>`}
    </section>`;
  }
- return `<section class="wallet-hero"><div><span class="cfg-eyebrow">CONTROLE DE CRÉDITO</span><h2>Meus cartões</h2><p>Limites, utilização e faturas separados por cartão.</p></div><button type="button" class="btn" data-a="ac">＋ Adicionar cartão</button></section>
- <div class="wallet-overview">${metric('Faturas do período',totalBills,'somatório dos cartões','🧾')}${metric('Total utilizado',totalUsed,'parcelas ainda não pagas','💳')}${metric('Limite disponível',totalLimit-totalUsed,'em todos os cartões','✦')}${metric('Limite total',totalLimit,'limites cadastrados','▤')}</div>
- <div class="wallet-section-title"><div><h3>Seus cartões</h3><p>${cards.length} ${cards.length===1?'cartão cadastrado':'cartões cadastrados'} nesta conta</p></div><span>🔐 Dados separados por conta</span></div>
- ${cards.length?`<div class="wallet-grid">${cards.map(cardMarkup).join('')}</div>`:`<div class="wallet-empty wallet-empty-main"><span>💳</span><b>Nenhum cartão cadastrado</b><p>Adicione Banco do Brasil, Caixa ou outro cartão para acompanhar seus limites e faturas.</p><button class="btn" data-a="ac">＋ Adicionar cartão</button></div>`}
+ const kpi=(label,value,note)=>`<div class="wcx-kpi"><small>${label}</small><b>${money(value)}</b><i>${note}</i></div>`;
+ return `<section class="wcx-top"><div class="wcx-toprow"><div><span class="cfg-eyebrow">CONTROLE DE CRÉDITO</span><h2>Meus cartões</h2><p>Limites, utilização e faturas de cada cartão em um só lugar.</p></div><button type="button" class="btn" data-a="ac">＋ Adicionar cartão</button></div><div class="wcx-kpis">${kpi('Faturas do período',totalBills,'somatório dos cartões')}${kpi('Total utilizado',totalUsed,'parcelas não pagas')}${kpi('Limite disponível',totalLimit-totalUsed,'em todos os cartões')}${kpi('Limite total',totalLimit,'limites cadastrados')}</div></section>
+ <div class="wcx-title"><h3>Seus cartões</h3><span>${cards.length} ${cards.length===1?'cartão cadastrado':'cartões cadastrados'} nesta conta</span></div>
+ ${cards.length?`<div class="wcx-grid">${cards.map(cardMarkup).join('')}</div>`:`<div class="wallet-empty wallet-empty-main"><span>💳</span><b>Nenhum cartão cadastrado</b><p>Adicione Banco do Brasil, Caixa ou outro cartão para acompanhar seus limites e faturas.</p><button class="btn" data-a="ac">＋ Adicionar cartão</button></div>`}
  ${detail}`;
 }
 
