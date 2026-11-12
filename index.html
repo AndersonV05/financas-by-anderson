@@ -825,6 +825,7 @@ const K='fin-anderson-v2',uid=()=>Math.random().toString(36).slice(2,9),pad=n=>S
 const td=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())},cur=td().slice(0,7);
 const MN='Janeiro,Fevereiro,Março,Abril,Maio,Junho,Julho,Agosto,Setembro,Outubro,Novembro,Dezembro'.split(',');
 const addM=(m,k)=>{const d=new Date(+m.slice(0,4),+m.slice(5)-1+k,1);return d.getFullYear()+'-'+pad(d.getMonth()+1)};
+const dueIn=(ym,day)=>{const last=new Date(+ym.slice(0,4),+ym.slice(5),0).getDate();return ym+'-'+pad(Math.min(Math.max(1,+day||1),last))};
 const billDueDate=(ym,day)=>{const m=addM(ym,1),last=new Date(+m.slice(0,4),+m.slice(5),0).getDate();return m+'-'+pad(Math.min(Math.max(1,+day||1),last))};
 const ad=(d,n)=>new Date(+new Date(d+'T12:00:00Z')+n*864e5).toISOString().slice(0,10);
 const nmo=(d,k)=>{const m=addM(d.slice(0,7),k);return m+'-'+pad(Math.min(+d.slice(8),new Date(+m.slice(0,4),+m.slice(5),0).getDate()))};
@@ -898,7 +899,7 @@ function pickEmoji(cb,sug){const d=document.getElementById('edlg'),inp=d.querySe
   else if(k){c=+k.dataset.c;q='';inp.value='';paint()}else if(e.target.closest('[data-x]')||e.target===d)d.close()};
  paint();d.showModal()}
 // ---------- cálculo ----------
-const stm=b=>{const c=S.cards.find(x=>x.id===b.card);return c&&+b.date.slice(8)>+c.close?addM(b.date.slice(0,7),1):b.date.slice(0,7)};
+const stm=b=>{const c=S.cards.find(x=>x.id===b.card),pm=b.date.slice(0,7);if(!c)return pm;const cl=+c.close||0,du=+c.due||0;let m=+b.date.slice(8)>cl?addM(pm,1):pm;if(cl&&du&&du<=cl)m=addM(m,1);return m};
 const bpaid=(b,i)=>b.pd.includes(i)||(AC(b.owner).set.auto&&addM(stm(b),i)<cur);
 function gen(){}
 function items(yms){const o=[];
@@ -969,7 +970,7 @@ function vHome(){
  if(nl&&nt(w,'late'))chips.push(['bad','⚠️',`${nl} despesa(s) atrasada(s)`,'exp']);
  if(mr&&nt(w,'rec'))chips.push(['wr','🔔',`${mr} receita(s) não recebida(s)`,'inc']);
  if(proj<0&&nt(w,'neg'))chips.push(['bad','📉','Saldo previsto negativo','notif']);
- S.cards.filter(c=>c.owner===w).forEach(c=>{const dd=billDueDate(cur,c.due),d=Math.round((new Date(dd+'T00:00:00')-new Date(t+'T00:00:00'))/864e5),u=sum(items([cur]).filter(i=>i.card===c.id&&!i.paid&&pOK(i,w,'panel')),i=>i.amt);if(u>0&&d>=0&&d<=5&&nt(w,'fat'))chips.push(['wr','💳',`Fatura ${esc(c.name)} ${R(u)} · vence em ${d} dia(s)`,'cards'])});
+ S.cards.filter(c=>c.owner===w).forEach(c=>{const dd=dueIn(cur,c.due),d=Math.round((new Date(dd+'T00:00:00')-new Date(t+'T00:00:00'))/864e5),u=sum(items([cur]).filter(i=>i.card===c.id&&!i.paid&&pOK(i,w,'panel')),i=>i.amt);if(u>0&&d>=0&&d<=5&&nt(w,'fat'))chips.push(['wr','💳',`Fatura ${esc(c.name)} ${R(u)} · vence em ${d} dia(s)`,'cards'])});
  const att=chips.length?`<div class="hx-att">${chips.map(c=>`<button type="button" class="hx-chip ${c[0]}" data-a="go" data-v="${c[3]}">${c[1]} ${c[2]}</button>`).join('')}</div>`:'';
  // próximos pagamentos em grupos
  const up=items([addM(yl[0],-3),addM(yl[0],-2),addM(yl[0],-1),...yl]).filter(i=>i.p===w&&pOK(i,w,'panel')&&i.k!=='inc'&&!i.paid&&i.cat!=='Dinheiro guardado'&&(isLate(i)||yl.includes(i.date.slice(0,7)))).sort((a,b)=>a.date<b.date?-1:1),wk=dateAdd(t,7),
@@ -1186,7 +1187,7 @@ function vNotif(){const t=td(),w=V.acc,r=rg(),a=AC(),pk=r.y.join();a.read=a.read
  const its=items(r.y).filter(i=>i.p===w),notes=[],late=its.filter(i=>i.k!=='inc'&&!i.paid&&i.cat!=='Dinheiro guardado'&&isLate(i)),gr={};
  late.forEach(i=>{const b=String(i.id).split('@')[0];(gr[b]=gr[b]||[]).push(i)});
  Object.keys(gr).forEach(b=>{const arr=gr[b].sort((x,y)=>x.date<y.date?-1:1),o=arr[0],tl=sum(arr,i=>i.amt);notes.push({id:'late:'+b+'|'+pk,sev:'bad',icon:'⏰',title:arr.length>1?arr.length+' parcelas em atraso':'Conta atrasada',desc:'<b>'+R(tl)+' vencido</b> · '+esc(o.desc)+' · mais antiga '+D(o.date),navK:o.k,navDate:o.date,navId:o.id,navCard:o.card})});
- S.cards.filter(c=>c.owner===w&&+c.limit>0).forEach(c=>{const dueDate=billDueDate(V.ym,c.due),dd=Math.round((new Date(dueDate+'T00:00:00')-new Date(t+'T00:00:00'))/864e5),u=sum(its.filter(i=>i.card===c.id&&!i.paid),i=>i.amt);if(u>0&&dd>=0&&dd<=5&&nt(w,'fat'))notes.push({id:'fat:'+c.id+'|'+pk,sev:'wr',icon:'📅',title:'Fatura perto do vencimento · '+esc(c.name),desc:R(u)+' vence em '+dd+' dia(s) · vencimento '+D(dueDate),navK:'card',navDate:dueDate,navCard:c.id});const used=sum(S.buys.filter(b=>b.card===c.id),b=>{let x=0;for(let i=0;i<b.n;i++)if(!bpaid(b,i))x+=inst(b,i);return x}),pct=used/c.limit*100;if(pct>=100)notes.push({id:'lim:'+c.id+'|'+pk,sev:'bad',icon:'🚨',title:'Limite estourado · '+esc(c.name),desc:'Usado '+R(used)+' de '+R(+c.limit)+' ('+Math.round(pct)+'%)',navK:'card',navCard:c.id});else if(pct>=85)notes.push({id:'lim:'+c.id+'|'+pk,sev:'wr',icon:'⚠️',title:'Limite quase no fim · '+esc(c.name),desc:R(used)+' de '+R(+c.limit)+' ('+Math.round(pct)+'%)',navK:'card',navCard:c.id})});
+ S.cards.filter(c=>c.owner===w&&+c.limit>0).forEach(c=>{const dueDate=dueIn(V.ym,c.due),dd=Math.round((new Date(dueDate+'T00:00:00')-new Date(t+'T00:00:00'))/864e5),u=sum(its.filter(i=>i.card===c.id&&!i.paid),i=>i.amt);if(u>0&&dd>=0&&dd<=5&&nt(w,'fat'))notes.push({id:'fat:'+c.id+'|'+pk,sev:'wr',icon:'📅',title:'Fatura perto do vencimento · '+esc(c.name),desc:R(u)+' vence em '+dd+' dia(s) · vencimento '+D(dueDate),navK:'card',navDate:dueDate,navCard:c.id});const used=sum(S.buys.filter(b=>b.card===c.id),b=>{let x=0;for(let i=0;i<b.n;i++)if(!bpaid(b,i))x+=inst(b,i);return x}),pct=used/c.limit*100;if(pct>=100)notes.push({id:'lim:'+c.id+'|'+pk,sev:'bad',icon:'🚨',title:'Limite estourado · '+esc(c.name),desc:'Usado '+R(used)+' de '+R(+c.limit)+' ('+Math.round(pct)+'%)',navK:'card',navCard:c.id});else if(pct>=85)notes.push({id:'lim:'+c.id+'|'+pk,sev:'wr',icon:'⚠️',title:'Limite quase no fim · '+esc(c.name),desc:R(used)+' de '+R(+c.limit)+' ('+Math.round(pct)+'%)',navK:'card',navCard:c.id})});
  const recL=its.filter(i=>i.k==='inc'&&!i.paid&&i.date<t);if(recL.length&&nt(w,'rec')){const ro=recL.sort((x,y)=>x.date<y.date?-1:1)[0];notes.push({id:'rec:'+pk,sev:'wr',icon:'🔔',title:recL.length+' receita(s) não recebida(s)',desc:'Total '+R(sum(recL,i=>i.amt))+' · mais antiga '+esc(ro.desc)+' ('+D(ro.date)+')',navK:'inc',navDate:ro.date,navId:ro.id})}
  const T=tot(its,'all');if(T.saldo<0&&nt(w,'neg'))notes.push({id:'neg:'+pk,sev:'bad',icon:'💸',title:'Saldo negativo',desc:'Você já pagou '+R(-T.saldo)+' a mais do que recebeu neste período.'});
  const vis=notes.filter(n=>!a.ndel[n.id]);V.notes=vis;const idx=n=>vis.indexOf(n),U=vis.filter(n=>!a.read[n.id]),Rd=vis.filter(n=>a.read[n.id]),view=V.nview||'pend';
