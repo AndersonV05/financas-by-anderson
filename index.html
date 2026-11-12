@@ -940,6 +940,14 @@ main.gr .ring .rf{animation:ringIn 1.1s .15s var(--e) both}@keyframes ringIn{fro
 @media(max-width:520px){.gl-grid{grid-template-columns:1fr}.gl-hero .btn{width:100%}}
 @media(prefers-reduced-motion:reduce){.gl-card,.gl-bar i{animation:none}}
 
+.xt-chips{display:flex;gap:.4rem;overflow-x:auto;padding:.1rem .1rem .45rem;margin-bottom:.2rem;scrollbar-width:none}
+.xt-chips::-webkit-scrollbar{display:none}
+.xt-chip{flex:none;font:inherit;font-size:.78rem;color:var(--tx);background:var(--sf);border:1px solid var(--ln);border-radius:99px;padding:.28rem .7rem;cursor:pointer;white-space:nowrap;transition:background .18s,border-color .18s}
+.xt-chip:hover{border-color:var(--cc)}.xt-chip.on{background:color-mix(in srgb,var(--cc) 24%,transparent);border-color:var(--cc);font-weight:700}
+.xt-bar{gap:.4rem;margin-bottom:.6rem}
+.xt-bar input.xt-q{flex:1 1 150px;width:auto;min-width:0;padding:.42rem .75rem;font-size:.84rem;border-radius:10px}
+.xt-bar select{flex:0 0 auto;width:auto;max-width:48%;padding:.42rem .6rem;font-size:.82rem;border-radius:10px}
+.xt-bar .tag{flex:none}
 </style>
 </head><body>
 <div class="app"><div class="tb"><button class="mb" id="mb" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><b class="bt">Finanças <em>By Anderson</em></b><div class="mo" id="mo"></div><div class="acc" id="acc"></div></div><main id="main"></main></div>
@@ -1128,7 +1136,7 @@ function vTx2(kind){const r=rg(),w=V.acc,I=kind==='inc',t=td(),F=V.f||{},
  const cmp=df===null?'':Math.abs(df)<1?`<span class="xt-cmp">＝ Igual a ${plb}</span>`:`<span class="xt-cmp ${(df>0)===I?'ok':'bad'}">${df>0?'▲':'▼'} ${Math.round(Math.abs(df))}% ${df>0?'a mais':'a menos'} que ${plb}</span>`;
  const tile=(lb,v,n,cl)=>`<button type="button" class="xt-tile ${cl}${F.st===lb?' on':''}" data-a="xst" data-v="${lb}"><small>${lb}</small><b data-count="${v}">${R(v)}</b><span>${n} lançamento${n!==1?'s':''}</span></button>`;
  const cm={};all.forEach(i=>cm[i.cat]=(cm[i.cat]||0)+i.amt);const cats=Object.entries(cm).sort((a,b)=>b[1]-a[1]).slice(0,6),mx=cats.length?cats[0][1]:1;
- const catH=cats.length?`<div class="xt-cats"><div class="xt-ct">Por categoria <small>toque para filtrar</small></div>${cats.map(([n,v])=>{const c=ct(n,w);return`<button type="button" class="xt-cat${F.cat===n?' on':''}" style="--cc:${c.c}" data-a="xcat" data-v="${esc(n)}"><span>${c.e} ${esc(n)}</span><i style="width:${Math.max(4,v/mx*100)}%"></i><b>${R(v)}</b></button>`}).join('')}</div>`:'';
+ const catH=cats.length>1?`<div class="xt-chips" role="group" aria-label="Filtrar por categoria">${cats.map(([n,v])=>{const c=ct(n,w);return`<button type="button" class="xt-chip${F.cat===n?' on':''}" style="--cc:${c.c}" data-a="xcat" data-v="${esc(n)}" title="${esc(n)} · ${R(v)}">${c.e} ${esc(n)}</button>`}).join('')}</div>`:'';
  const rowX=i=>{const c=ct(i.cat,i.p),lt=isLate(i);return`<div class="xt-row${i.paid?' paid':lt?' late':''}${hlc(i.id)}" data-a="ed" data-k="${i.k}" data-id="${i.id}" data-s="${esc((i.desc+' '+i.cat).toLowerCase())}"><button type="button" class="xt-chk" data-a="tg" data-k="${i.k}" data-id="${i.id}" data-v="${i.i??''}" title="${i.paid?'Desfazer':I?'Marcar como recebido':'Marcar como pago'}" aria-label="${i.paid?'Desfazer':I?'Marcar como recebido':'Marcar como pago'}">${i.paid?'✓':''}</button><span class="xt-ico" style="--cc:${c.c}">${c.e}</span><div class="xt-m"><b>${i.c?'👫 ':''}${esc(i.desc)}</b><small>${F.sort==='value'?D(i.date)+' · ':''}${esc(i.cat)}${i.pay?' · '+payE(i.pay,i.p)+' '+esc(i.pay):''}${i.person&&i.person!=='eu'?' · '+esc(pName(i.person)):''}</small></div><div class="xt-a"><b class="${I?'ok':''}">${I?'+':'-'}${R(i.amt)}</b><small>${stt(i)}</small></div></div>`};
  const days=(arr,asc)=>{const dm={};arr.forEach(i=>(dm[i.date]=dm[i.date]||[]).push(i));const ks=Object.keys(dm).sort();if(!asc)ks.reverse();return ks.map((d,n)=>`<section class="xt-day" style="--i:${Math.min(n,8)}"><header><span>${dl(d)}</span><small>${R(sum(dm[d],i=>i.amt))}</small></header>${dm[d].map(rowX).join('')}</section>`).join('')};
  const sm=F.sort||'recent';let list;
