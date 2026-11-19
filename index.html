@@ -815,19 +815,15 @@ main.gr .ring .rf{animation:ringIn 1.1s .15s var(--e) both}@keyframes ringIn{fro
 .qs-i.on{background:linear-gradient(90deg,#22d3ee26,#8b5cf626)}.qs-i.on svg{stroke:var(--c1)}
 .qs-e{padding:1.2rem;text-align:center;color:var(--mu)}
 @media print{.toast2,#toasts,.qs,#qBtn{display:none!important}}
-/* --- atalhos estilo app de banco + botão início (celular) --- */
-.hb{display:none}
-.hb{width:44px;height:44px;border-radius:13px;border:1px solid var(--ln);background:var(--sf);cursor:pointer;align-items:center;justify-content:center;flex:none;transition:transform .2s var(--e),background .2s}
-.hb svg{width:22px;height:22px;fill:none;stroke:var(--tx);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.hb:active{transform:scale(.92)}.hb.on{background:linear-gradient(90deg,#22d3ee33,#8b5cf633);border-color:#22d3ee66}
-@media(max-width:899px){
- .qa button{background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:.4rem;cursor:pointer;font-size:.74rem;font-weight:600;color:var(--tx);line-height:1.15;text-align:center}
- .qa i{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--q) 18%,transparent);border:1px solid color-mix(in srgb,var(--q) 38%,transparent);transition:transform .2s var(--e)}
- .qa button:active i{transform:scale(.9)}
- .qa svg{width:26px;height:26px;fill:none;stroke:var(--q);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-}
-.qa{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem .2rem;margin:.3rem 0 1.1rem}
-@media(min-width:900px){.qa{max-width:560px}}
+/* --- QuickActions: atalhos rápidos do Painel --- */
+.qa{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.1rem .25rem;margin:.2rem 0 1.1rem;padding:1.1rem .6rem;background:var(--sf);border-radius:20px}
+.qa-i{appearance:none;-webkit-appearance:none;background:none;border:0;margin:0;padding:.15rem 0;min-height:48px;display:flex;flex-direction:column;align-items:center;gap:.45rem;cursor:pointer;color:var(--tx);font-size:.8rem;font-weight:600;line-height:1.15;text-align:center;-webkit-tap-highlight-color:transparent;transition:transform .15s var(--e),opacity .15s}
+.qa-c{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft)}
+.qa-c svg{width:25px;height:25px;fill:none;stroke:var(--accent-light);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.qa-i:active{transform:scale(.92);opacity:.8}
+.qa-i:focus-visible{outline:2px solid var(--accent-light);outline-offset:3px;border-radius:14px}
+:root[data-theme=light] .qa-c svg{stroke:var(--accent)}
+@media(min-width:768px){.qa{grid-template-columns:repeat(6,minmax(0,1fr));max-width:680px}}
 @media print{.qa{display:none!important}}
 </style><style>
 .ln-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;margin:.2rem 0 .9rem}
@@ -1148,7 +1144,7 @@ function vHome(){
  const up=hxBills(items([addM(yl[0],-3),addM(yl[0],-2),addM(yl[0],-1),...yl]).filter(i=>i.p===w&&pOK(i,w,'panel')&&i.k!=='inc'&&!i.paid&&i.cat!=='Dinheiro guardado'&&(isLate(i)||yl.includes(i.date.slice(0,7))))).sort((a,b)=>rd(a)<rd(b)?-1:1),wk=dateAdd(t,7),
  grp=[['Atrasados','bad',up.filter(isLate),8],['Hoje','ok',up.filter(i=>!isLate(i)&&rd(i)<=t),8],['Esta semana','wr',up.filter(i=>!isLate(i)&&rd(i)>t&&rd(i)<=wk),8],['Depois','',up.filter(i=>!isLate(i)&&rd(i)>wk),6]].filter(g=>g[2].length),
  tl=grp.length?grp.map(g=>`<div class="hx-grp"><div class="hx-gh ${g[1]}"><b>${g[0]}</b><span>${g[2].length} · ${R(sum(g[2],i=>i.amt))}</span></div>${(V.hxMore&&V.hxMore[g[0]]?g[2]:g[2].slice(0,g[3])).map(row).join('')}${g[2].length>g[3]&&!(V.hxMore&&V.hxMore[g[0]])?`<button type="button" class="hx-more" data-a="more" data-v="${g[0]}">+ ${g[2].length-g[3]} outros · ver todos</button>`:''}</div>`).join(''):'<div class="empty">Nada pendente. 🎉</div>';
- const qa=`<nav class="qa" aria-label="Atalhos">${[['inc','Receitas'],['exp','Despesas'],['cards','Cartões'],['loans','Empréstimos'],['cpl','Casal'],['goal','Metas'],['rep','Relatórios'],['notif','Avisos']].map(x=>`<button type="button" data-a="go" data-v="${x[0]}" style="--q:${PGM[x[0]][0]}"><i>${svg(IC[x[0]])}</i><span>${x[1]}</span></button>`).join('')}</nav>`;
+ const qa=QuickActions();
  return ctl()+hero+qa+att+`<article class="hx-box"><div class="hx-bh"><b>Próximos pagamentos</b><small>toque no status para marcar como pago</small></div>${tl}</article>`}
 function vTx(kind){const r=rg(),w=V.acc,I=kind==='inc',all=items(r.y).filter(i=>i.k===kind&&i.p===w&&(!r.a||i.date===r.a)),
  its=all.filter(i=>(!V.f.cat||i.cat===V.f.cat)&&(!V.f.q||i.desc.toLowerCase().includes(V.f.q.toLowerCase()))&&(!V.f.pay||i.pay===V.f.pay)&&(!V.f.st||stt(i)===V.f.st)).sort((a,b)=>a.date<b.date?1:-1),ss=I?['Recebido','Pendente','Atrasado']:['Já pago','A pagar','Atrasado'];
@@ -1608,6 +1604,16 @@ function maskMoney(){const w=document.createTreeWalker(main,NodeFilter.SHOW_TEXT
 function confetti(){if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;const cs=['#34d399','#fbbf24','#22d3ee','#f472b6','#a78bfa'];for(let i=0;i<42;i++){const d=document.createElement('i');d.className='cf';d.style.cssText=`left:${Math.random()*100}vw;background:${cs[i%5]};--dx:${(Math.random()-.5)*220}px;--r:${Math.random()*720}deg;animation-delay:${Math.random()*.25}s`;document.body.appendChild(d);setTimeout(()=>d.remove(),2000)}}
 function draw(){const _y=window.scrollY,_k=V.tab+'|'+V.sub;accUI();mUI();nv.innerHTML=navHTML();
  main.className=anim?'fx':'';anim=0;const _t=TABS.find(t=>t[0]===V.tab),_g=PGM[V.tab]||['#22d3ee',''];main.innerHTML=`<div class="phd" style="--pc:${_g[0]};--ps:${_g[0]}22"><span class="phi">${svg(IC[V.tab]||'')}</span><div><h1 class="pt">${_t[1]}</h1><div class="phs">${_g[1]}</div></div></div>`+VW[V.tab]();const _chg=V._k!==_k,_new=_chg||V._cu!==V.ym;if(!_chg)window.scrollTo(0,_y);V._k=_k;V._cu=V.ym;if(document.documentElement.classList.contains('priv'))maskMoney();else if(_new)countUp();if(_new){main.querySelectorAll('.hx-box,.hx-hero>*,.rpx-box,.rpx-strip,.rpx-sec,.wcx,.cpx-person,.cpx-list,.cpx-settle,.cpx-strip,.gcard,.box').forEach((el,i)=>el.style.setProperty('--i',Math.min(i,9)));main.classList.add('gr');clearTimeout(V._grt);V._grt=setTimeout(()=>main.classList.remove('gr'),1100)}}
+const QUICK_ACTIONS=[
+ {tab:'rep',label:'Relatório'},
+ {tab:'cards',label:'Cartões'},
+ {tab:'exp',label:'Despesas'},
+ {tab:'inc',label:'Receitas'},
+ {tab:'loans',label:'Empréstimo'},
+ {tab:'cpl',label:'Casal'}
+];
+function QuickActions(items=QUICK_ACTIONS){
+ return `<nav class="qa" aria-label="Atalhos rápidos">${items.map(a=>`<button type="button" class="qa-i" data-a="go" data-v="${a.tab}" aria-label="${a.label}"><span class="qa-c">${svg(IC[a.icon||a.tab])}</span><span>${a.label}</span></button>`).join('')}</nav>`}
 function goItem(k,id,d){
  const tab=k==='inc'?'inc':k==='loan'?'loans':(k==='card'||k==='bill')?'cards':'exp';
  if(d)V.ym=String(d).slice(0,7);
