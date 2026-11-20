@@ -1141,6 +1141,11 @@ const sk=i=>i.paid?(i.k==='inc'?'rec':'paid'):isLate(i)?'late':'pend';
 function hxBills(a){const o=[],m={};a.forEach(i=>{if(i.k!=='card'){o.push(i);return}const key=i.card+'|'+i.date.slice(0,7);if(!m[key]){const c=S.cards.find(x=>x.id===i.card)||{};m[key]={k:'bill',id:'bill:'+key,card:i.card,ym:i.date.slice(0,7),p:i.p,desc:'Fatura '+(c.name||'cartão'),cat:'Cartão',amt:0,n:0,date:i.date,real:i.real,paid:false};o.push(m[key])}m[key].amt+=i.amt;m[key].n++});return o}
 const rel=i=>{if(i.paid)return'';const d=Math.round((new Date(rd(i)+'T12:00:00')-new Date(td()+'T12:00:00'))/864e5);if(Math.abs(d)>60)return'';const tx=d===0?'hoje':d===1?'amanhã':d===-1?'ontem':d>1?'em '+d+' dias':'há '+(-d)+' dias';return`<span class="rel ${d<0?'bad':d<=3?'wr':''}">${tx}</span> · `};
 function rowBill(i){const lt=isLate(i),t=AC(i.p).st[lt?'late':'pend'];return`<div class="row" data-a="cv" data-v="${i.card}"><span class="ico">💳</span><div class="m"><div>${dnm(i.desc)}</div><div class="k">${rel(i)}${D(rd(i))} · ${i.n} lançamento${i.n!==1?'s':''} na fatura</div></div><div class="a">-${R(i.amt)}</div><button class="tag" style="color:${t.c};border-color:${t.c}66" data-a="fpay" data-v="${i.card}" data-k="${i.ym}" title="Marcar a fatura inteira como paga">${t.e} Pagar fatura</button></div>`}
+function homeRow(i){
+ if(i.k==='bill'){const lt=isLate(i),t=AC(i.p).st[lt?'late':'pend'];return`<div class="row hx-row" data-a="cv" data-v="${i.card}"><span class="ico">💳</span><div class="m"><div>${dnm(i.desc)}</div><div class="k">${rel(i)}${D(rd(i))} · ${i.n} lançamento${i.n!==1?'s':''}</div></div><div class="hx-ra"><div class="a">-${R(i.amt)}</div><button class="tag" style="color:${t.c};border-color:${t.c}66" data-a="fpay" data-v="${i.card}" data-k="${i.ym}" title="Marcar a fatura inteira como paga">${t.e} Pagar fatura</button></div></div>`}
+ const x=stt(i),t=AC(i.p).st[sk(i)],nm=String(i.desc||'').toLowerCase(),cat=String(i.cat||''),showCat=cat&&i.k!=='loan'&&!nm.includes(cat.toLowerCase()),
+ meta=[];if(showCat)meta.push(esc(cat));if(i.c)meta.push('Casal');if(i.pay)meta.push(payE(i.pay,i.p)+' '+esc(i.pay));if(i.person&&i.person!=='eu')meta.push(esc(pName(i.person)));
+ return`<div class="row hx-row${hlc(i.id)}" data-a="ed" data-k="${i.k}" data-id="${i.id}" data-d="${i.date}"><span class="ico">${ct(i.cat,i.p).e}</span><div class="m"><div>${dnm(i.desc)}</div><div class="k">${rel(i)}${D(rd(i))}${meta.length?' · '+meta.join(' · '):''}</div></div><div class="hx-ra"><div class="a ${i.k==='inc'?'ok':''}">${i.k==='inc'?'+':'-'}${R(i.amt)}</div><button class="tag" style="color:${t.c};border-color:${t.c}66" data-a="tg" data-k="${i.k}" data-id="${i.id}" data-v="${i.i??''}">${t.e} ${x}</button></div></div>`}
 function row(i){if(i.k==='bill')return rowBill(i);const x=stt(i),t=AC(i.p).st[sk(i)];return`<div class="row${hlc(i.id)}" data-a="ed" data-k="${i.k}" data-id="${i.id}" data-d="${i.date}"><span class="ico">${ct(i.cat,i.p).e}</span><div class="m"><div>${dnm(i.desc)}</div><div class="k">${rel(i)}${D(rd(i))} · ${esc(i.cat)}${i.k==='card'?' · Cartão':i.k==='loan'?' · Empréstimo':''}${i.c?' · Casal':''}${i.pay?' · '+payE(i.pay,i.p)+' '+i.pay:''}${i.person&&i.person!=='eu'?' · '+esc(pName(i.person)):''}</div></div>${V.tab==='cpl'?`<span class="pp" style="color:${pc(i.p)}">${pn(i.p)}</span>`:''}<div class="a ${i.k==='inc'?'ok':''}">${i.k==='inc'?'+':'-'}${R(i.amt)}</div><button class="tag" style="color:${t.c};border-color:${t.c}66" data-a="tg" data-k="${i.k}" data-id="${i.id}" data-v="${i.i??''}">${t.e} ${x}</button></div>`}
 function ctl(){return`<div class="ctl panel-ctl">${V.tab==='rep'||V.tab==='cpl'?`<div class="seg compact-scope"><button class="${V.scopeWho==='all'?'':'on'}" data-a="repwho" data-v="me">Só meus</button><button class="${V.scopeWho==='all'?'on':''}" data-a="repwho" data-v="all">Todas as pessoas</button></div>`:''}<b class="k period-label">${rg().l}</b></div>`}
 // ---------- páginas ----------
@@ -1163,13 +1168,12 @@ function vHome(){
  const chips=[],nl=mine.filter(i=>i.k!=='inc'&&isLate(i)).length,mr=mine.filter(i=>i.k==='inc'&&!i.paid&&i.date<t).length;
  if(nl&&nt(w,'late'))chips.push(['bad','⚠️',`${nl} despesa(s) atrasada(s)`,'exp']);
  if(mr&&nt(w,'rec'))chips.push(['wr','🔔',`${mr} receita(s) não recebida(s)`,'inc']);
- if(proj<0&&nt(w,'neg'))chips.push(['bad','📉','Saldo previsto negativo','notif']);
- S.cards.filter(c=>c.owner===w).forEach(c=>{const dd=billDueDate(cur,c.due),d=Math.round((new Date(dd+'T00:00:00')-new Date(t+'T00:00:00'))/864e5),u=sum(items([cur]).filter(i=>i.card===c.id&&!i.paid&&pOK(i,w,'panel')),i=>i.amt);if(u>0&&d>=0&&d<=5&&nt(w,'fat'))chips.push(['wr','💳',`Fatura ${esc(c.name)} ${R(u)} · vence em ${d} dia(s)`,'cards'])});
+  S.cards.filter(c=>c.owner===w).forEach(c=>{const dd=billDueDate(cur,c.due),d=Math.round((new Date(dd+'T00:00:00')-new Date(t+'T00:00:00'))/864e5),u=sum(items([cur]).filter(i=>i.card===c.id&&!i.paid&&pOK(i,w,'panel')),i=>i.amt);if(u>0&&d>=0&&d<=5&&nt(w,'fat'))chips.push(['wr','💳',`Fatura ${esc(c.name)} ${R(u)} · vence em ${d} dia(s)`,'cards'])});
  const att=chips.length?`<div class="hx-att">${chips.map(c=>`<button type="button" class="hx-chip ${c[0]}" data-a="go" data-v="${c[3]}">${c[1]} ${c[2]}</button>`).join('')}</div>`:'';
  // próximos pagamentos em grupos
  const up=hxBills(items([addM(yl[0],-3),addM(yl[0],-2),addM(yl[0],-1),...yl]).filter(i=>i.p===w&&pOK(i,w,'panel')&&i.k!=='inc'&&!i.paid&&i.cat!=='Dinheiro guardado'&&(isLate(i)||yl.includes(i.date.slice(0,7))))).sort((a,b)=>rd(a)<rd(b)?-1:1),wk=dateAdd(t,7),
  grp=[['Atrasados','bad',up.filter(isLate),8],['Hoje','ok',up.filter(i=>!isLate(i)&&rd(i)<=t),8],['Esta semana','wr',up.filter(i=>!isLate(i)&&rd(i)>t&&rd(i)<=wk),8],['Depois','',up.filter(i=>!isLate(i)&&rd(i)>wk),6]].filter(g=>g[2].length),
- tl=grp.length?grp.map(g=>`<div class="hx-grp"><div class="hx-gh ${g[1]}"><b>${g[0]}</b><span>${g[2].length} · ${R(sum(g[2],i=>i.amt))}</span></div>${(V.hxMore&&V.hxMore[g[0]]?g[2]:g[2].slice(0,3)).map(row).join('')}${g[2].length>3&&!(V.hxMore&&V.hxMore[g[0]])?`<button type="button" class="hx-more" data-a="more" data-v="${g[0]}">+ ${g[2].length-3} outros · ver todos</button>`:''}</div>`).join(''):'<div class="empty">Nada pendente. 🎉</div>';
+ tl=grp.length?grp.map(g=>`<div class="hx-grp"><div class="hx-gh ${g[1]}"><b>${g[0]}</b><span>${g[2].length} · ${R(sum(g[2],i=>i.amt))}</span></div>${(V.hxMore&&V.hxMore[g[0]]?g[2]:g[2].slice(0,3)).map(homeRow).join('')}${g[2].length>3&&!(V.hxMore&&V.hxMore[g[0]])?`<button type="button" class="hx-more" data-a="more" data-v="${g[0]}">+ ${g[2].length-3} outros · ver todos</button>`:''}</div>`).join(''):'<div class="empty">Nada pendente. 🎉</div>';
  const qa=QuickActions();
  return ctl()+hero+qa+att+`<article class="hx-box"><div class="hx-bh"><b>Próximos pagamentos</b><small>toque no status para marcar como pago</small></div>${tl}</article>`}
 function vTx(kind){const r=rg(),w=V.acc,I=kind==='inc',all=items(r.y).filter(i=>i.k===kind&&i.p===w&&(!r.a||i.date===r.a)),
@@ -1455,7 +1459,7 @@ function vSet(){const a=AC(),p=a.pf,t=a.set,s=V.sub||'pf',nm=esc(p.dn||p.n),hasP
  if(s==='nt')b=`<div class="box"><b>Alertas do Painel (conta ${nm})</b>${[['fat','Fatura de cartão perto do vencimento'],['late','Despesas atrasadas'],['rec','Receitas previstas e não recebidas'],['neg','Saldo projetado negativo']].map(([k,n])=>`<label style="display:flex;gap:.6rem;align-items:center;color:var(--tx);font-size:.95rem"><input type="checkbox" data-nt="${k}" ${nt(V.acc,k)?'checked':''}> ${n}</label>`).join('')}</div>`;
  if(s==='sy')b=`<div class="grid g2"><div class="box"><b>Sincronização</b><div class="k" style="margin:.4rem 0">${SYNC==='ok'?'☁️ Sincronizado online: os dados aparecem em qualquer aparelho que abrir este link com acesso.':'💾 Salvo só neste navegador. A gravação online fica ativa quando o link é aberto por uma conta com acesso.'}</div></div>
  <div class="box"><b>Backup da conta ${nm}</b><div class="k" style="margin:.3rem 0 .9rem">Guarde seus dados num arquivo ou traga de volta um backup salvo. Afeta apenas esta conta.</div><input type="file" id="bf" accept="*/*" style="display:none"><div class="bkg"><button class="btn" data-a="dl">${svg(IC.dl)} Exportar backup</button><button class="btn g" data-a="csv">📊 Exportar CSV</button><button class="btn g" data-a="imp">📂 Importar backup</button><button class="btn d" data-a="rst">🗑️ Apagar tudo</button></div></div></div>`;
- return nav+b}
+ return b}
 function vCpl(){
   if(!document.body.classList.contains('has-partner'))return '<div class="box empty" style="padding:40px 20px;text-align:center"><div style="font-size:46px;margin-bottom:12px">👫</div><h2 style="margin:0 0 8px">Seu espaço a dois começa aqui</h2><div class="k" style="max-width:520px;margin:0 auto">Compartilhe a conta com seu parceiro para acompanhar despesas divididas, contribuições e acertos em um só lugar.</div></div>';
   const r=rg(),raw=items(r.y).filter(i=>!r.a||i.date===r.a);
@@ -2289,4 +2293,22 @@ try{decorate();placeInd()}catch(e){}
  #pdfdoc td{padding:3px 6px;border-bottom:1px solid #ddd}
  #pdfdoc .pdf-tot{text-align:right;font-weight:700;margin-top:4px}
 }
+
+/* ===== AJUSTES 3: menu Mais no PC + Próximos pagamentos limpos ===== */
+@media(min-width:900px){
+ .msh.on{display:block;position:fixed;inset:0;z-index:60}
+ .msh-bg{position:absolute;inset:0;background:#0009}
+ .msh-p{position:absolute;left:0;right:0;bottom:0;margin-inline:auto;width:min(520px,calc(100vw - 32px));max-height:84vh;overflow:auto;background:var(--bg);border:1px solid var(--ln);border-radius:24px 24px 0 0;padding:.5rem 1rem 1.4rem;animation:shup .25s var(--e)}
+ .msh-h{display:block;width:44px;height:5px;border-radius:3px;background:var(--ln);margin:.2rem auto .6rem}
+ .msh-t{font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin:.9rem .3rem .3rem}
+ .msh-r{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:48px;padding:.5rem .8rem;border:0;border-radius:14px;background:none;color:var(--tx);font-size:1rem;font-weight:600;text-align:left;cursor:pointer}
+ .msh-r:hover{background:var(--s2)}
+ .msh-r b{color:var(--mu);font-size:1.3rem;font-weight:400}
+}
+.hx-row{align-items:center!important;gap:.75rem!important}
+.hx-row .m>div:first-child{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal!important;line-height:1.25;word-break:normal;overflow-wrap:anywhere}
+.hx-row .m .k{font-size:.72rem;line-height:1.4;margin-top:.15rem}
+.hx-ra{display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;flex:none}
+.hx-ra .a{font-size:.95rem}
+.hx-ra .tag{font-size:.68rem!important;padding:.22rem .5rem!important;white-space:nowrap}
 </style>
