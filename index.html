@@ -2231,4 +2231,25 @@ try{decorate();placeInd()}catch(e){}
 .cpx-person{padding:.8rem!important}.cpx-phead{display:flex!important;align-items:center!important;gap:.55rem!important;min-width:0!important;flex-wrap:wrap!important}.cpx-phead b{overflow-wrap:anywhere!important}.cpx-pgrid{grid-template-columns:1fr!important;gap:.45rem!important}.cpx-pgrid>div{display:flex!important;justify-content:space-between!important;align-items:center!important;gap:.5rem!important;min-width:0!important}.cpx-pgrid b{overflow-wrap:anywhere!important;text-align:right!important}
 #mo{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:6px!important}#mo .ml{flex:1!important;order:2!important;text-align:center!important;justify-content:center!important}#mo>[data-m="-1"]{order:1!important}#mo>[data-m="1"]{order:3!important}
 }
+
+/* ===== AJUSTES: saldo previsto compacto + faturas sem sobreposição ===== */
+.hx-proj{min-height:0!important;height:auto!important;gap:.2rem!important;padding:.8rem 1rem!important;border-radius:18px!important}
+.hx-proj small{font-size:.6rem!important;line-height:1.2}
+.hx-proj strong{font-size:clamp(1.5rem,6vw,2rem)!important;line-height:1.1!important}
+.hx-proj p{margin:0!important;font-size:.74rem!important;line-height:1.35!important}
+.hx-proj .hx-formula{margin-top:0!important;padding-top:.25rem!important}
+@media(max-width:900px){
+ .rpx-fc summary{
+  grid-template-columns:48px minmax(0,1fr) minmax(0,1fr)!important;
+  grid-template-areas:"mk fn fn" "fa fa fp" "fb fb st"!important;
+  gap:.7rem .8rem!important;align-items:center!important}
+ .rpx-fc summary>:nth-child(1){grid-area:mk!important}
+ .rpx-fc summary>.rpx-fn{grid-area:fn!important;grid-column:auto!important}
+ .rpx-fc summary>.rpx-fv:nth-child(3){grid-area:fa!important}
+ .rpx-fc summary>.rpx-fv:nth-child(4){grid-area:fp!important}
+ .rpx-fc summary>.rpx-fb{grid-area:fb!important;grid-column:auto!important}
+ .rpx-fc summary>.rep-card-status{grid-area:st!important;justify-self:stretch;text-align:center}
+ .rpx-fv{min-width:0}
+ .rpx-fv b{font-size:.95rem!important}
+}
 </style>
