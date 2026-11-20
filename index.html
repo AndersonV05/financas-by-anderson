@@ -995,6 +995,50 @@ main.gr .ring .rf{animation:ringIn 1.1s .15s var(--e) both}@keyframes ringIn{fro
 .toast-undo{margin-left:.5rem;background:none;border:0;color:#4f46e5;font:inherit;font-weight:800;cursor:pointer;padding:.2rem .35rem;border-radius:8px}.toast-undo:hover{background:#4f46e51a}.toast-undo:focus-visible{outline:2px solid #4f46e5}
 .rel{font-weight:700;color:var(--mu)}.rel.bad{color:var(--bad)}.rel.wr{color:var(--wr)}
 </style>
+
+<style id="fba-dashboard-report-search-refresh">
+/* Atalhos com cores sem abandonar o tema escuro */
+.qa-i{min-width:0!important;gap:.48rem!important;font-weight:700!important}
+.qa-i .qa-c{width:42px!important;height:42px!important;border-radius:14px!important;display:grid!important;place-items:center!important;background:var(--qa-bg,#252d3b)!important;color:var(--qa-fg,#dbe4f0)!important;transition:transform .18s ease,filter .18s ease}
+.qa-i .qa-c svg{width:21px!important;height:21px!important;stroke:currentColor!important}
+.qa-i:active .qa-c{transform:scale(.94)}
+.qa-i[data-v="inc"]{--qa-bg:#17382f;--qa-fg:#55d6a0}
+.qa-i[data-v="exp"]{--qa-bg:#40272b;--qa-fg:#ff8585}
+.qa-i[data-v="cpl"]{--qa-bg:#3c2939;--qa-fg:#e99ac4}
+.qa-i[data-v="loans"]{--qa-bg:#3c3321;--qa-fg:#e9bd65}
+.qa-i[data-v="goal"]{--qa-bg:#20364a;--qa-fg:#72b9f5}
+.qa-i[data-v="notif"]{--qa-bg:#332b46;--qa-fg:#b59af5}
+.hx-notices .hx-att{display:flex;flex-wrap:wrap;gap:.5rem}
+.hx-notice-empty{padding:.55rem .7rem;border-radius:11px;background:color-mix(in srgb,var(--ok) 9%,var(--sf));color:var(--ok);font-size:.82rem;font-weight:650}
+.hx-movements .row{border-bottom:1px solid var(--ln)}
+.hx-movements .row:last-child{border-bottom:0}
+/* Relatórios: hierarquia tipográfica mais clara */
+.rpx-head>div:first-child>b,.rpx-bh>b,.rpx-sec .rpx-bh b{font-size:.96rem;letter-spacing:-.015em}
+.rpx-head>div:first-child>small,.rpx-bh small,.rpx-sec .rpx-bh small{font-size:.72rem;line-height:1.45}
+.rpx-kpi small{font-size:.7rem!important;font-weight:650;letter-spacing:.01em}
+.rpx-kpi b{font-size:clamp(.9rem,1.25vw,1.12rem)!important;line-height:1.25!important;font-weight:800!important}
+.rpx-fn b{font-size:.9rem!important;font-weight:800!important;letter-spacing:-.01em}
+.rpx-fn small{font-size:.7rem!important;line-height:1.4!important}
+.rpx-fv small{font-size:.65rem!important;font-weight:650}
+.rpx-fv b{font-size:.9rem!important;font-weight:800!important;font-variant-numeric:tabular-nums}
+.rpx-big b{font-size:.84rem!important;font-weight:750!important}
+.rpx-big small{font-size:.68rem!important;line-height:1.4}
+/* Busca rápida confortável no celular */
+.qs{padding: max(5vh,env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom))!important;align-items:flex-start!important}
+.qs-p{width:min(580px,100%)!important;max-height:88dvh!important;display:flex!important;flex-direction:column!important}
+.qs-h{min-height:58px!important;flex:none!important}
+.qs-h input{font-size:16px!important;min-height:42px!important;touch-action:manipulation}
+.qs-list{max-height:min(68dvh,620px)!important;overflow-y:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}
+.qs-i{min-height:46px!important;touch-action:manipulation!important}
+@media(max-width:600px){
+ .qa-i .qa-c{width:40px!important;height:40px!important}
+ .qa-i{font-size:.72rem!important}
+ .hx-notices,.hx-movements{padding:.85rem!important}
+ .rpx-head>div:first-child>b{font-size:.9rem!important}
+ .rpx-fn b{font-size:.84rem!important}
+}
+</style>
+
 </head><body>
 <div class="app"><div class="tb"><button class="mb" id="mb" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><b class="bt">Finanças <em>By Anderson</em></b><div class="mo" id="mo"></div><div class="acc" id="acc"></div></div><main id="main"></main></div>
 <div class="scrim" id="sc"></div><aside class="side" id="nav"></aside>
@@ -1169,13 +1213,16 @@ function vHome(){
  if(nl&&nt(w,'late'))chips.push(['bad','⚠️',`${nl} despesa(s) atrasada(s)`,'exp']);
  if(mr&&nt(w,'rec'))chips.push(['wr','🔔',`${mr} receita(s) não recebida(s)`,'inc']);
   S.cards.filter(c=>c.owner===w).forEach(c=>{const dd=billDueDate(cur,c.due),d=Math.round((new Date(dd+'T00:00:00')-new Date(t+'T00:00:00'))/864e5),u=sum(items([cur]).filter(i=>i.card===c.id&&!i.paid&&pOK(i,w,'panel')),i=>i.amt);if(u>0&&d>=0&&d<=5&&nt(w,'fat'))chips.push(['wr','💳',`Fatura ${esc(c.name)} ${R(u)} · vence em ${d} dia(s)`,'cards'])});
- const att=chips.length?`<div class="hx-att">${chips.map(c=>`<button type="button" class="hx-chip ${c[0]}" data-a="go" data-v="${c[3]}">${c[1]} ${c[2]}</button>`).join('')}</div>`:'';
+ const att=chips.length?`<article class="hx-box hx-notices"><div class="hx-bh"><b>Avisos</b><small>${chips.length} aviso${chips.length===1?'':'s'} para conferir</small></div><div class="hx-att">${chips.map(c=>`<button type="button" class="hx-chip ${c[0]}" data-a="go" data-v="${c[3]}">${c[1]} ${c[2]}</button>`).join('')}</div></article>`:`<article class="hx-box hx-notices"><div class="hx-bh"><b>Avisos</b><small>Tudo tranquilo por aqui</small></div><div class="hx-notice-empty">✓ Nenhum aviso importante neste momento.</div></article>`;
+ const recent=hxBills(items([addM(ym,-2),addM(ym,-1),...yl])).filter(i=>i.p===w&&pOK(i,w,'panel')).sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,5);
+ const recentHtml=recent.length?recent.map(homeRow).join(''):'<div class="empty">Nenhuma movimentação recente.</div>';
+ const movements=`<article class="hx-box hx-movements"><div class="hx-bh"><b>Movimentações recentes</b><small>Últimos lançamentos</small></div>${recentHtml}</article>`;
  // próximos pagamentos em grupos
  const up=hxBills(items([addM(yl[0],-3),addM(yl[0],-2),addM(yl[0],-1),...yl]).filter(i=>i.p===w&&pOK(i,w,'panel')&&i.k!=='inc'&&!i.paid&&i.cat!=='Dinheiro guardado'&&(isLate(i)||yl.includes(i.date.slice(0,7))))).sort((a,b)=>rd(a)<rd(b)?-1:1),wk=dateAdd(t,7),
  grp=[['Atrasados','bad',up.filter(isLate),8],['Hoje','ok',up.filter(i=>!isLate(i)&&rd(i)<=t),8],['Esta semana','wr',up.filter(i=>!isLate(i)&&rd(i)>t&&rd(i)<=wk),8],['Depois','',up.filter(i=>!isLate(i)&&rd(i)>wk),6]].filter(g=>g[2].length),
  tl=grp.length?grp.map(g=>`<div class="hx-grp"><div class="hx-gh ${g[1]}"><b>${g[0]}</b><span>${g[2].length} · ${R(sum(g[2],i=>i.amt))}</span></div>${(V.hxMore&&V.hxMore[g[0]]?g[2]:g[2].slice(0,3)).map(homeRow).join('')}${g[2].length>3&&!(V.hxMore&&V.hxMore[g[0]])?`<button type="button" class="hx-more" data-a="more" data-v="${g[0]}">+ ${g[2].length-3} outros · ver todos</button>`:''}</div>`).join(''):'<div class="empty">Nada pendente. 🎉</div>';
  const qa=QuickActions();
- return ctl()+hero+qa+att+`<article class="hx-box"><div class="hx-bh"><b>Próximos pagamentos</b><small>toque no status para marcar como pago</small></div>${tl}</article>`}
+ return ctl()+hero+qa+att+movements+`<article class="hx-box"><div class="hx-bh"><b>Próximos pagamentos</b><small>toque no status para marcar como pago</small></div>${tl}</article>`}
 function vTx(kind){const r=rg(),w=V.acc,I=kind==='inc',all=items(r.y).filter(i=>i.k===kind&&i.p===w&&(!r.a||i.date===r.a)),
  its=all.filter(i=>(!V.f.cat||i.cat===V.f.cat)&&(!V.f.q||i.desc.toLowerCase().includes(V.f.q.toLowerCase()))&&(!V.f.pay||i.pay===V.f.pay)&&(!V.f.st||stt(i)===V.f.st)).sort((a,b)=>a.date<b.date?1:-1),ss=I?['Recebido','Pendente','Atrasado']:['Já pago','A pagar','Atrasado'];
  const sl=(f,o,n)=>`<select data-f="${f}"><option value="">${n}</option>${o.map(x=>`<option ${V.f[f]===x?'selected':''}>${x}</option>`).join('')}</select>`;
@@ -1415,7 +1462,7 @@ function vRep(){
   S.buys.filter(b=>b.card===c.id&&personVisible(b.person,s,'reports')).forEach(b=>{for(let i=0;i<b.n;i++)if(r.y.includes(addM(stm(b),i))){const val=inst(b,i),key=b.person||'__';pbd[key]=pbd[key]||{tot:0,op:0};pbd[key].tot+=val;if(!bpaid(b,i))pbd[key].op+=val}});
   const prs=Object.entries(pbd).sort((a,b)=>b[1].tot-a[1].tot).map(([k,v])=>{const pp=k!=='__'&&S.people.find(x=>x.id===k);return `<div class="rep-person-row"><span class="rep-person-avatar" style="--person-color:${pp?pp.c:'#8a94a8'}">${pp?(pp.e||'🧑'):'👤'}</span><span class="rep-person-name">${pp?esc(pp.name):'Sem responsável'}</span><b>${R(v.tot)}</b><small class="${v.op?'rep-warn':'rep-good'}">${v.op?'Em aberto '+R(v.op):'✓ Tudo pago'}</small></div>`}).join('');
   const l4=String(c.last4||'').replace(/\D/g,'').slice(-4)||'••••',pct=fa?Math.round((fa-op)/fa*100):100;
-  return `<details class="rpx-fc"><summary><span class="rep-card-mark" style="background:${bankBg(c)}">${esc(c.em||'💳')}</span><span class="rpx-fn"><b>${esc(c.name)}</b><small>${c.bank&&c.bank!=='Outro'&&norm(c.bank)!==norm(c.name)?esc(c.bank)+' · ':''}•••• ${l4} · vence dia ${c.due}</small></span><span class="rpx-fv"><small>Fatura</small><b>${R(fa)}</b></span><span class="rpx-fv"><small>Falta pagar</small><b class="${op?'rep-warn':'rep-good'}">${R(op)}</b></span><span class="rpx-fb"><i style="width:${pct}%;background:${bankAc(c)}"></i></span><span class="rep-card-status ${op?'is-open':'is-paid'}">${op?'Em aberto':'Quitada'}</span></summary><div class="rep-people">${prs||'<div class="rep-empty">Sem compras neste período.</div>'}</div></details>`};
+  return `<details class="rpx-fc"><summary><span class="rep-card-mark" style="background:${bankBg(c)}">${esc(c.em||'💳')}</span><span class="rpx-fn"><b>${esc(c.name)}</b><small>•••• ${l4} · vence dia ${c.due}</small></span><span class="rpx-fv"><small>Fatura</small><b>${R(fa)}</b></span><span class="rpx-fv"><small>Falta pagar</small><b class="${op?'rep-warn':'rep-good'}">${R(op)}</b></span><span class="rpx-fb"><i style="width:${pct}%;background:${bankAc(c)}"></i></span><span class="rep-card-status ${op?'is-open':'is-paid'}">${op?'Em aberto':'Quitada'}</span></summary><div class="rep-people">${prs||'<div class="rep-empty">Sem compras neste período.</div>'}</div></details>`};
  const fat=cards.length?`<div class="rpx-fl">${cards.map(fcard).join('')}</div><div class="rep-total-open"><span><small>Compromissos em aberto</small><b>Todos os cartões</b></span><strong>${R(totOp)}</strong></div>`:'<div class="rep-empty-state"><span>💳</span><b>Nenhum cartão cadastrado</b><small>Cadastre um cartão para acompanhar suas faturas aqui.</small></div>';
  const charts=AC().set.showCharts?`<div class="rpx-two"><article class="rpx-box"><div class="rpx-bh"><b>Despesas por categoria</b><small>${R(tc)} no período</small></div>${catHtml}</article><article class="rpx-box"><div class="rpx-bh"><b>Evolução mensal</b><div class="seg"><button class="${N===6?'on':''}" data-a="repn" data-v="6">6 meses</button><button class="${N===12?'on':''}" data-a="repn" data-v="12">12 meses</button></div></div>${evoHtml}</article></div>`:'';
  return ctl()+`<div class="rpx-head"><div><b>Relatório de ${esc(AC().pf.dn||AC().pf.n)}</b><small>${r.l} · ${its.filter(who).length} lançamentos analisados</small></div><div class="rpx-exp"><button class="btn g s" data-a="repcsv">${svg(IC.dl)} CSV</button><button class="btn g s" data-a="repprint">${svg(IC.print)} PDF</button></div></div>${strip}${charts}${hxStrip()}<section class="rpx-sec"><div class="rpx-bh"><div><b>Cartões e faturas</b><small>Fatura completa de cada cartão · toque para ver por pessoa</small></div>${cards.length?`<button type="button" class="btn g s" data-a="cardpdf">${svg(IC.print)} PDF</button>`:''}</div>${fat}</section><article class="rpx-box"><div class="rpx-bh"><b>Maiores gastos do período</b><small>Top 5</small></div>${bigHtml}</article>`;
@@ -1807,7 +1854,7 @@ document.addEventListener('pointerdown',e=>{if(RM())return;const b=e.target.clos
 let ov=null,sel=0,list=[];
 const norm=s=>String(s==null?'':s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function build(q){const n=norm(q.trim()),out=[];
- TABS.forEach(t=>out.push({g:'Ir para',l:t[1],ic:IC[t[0]],run:()=>{V.tab=t[0];V.f={cat:'',st:'',pay:''};anim=1;draw()}}));
+ TABS.forEach(t=>out.push({g:'',l:t[1],ic:IC[t[0]],run:()=>{V.tab=t[0];V.f={cat:'',st:'',pay:''};anim=1;draw()}}));
  try{S.cards.filter(c=>String(c.owner)===String(V.acc)).forEach(c=>out.push({g:'Cartões',l:c.name+(c.last4?' · •••• '+String(c.last4).slice(-4):''),ic:IC.cards,run:()=>A.cv(String(c.id))}))}catch(e){}
  if(n){try{for(let k=-12;k<=12;k++){const ym=addM(cur,k),l=MN[+ym.slice(5)-1]+' de '+ym.slice(0,4);out.push({g:'Mês',l,ic:IC.rep,run:()=>setM(ym)})}}catch(e){}
   try{
@@ -1823,7 +1870,7 @@ function build(q){const n=norm(q.trim()),out=[];
  }
  const f=n?out.filter(x=>norm(x.l).includes(n)):out.filter(x=>x.g!=='Mês'&&x.g!=='Neste mês');
  const res=[];let it=0;f.forEach(x=>{if(x.it&&++it>6)return;res.push(x)});return res.slice(0,14)}
-function paint(){const box=ov.querySelector('.qs-list');let g='';box.innerHTML=list.length?list.map((x,i)=>{const h=x.g!==g?`<div class="qs-g">${esc(x.g)}</div>`:'';g=x.g;return h+`<button type="button" class="qs-i${i===sel?' on':''}" data-i="${i}">${sv(x.ic||'')}<span>${esc(x.l)}</span>${x.r?`<em class="mny">${esc(x.r)}</em>`:''}</button>`}).join(''):'<div class="qs-e">Nada encontrado.</div>';
+function paint(){const box=ov.querySelector('.qs-list');let g='';box.innerHTML=list.length?list.map((x,i)=>{const h=x.g&&x.g!==g?`<div class="qs-g">${esc(x.g)}</div>`:'';g=x.g;return h+`<button type="button" class="qs-i${i===sel?' on':''}" data-i="${i}">${sv(x.ic||'')}<span>${esc(x.l)}</span>${x.r?`<em class="mny">${esc(x.r)}</em>`:''}</button>`}).join(''):'<div class="qs-e">Nada encontrado.</div>';
  const on=box.querySelector('.on');if(on)on.scrollIntoView({block:'nearest'})}
 function qClose(){if(!ov)return;const o=ov;ov=null;o.classList.add('out');setTimeout(()=>o.remove(),200)}
 function qGo(i){const x=list[i];if(!x)return;qClose();menu(false);x.run()}
