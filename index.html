@@ -10,7 +10,8 @@
 *{box-sizing:border-box}html{font-size:var(--fs);height:100%}
 body{margin:0;min-height:100%;color:var(--tx);font-family:Manrope,system-ui,sans-serif;line-height:1.45;background:radial-gradient(700px 380px at 0 0,#8b5cf622,transparent),radial-gradient(700px 380px at 100% 0,#22d3ee18,transparent),var(--bg);background-attachment:fixed}
 button,input,select,textarea{font:inherit;color:inherit}
-.app{max-width:1080px;margin:0 auto;padding:0 1rem 3rem}
+.app{width:min(100% - 2rem,1280px);max-width:1280px;margin:0 auto;padding:0 0 3rem}
+@media(min-width:1100px){.app{width:min(100% - 4rem,1360px)}#main{min-width:0}.grid{gap:1rem}.box{padding:1.15rem}.tb{padding:1rem 0 1.15rem}}
 .tb{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:.8rem;padding:.8rem 0;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(12px)}
 .bt{font-weight:800;letter-spacing:-.02em}.bt em{font-style:normal;background:linear-gradient(90deg,var(--c1),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .mb{width:44px;height:44px;border-radius:13px;border:1px solid var(--ln);background:var(--sf);cursor:pointer;display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;transition:transform .2s var(--e),background .2s}
@@ -1718,7 +1719,7 @@ const A={cardpdf:()=>{const r=rg(),s=V.acc,cards=S.cards.filter(c=>c.owner===s);
  gfx:async v=>{const x=AC().goals.find(g=>g.id===v),r=await ask('Aporte mensal fixo · '+x.name,'Quanto você vai guardar por mês? Deixe vazio para remover.',fm(x.monthly));if(r===null)return;x.monthly=pm(r);save();draw()},
  gd:async v=>{const x=AC().goals.find(g=>g.id===v),r=await ask('Aportar · '+x.name,'Valor em R$ (negativo para retirar).',fm(x.monthly));if(r===null)return;const n=pm(String(r).startsWith('-')?r.slice(1):r)*(String(r).trim().startsWith('-')?-1:1);if(n){x.saved=Math.max(0,(+x.saved||0)+n);const en={d:td(),v:n};(x.hist=x.hist||[]).push(en);if(x.hist.length>60)x.hist.shift();save();draw();toast(n>0?'Aporte registrado 🎉':'Retirada registrada',gUndo(x,en));if(n>0&&+x.target>0&&(+x.saved>=+x.target))confetti()}},
  rd:v=>{const a=AC();a.read=a.read||{};if(a.read[v])delete a.read[v];else a.read[v]=1;save();draw()},
- repn:v=>{V.repN=+v;draw()},more:v=>{V.hxMore=V.hxMore||{};V.hxMore[v]=true;draw()},gm:v=>{V.ym=v;if(V.mode==='d')V.mode='m';anim=1;draw()},gc:v=>{V.tab='exp';V.f={cat:v,st:'',pay:''};anim=1;draw()},go:v=>{V.tab=v;V.f={cat:'',st:'',pay:''};anim=1;draw()},repwho:v=>{V.scopeWho=v;draw()},repprint:()=>{const main=document.getElementById('main');if(!main)return;const old=document.getElementById('reportdoc');if(old)old.remove();const d=document.createElement('div');d.id='reportdoc';const copy=main.cloneNode(true);copy.querySelectorAll('details').forEach(x=>x.open=true);copy.querySelectorAll('.rpx-exp').forEach(x=>x.remove());d.appendChild(copy);document.body.appendChild(d);document.documentElement.classList.add('report-mode');const done=()=>{document.documentElement.classList.remove('report-mode');d.remove();window.removeEventListener('afterprint',done)};window.addEventListener('afterprint',done);setTimeout(()=>window.print(),60)},repcsv:()=>{const r=rg(),rows=[['Data','Tipo','Descrição','Categoria','Valor','Status']];items(r.y).filter(i=>i.p===V.acc&&pOK(i,V.acc,'reports')).sort((a,b)=>a.date<b.date?-1:1).forEach(i=>rows.push([i.date,i.k==='inc'?'Receita':'Despesa',i.desc,i.cat,(i.amt/100).toFixed(2).replace('.',','),stt(i)]));const t='\ufeff'+rows.map(x=>x.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(';')).join('\n'),u=URL.createObjectURL(new Blob([t],{type:'text/csv'})),a=document.createElement('a');a.href=u;a.download='relatorio-'+V.ym+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2e3)},
+ repn:v=>{V.repN=+v;draw()},more:v=>{V.hxMore=V.hxMore||{};V.hxMore[v]=true;draw()},gm:v=>{V.ym=v;if(V.mode==='d')V.mode='m';anim=1;draw()},gc:v=>{if(V.tab!=='exp')V._prevTab=V.tab;V.tab='exp';V.f={cat:v,st:'',pay:''};anim=1;draw()},go:v=>{if(V.tab!==v)V._prevTab=V.tab;V.tab=v;V.f={cat:'',st:'',pay:''};anim=1;draw()},repwho:v=>{V.scopeWho=v;draw()},repprint:()=>{const main=document.getElementById('main');if(!main)return;const old=document.getElementById('reportdoc');if(old)old.remove();const d=document.createElement('div');d.id='reportdoc';const copy=main.cloneNode(true);copy.querySelectorAll('details').forEach(x=>x.open=true);copy.querySelectorAll('.rpx-exp').forEach(x=>x.remove());d.appendChild(copy);document.body.appendChild(d);document.documentElement.classList.add('report-mode');const done=()=>{document.documentElement.classList.remove('report-mode');d.remove();window.removeEventListener('afterprint',done)};window.addEventListener('afterprint',done);setTimeout(()=>window.print(),60)},repcsv:()=>{const r=rg(),rows=[['Data','Tipo','Descrição','Categoria','Valor','Status']];items(r.y).filter(i=>i.p===V.acc&&pOK(i,V.acc,'reports')).sort((a,b)=>a.date<b.date?-1:1).forEach(i=>rows.push([i.date,i.k==='inc'?'Receita':'Despesa',i.desc,i.cat,(i.amt/100).toFixed(2).replace('.',','),stt(i)]));const t='\ufeff'+rows.map(x=>x.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(';')).join('\n'),u=URL.createObjectURL(new Blob([t],{type:'text/csv'})),a=document.createElement('a');a.href=u;a.download='relatorio-'+V.ym+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2e3)},
  rda:()=>{const a=AC();a.read=a.read||{};(V.notes||[]).filter(n=>!a.read[n.id]).forEach(n=>a.read[n.id]=1);save();draw()},
  nview:v=>{V.nview=v;draw()},
  nrd:v=>{const n=(V.notes||[])[+v];if(!n)return;const a=AC();a.read=a.read||{};if(a.read[n.id])delete a.read[n.id];else a.read[n.id]=1;save();draw()},
@@ -1769,7 +1770,7 @@ const A={cardpdf:()=>{const r=rg(),s=V.acc,cards=S.cards.filter(c=>c.owner===s);
  rst:async()=>{if(await cf('Apagar tudo?','Todos os dados desta conta serão apagados. A outra conta não é afetada.',1)){const w=V.acc,p=AC().pf;['tx','cards','buys','loans'].forEach(n=>S[n]=S[n].filter(x=>x.owner!==w));S.acc[w]=mkA(p.n,p.e,p.c,p.c2);save();applySet();draw()}},
  rsd:async()=>{if(await cf('Restaurar padrão?','Tema, cor, letra, emojis e status voltam ao padrão. Lançamentos, cartões e categorias NÃO são apagados.')){const a=AC();a.set={theme:'dark',font:16,auto:true,n:{fat:1,late:1,rec:1,neg:1},accent:a.pf.c,incOther:false,expOther:false,cardOther:false,consolidate:false,showCharts:true};a.pe={...DPE};a.st={paid:{e:'✅',c:'#34d399'},pend:{e:'⏳',c:'#fbbf24'},late:{e:'⚠️',c:'#f87171'},rec:{e:'💰',c:'#34d399'}};save();applySet();draw();toast('Configurações restauradas ao padrão')}}
 };
-const TABS=[['home','Painel','🏠'],['inc','Receitas','💰'],['exp','Despesas','💸'],['cards','Cartões','💳'],['loans','Empréstimos','🏦'],['notif','Notificações','🔔'],['cpl','Casal','👫'],['goal','Metas','🏆'],['rep','Relatórios','📊'],['set','Configurações','⚙️']];
+const TABS=[['home','Painel','🏠'],['inc','Receitas','💰'],['exp','Despesas','💸'],['cards','Cartões','💳'],['loans','Empréstimos','🏦'],['notif','Notificações','🔔'],['cpl','Compartilhado','👫'],['goal','Metas','🏆'],['rep','Relatórios','📊'],['set','Configurações','⚙️']];
 const PGM={home:['#22d3ee','Visão geral das suas finanças'],inc:['#34d399','Tudo que entra na sua conta'],exp:['#f87171','Tudo que sai da sua conta'],cards:['#a78bfa','Seus cartões e faturas'],loans:['#fbbf24','Parcelamentos e dívidas'],notif:['#fb923c','Só o que precisa da sua atenção'],rep:['#38bdf8','Gráficos e análises do período'],cpl:['#f472b6','Despesas divididas e quem deve a quem'],goal:['#34d399','Seus objetivos de economia'],set:['#8a94a8','Preferências, contas e dados']};
 const VW={home:vHome,inc:()=>vTx2('inc'),exp:()=>vTx2('exp'),cards:vCards,loans:vLoans,notif:vNotif,rep:vRep,cpl:vCpl,goal:vGoal,set:vSet};
 let anim=0;const moEl=document.getElementById('mo'),accEl=document.getElementById('acc'),main=document.getElementById('main'),nv=document.getElementById('nav'),sc=document.getElementById('sc'),mb=document.getElementById('mb');
@@ -1818,8 +1819,8 @@ function countUp(){if(window.matchMedia&&matchMedia('(prefers-reduced-motion:red
 function maskMoney(){const w=document.createTreeWalker(main,NodeFilter.SHOW_TEXT),L=[];let n;while(n=w.nextNode()){if(/R\$/.test(n.nodeValue)&&!n.parentElement.closest('script,style,svg,.mny'))L.push(n)}L.forEach(n=>{const parts=n.nodeValue.split(/(-?R\$\s?-?[\d.]+,\d{2})/),f=document.createDocumentFragment();parts.forEach((p,i)=>{if(i%2){const sp=document.createElement('span');sp.className='mny';sp.textContent=p;f.appendChild(sp)}else if(p)f.appendChild(document.createTextNode(p))});n.parentNode.replaceChild(f,n)})}
 function confetti(){if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;const cs=['#34d399','#fbbf24','#22d3ee','#f472b6','#a78bfa'];for(let i=0;i<42;i++){const d=document.createElement('i');d.className='cf';d.style.cssText=`left:${Math.random()*100}vw;background:${cs[i%5]};--dx:${(Math.random()-.5)*220}px;--r:${Math.random()*720}deg;animation-delay:${Math.random()*.25}s`;document.body.appendChild(d);setTimeout(()=>d.remove(),2000)}}
 function draw(){const _y=window.scrollY,_k=V.tab+'|'+V.sub;document.body.dataset.tab=V.tab;bnUI();accUI();mUI();const pfb=document.getElementById('profileBtn');if(pfb){const pf=AC().pf;pfb.innerHTML=`<span class="profile-avatar">${avIn(pf)}</span><span class="profile-name">${esc(pf.dn||pf.n||'Perfil')}</span>`;}nv.innerHTML=navHTML();
- main.className=anim?'fx':'';anim=0;const _t=TABS.find(t=>t[0]===V.tab),_g=PGM[V.tab]||['#22d3ee',''];main.innerHTML=(['home','inc','exp','rep','cards'].includes(V.tab)?'':`<div class="phd" style="--pc:${_g[0]};--ps:${_g[0]}22"><span class="phi">${svg(IC[V.tab]||'')}</span><div><h1 class="pt">${_t[1]}</h1><div class="phs">${_g[1]}</div></div></div>`)+VW[V.tab]();const _chg=V._k!==_k,_new=_chg||V._cu!==V.ym;if(!_chg)window.scrollTo(0,_y);V._k=_k;V._cu=V.ym;if(document.documentElement.classList.contains('priv'))maskMoney();else if(_new)countUp();if(_new){main.querySelectorAll('.hx-box,.hx-hero>*,.rpx-box,.rpx-strip,.rpx-sec,.wcx,.cpx-person,.cpx-list,.cpx-settle,.cpx-strip,.gcard,.box').forEach((el,i)=>el.style.setProperty('--i',Math.min(i,9)));main.classList.add('gr');clearTimeout(V._grt);V._grt=setTimeout(()=>main.classList.remove('gr'),1100)}}
-function goTab(t,sub){V.tab=t;if(sub)V.sub=sub;V.card=null;V.hl=null;V.f={cat:'',st:'',pay:''};anim=1;sheet(false);draw();window.scrollTo(0,0)}
+ main.className=anim?'fx':'';anim=0;const _t=TABS.find(t=>t[0]===V.tab),_g=PGM[V.tab]||['#22d3ee',''];main.innerHTML=(['home','inc','exp','rep','cards'].includes(V.tab)?'':`<div class="phd" style="--pc:${_g[0]};--ps:${_g[0]}22"><button type="button" class="page-back" data-page-back aria-label="Voltar" title="Voltar">${svg(IC.chev)}</button><span class="phi">${svg(IC[V.tab]||'')}</span><div class="phd-copy"><h1 class="pt">${_t[1]}</h1><div class="phs">${_g[1]}</div></div></div>`)+VW[V.tab]();const _chg=V._k!==_k,_new=_chg||V._cu!==V.ym;if(!_chg)window.scrollTo(0,_y);V._k=_k;V._cu=V.ym;if(document.documentElement.classList.contains('priv'))maskMoney();else if(_new)countUp();if(_new){main.querySelectorAll('.hx-box,.hx-hero>*,.rpx-box,.rpx-strip,.rpx-sec,.wcx,.cpx-person,.cpx-list,.cpx-settle,.cpx-strip,.gcard,.box').forEach((el,i)=>el.style.setProperty('--i',Math.min(i,9)));main.classList.add('gr');clearTimeout(V._grt);V._grt=setTimeout(()=>main.classList.remove('gr'),1100)}}
+function goTab(t,sub){if(t!==V.tab)V._prevTab=V.tab;V.tab=t;if(sub)V.sub=sub;V.card=null;V.hl=null;V.f={cat:'',st:'',pay:''};anim=1;sheet(false);draw();window.scrollTo(0,0)}
 function sheet(o){const sh=document.getElementById('msh');if(!sh)return;
  if(o){const r=(a,t,ic,desc='',extra='')=>`<button type="button" class="msh-r msh-tile ${extra}" data-sh="${a}"><span class="msh-ico">${svg(IC[ic]||IC.set)}</span><span class="msh-copy"><span class="msh-label">${t}</span>${desc?`<small>${desc}</small>`:''}</span><b>›</b></button>`;
  const accounts=document.body.classList.contains('has-partner')?['a','b']:['a'];
@@ -1835,7 +1836,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-bn]');
 const QUICK_ACTIONS=[
  {tab:'inc',label:'Receitas',icon:'wallet'},
  {tab:'exp',label:'Despesas',icon:'receipt'},
- {tab:'cpl',label:'Casal'},
+ {tab:'cpl',label:'Compartilhado'},
  {tab:'loans',label:'Empréstimo'},
  {tab:'goal',label:'Metas'},
  {tab:'notif',label:'Avisos'}
@@ -1853,8 +1854,9 @@ function goItem(k,id,d){
  setTimeout(()=>{if(String(V.hl)===String(id)){V.hl=null;draw()}},2800)}
 function menu(o){nv.classList.toggle('open',o);sc.classList.toggle('on',o);mb.classList.toggle('open',o);mb.setAttribute('aria-expanded',o)}
 mb.onclick=()=>menu(!nv.classList.contains('open'));sc.onclick=()=>menu(false);addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
-nv.onclick=e=>{if(e.target.closest('[data-col]')){const v=!document.documentElement.classList.contains('col');document.documentElement.classList.toggle('col',v);try{localStorage.setItem('fin-sb',v?'1':'0')}catch(x){}return}const b=e.target.closest('[data-tab]');if(b){V.tab=b.dataset.tab;V.f={cat:'',st:'',pay:''};anim=1;menu(false);draw()}};
+nv.onclick=e=>{if(e.target.closest('[data-col]')){const v=!document.documentElement.classList.contains('col');document.documentElement.classList.toggle('col',v);try{localStorage.setItem('fin-sb',v?'1':'0')}catch(x){}return}const b=e.target.closest('[data-tab]');if(b){if(V.tab!==b.dataset.tab)V._prevTab=V.tab;V.tab=b.dataset.tab;V.f={cat:'',st:'',pay:''};anim=1;menu(false);draw()}};
 main.onclick=e=>{
+ if(e.target.closest('[data-page-back]')){const prev=V._prevTab&&V._prevTab!==V.tab?V._prevTab:'home';V._prevTab=null;goTab(prev);return}
  const open=e.target.closest('[data-open-card]');
  if(open){
    e.preventDefault();
@@ -2615,4 +2617,31 @@ try{decorate();placeInd()}catch(e){}
 .nts-sw:checked{background:var(--accent);border-color:var(--accent)}.nts-sw:checked::after{transform:translateX(18px)}
 .nts-opt{display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:.55rem 1.1rem .75rem 4.3rem;font-size:.76rem;color:var(--mu)}
 .nts-sel{width:auto!important;min-width:96px;padding:.3rem .6rem!important;border-radius:999px!important;font-size:.76rem!important}
+
+/* Ajustes de responsividade para Avisos/Notificações e telas internas */
+#main{min-width:0;overflow-wrap:anywhere}
+.nts,.nts-g,.nts-hd,.nts-row,.nts-opt{min-width:0;max-width:100%}
+.nts-tx{overflow-wrap:anywhere}
+.nts-row{margin:0;flex-wrap:nowrap}
+.nts-opt{flex-wrap:wrap;padding-left:calc(34px + 2.15rem)}
+.page-back{width:38px;height:38px;flex:none;display:grid;place-items:center;border:1px solid var(--ln);border-radius:12px;background:var(--sf);color:var(--tx);cursor:pointer;transition:background .2s,transform .2s}
+.page-back:hover{background:var(--s2);transform:translateX(-2px)}
+.page-back svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.phd-copy{min-width:0;flex:1}
+@media(min-width:1100px){.phd{padding:1rem 0 1.1rem;margin:.5rem 0 1.3rem}.page-back{width:42px;height:42px}.phd .phi{width:50px;height:50px}.pt{font-size:1.85rem}.phs{font-size:.9rem}}
+@media(max-width:600px){
+ .app{width:100%;padding:0 .8rem 6rem}
+ .nts{gap:.75rem}.nts-hd{align-items:flex-start;padding:.9rem;gap:.65rem}
+ .nts-hd h2{font-size:1.05rem;line-height:1.25}.nts-hd p{font-size:.75rem;line-height:1.4;max-width:100%}
+ .nts-hd-ico{width:36px;height:36px;border-radius:11px}.nts-g{border-radius:15px}
+ .nts-gt{padding:.75rem .85rem .45rem;font-size:.62rem}
+ .nts-row{gap:.6rem;padding:.78rem .85rem;align-items:center}
+ .nts-ico{width:31px;height:31px;border-radius:9px}
+ .nts-tx b{font-size:.81rem;line-height:1.3;overflow-wrap:anywhere}.nts-tx small{font-size:.69rem;line-height:1.35;overflow-wrap:anywhere}
+ .nts-sw{width:40px;height:23px}.nts-opt{padding:.5rem .85rem .75rem calc(.85rem + 31px + .6rem);gap:.5rem;font-size:.7rem;justify-content:space-between}
+ .nts-sel{min-width:88px!important;max-width:112px!important}
+ .phd{gap:.5rem;align-items:center}.page-back{width:34px;height:34px;border-radius:10px}
+ .phi{width:36px;height:36px;font-size:1.1rem}.phs{font-size:.72rem;overflow-wrap:anywhere}
+}
+@media(max-width:380px){.nts-opt{padding-left:.85rem}.nts-opt span{flex:1 1 100%}.nts-sel{max-width:100%!important}.nts-row{gap:.5rem;padding:.72rem .7rem}.nts-tx b{font-size:.77rem}.nts-tx small{font-size:.66rem}}
 </style>
