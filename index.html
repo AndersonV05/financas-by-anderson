@@ -1616,18 +1616,18 @@ function vProfile(){
  const a=AC(),p=a.pf,au=window.__finAuth;
  if(typeof p.e==='string'&&p.e.includes('@')){p.email=p.email||p.e;p.e='🧑';save()}
  const loginMail=(au&&au.mail&&au.mail())||'',email=loginMail||p.email||'',logged=!!loginMail,phone=p.phone||'',pname=p.phoneName||'',open=V.pfEdit||'',nm=esc(p.dn||p.n||'Sem nome');
- const row=(key,ico,label,val,btn,panel,extra='')=>`<div class="pf-row${open===key?' is-open':''}"><div class="pf-row-main"><span class="pf-ico">${icn(PI[ico])}</span><div class="pf-info"><small>${label}</small><b>${val}</b>${extra}</div><button type="button" class="pf-btn" data-pf-open="${key}" aria-expanded="${open===key}">${open===key?'Fechar':btn}</button></div>${open===key?`<div class="pf-panel">${panel}</div>`:''}</div>`;
+ const row=(key,ico,label,val,btn,panel,extra='')=>`<div class="pf-row pf-row-${key}${open===key?' is-open':''}"><div class="pf-row-main"><span class="pf-ico">${icn(PI[ico])}</span><div class="pf-info"><small>${label}</small><b>${val}</b>${extra}</div><button type="button" class="pf-btn" data-pf-open="${key}" aria-expanded="${open===key}">${open===key?'Fechar':btn}</button></div>${open===key?`<div class="pf-panel">${panel}</div>`:''}</div>`;
  const plain=(ico,label,val,btn)=>`<div class="pf-row"><div class="pf-row-main"><span class="pf-ico">${icn(PI[ico])}</span><div class="pf-info"><small>${label}</small><b>${val}</b></div>${btn||''}</div></div>`;
  const pw=(name,label,ph)=>`<label class="pf-f"><span>${label}</span><span class="pf-pw"><input type="password" name="${name}" autocomplete="new-password" placeholder="${ph}"><button type="button" class="pf-eye" data-pf-eye aria-label="Mostrar ou ocultar senha">${icn(PI.eye)}</button></span></label>`;
  const emailPanel=`<label class="pf-f"><span>Novo e-mail</span><input type="email" name="pfEmail" autocomplete="email" placeholder="seuemail@exemplo.com"></label><p class="pf-hint">${logged?'Enviaremos um link de confirmação para o novo endereço. O e-mail de acesso só muda depois que você confirmar.':'Você não está conectado: o e-mail será salvo apenas neste navegador.'}</p><div class="pf-actions"><button type="button" class="btn g" data-pf-open="">Cancelar</button><button type="button" class="btn" data-pf-save="email">Salvar e-mail</button></div>`;
- const phonePanel=`<div class="pf-two"><label class="pf-f"><span>Telefone com DDD</span><input type="tel" name="pfPhone" inputmode="tel" autocomplete="tel" placeholder="(81) 99999-9999" value="${esc(phone)}"></label><label class="pf-f"><span>Nome do contato <em>(opcional)</em></span><input type="text" name="pfPhoneName" placeholder="Ex.: Pessoal" value="${esc(pname)}"></label></div><div class="pf-actions">${phone?'<button type="button" class="btn d" data-pf-phone-clear>Remover</button>':''}<button type="button" class="btn g" data-pf-open="">Cancelar</button><button type="button" class="btn" data-pf-save="phone">Salvar telefone</button></div>`;
+ const phonePanel=`<label class="pf-f"><span>Telefone com DDD</span><input type="tel" name="pfPhone" inputmode="tel" autocomplete="tel" placeholder="(81) 99999-9999" value="${esc(phone)}"></label><div class="pf-actions">${phone?'<button type="button" class="btn d" data-pf-phone-clear>Remover</button>':''}<button type="button" class="btn g" data-pf-open="">Cancelar</button><button type="button" class="btn" data-pf-save="phone">Salvar telefone</button></div>`;
  const passPanel=logged?`<div class="pf-two">${pw('pfPass','Nova senha','Mínimo de 6 caracteres')}${pw('pfPass2','Confirmar nova senha','Repita a nova senha')}</div><div class="pf-meter" aria-hidden="true"><i></i></div><p class="pf-hint" id="pfPassHint">Use pelo menos 6 caracteres. Misturar letras, números e símbolos deixa a senha mais forte.</p><div class="pf-actions"><button type="button" class="btn g" data-pf-open="">Cancelar</button><button type="button" class="btn" data-pf-save="pass">Salvar nova senha</button></div>`:`<p class="pf-hint">Entre na sua conta online para alterar a senha.</p>`;
  return `<div class="pf">
- <section class="pf-hero"><button type="button" class="pf-av" data-a="ep" aria-label="Alterar foto de perfil"><span class="pf-av-in" style="--pf-c:${p.c||'var(--accent)'}">${avIn(p)}</span><span class="pf-cam">${icn(PI.cam)}</span></button><div class="pf-id"><span class="pf-badge">Conta pessoal</span><h2>${nm}</h2>${p.n&&p.n!==(p.dn||p.n)?`<p>${esc(p.n)}</p>`:''}<div class="pf-mail">${icn(PI.mail)}<span>${esc(email||'Nenhum e-mail cadastrado')}</span></div></div><button type="button" class="btn pf-edit" data-a="ep">${icn(PI.edit)}<span>Editar perfil</span></button></section>
+ <section class="pf-hero"><button type="button" class="pf-av" data-a="ep" aria-label="Alterar foto de perfil"><span class="pf-av-in" style="--pf-c:${p.c||'var(--accent)'}">${avIn(p)}</span><span class="pf-cam">${icn(PI.cam)}</span></button><div class="pf-id"><span class="pf-badge">Conta pessoal</span><h2>${nm}</h2><div class="pf-mail">${icn(PI.mail)}<span>${esc(email||'Nenhum e-mail cadastrado')}</span></div></div></section>
  <div class="pf-grid">
- <section class="pf-card pf-c-pers"><header><h3>Dados pessoais</h3><p>Como você aparece no aplicativo.</p></header>${plain('id','Nome completo',esc(p.n||'Não informado'),`<button type="button" class="pf-btn" data-a="ep">Editar</button>`)}${plain('user','Nome de exibição',nm,`<button type="button" class="pf-btn" data-a="ep">Editar</button>`)}</section>
+ <section class="pf-card pf-c-pers"><header><h3>Dados pessoais</h3><p>Como você aparece no aplicativo.</p></header>${plain('cam','Foto de perfil','Escolha uma foto ou emoji',`<button type="button" class="pf-btn" data-a="ep">Alterar</button>`)}${plain('user','Nome de exibição',nm,`<button type="button" class="pf-btn" data-a="ep">Editar</button>`)}</section>
  <section class="pf-card pf-c-sec"><header><h3>Segurança</h3><p>Proteja o acesso à sua conta.</p></header>${row('pass','lock','Senha','••••••••••','Alterar senha',passPanel)}${logged?plain('out','Sessão','Conectado neste aparelho',`<button type="button" class="pf-btn pf-danger" data-pf-logout>Sair</button>`):''}</section>
- <section class="pf-card pf-c-cont"><header><h3>Contato</h3><p>Seus dados de acesso e contato.</p></header>${row('email','mail','E-mail',esc(email||'Nenhum e-mail cadastrado'),email?'Alterar':'Adicionar',emailPanel,logged?'<span class="pf-ok">'+icn(PI.shield)+'E-mail de acesso</span>':'')}${row('phone','phone','Telefone',phone?esc(phone):'Não informado',phone?'Editar':'Adicionar',phonePanel,pname?`<span class="pf-sub">${esc(pname)}</span>`:'')}</section>
+ <section class="pf-card pf-c-cont"><header><h3>Contato</h3><p>Seus dados de acesso e contato.</p></header>${row('email','mail','E-mail',esc(email||'Nenhum e-mail cadastrado'),email?'Alterar':'Adicionar',emailPanel,logged?'<span class="pf-ok">'+icn(PI.shield)+'E-mail de acesso</span>':'')}${row('phone','phone','Telefone',phone?esc(phone):'Não informado',phone?'Editar':'Adicionar',phonePanel)}</section>
  </div></div>`}
 function vNotifSettings(){
  const N=AC().set.n||{},on1=k=>N[k]===1,fd=+N.fatd||5,sd=+N.soond||3;
@@ -1650,7 +1650,7 @@ async function pfSave(kind){
    if(logged){if(v.toLowerCase()===au.mail().toLowerCase())return toast('Este já é o seu e-mail atual.');const r=await cl.auth.updateUser({email:v});if(r.error)return toast(err(r.error.message));toast('Enviamos um link de confirmação para '+v)}
    else{pf.email=v;save();toast('E-mail salvo neste navegador.')}
    V.pfEdit='';draw();return}
-  if(kind==='phone'){const d=(q('pfPhone').value||'').replace(/\D/g,'');if(d.length<10||d.length>11)return toast('Informe o telefone com DDD.');pf.phone=fmtPhone(d);pf.phoneName=(q('pfPhoneName').value||'').trim();save();V.pfEdit='';draw();toast('Telefone salvo.');return}
+  if(kind==='phone'){const d=(q('pfPhone').value||'').replace(/\D/g,'');if(d.length<10||d.length>11)return toast('Informe o telefone com DDD.');pf.phone=fmtPhone(d);delete pf.phoneName;save();V.pfEdit='';draw();toast('Telefone salvo.');return}
   if(kind==='pass'){const a=q('pfPass').value||'',b=q('pfPass2').value||'';if(a.length<6)return toast('A senha deve ter pelo menos 6 caracteres.');if(a!==b)return toast('As senhas não coincidem.');if(!logged)return toast('Entre na sua conta online para trocar a senha.');const r=await cl.auth.updateUser({password:a});if(r.error)return toast(err(r.error.message));V.pfEdit='';draw();toast('Senha atualizada com sucesso.')}
  }catch(e){toast('Não foi possível concluir. Tente novamente.')}
 }
@@ -1702,8 +1702,8 @@ function vCpl(){
   const splitRows=dv.slice(0,8).map(i=>`<div class="cpx-row"><span class="cpx-ico">${ct(i.cat,i.p).e}</span><div class="cpx-rm"><b>${esc(i.desc)}</b><small>${D(i.date)} · ${esc(i.cat||'Sem categoria')} · pago por ${pn(i.p)}</small></div><span class="cpx-split">${i.sp}/${100-i.sp}</span><b class="cpx-val">${R(i.amt)}</b><button class="tag ${i.ac?'p':''}" data-a="stl" data-id="${i.id}">${i.ac?'✓ Acertado':'Acertar'}</button></div>`).join('');
   const progress=all.desp?Math.min(100,all.paid/all.desp*100):0;
   const nA=esc(AC('a').pf.dn||AC('a').pf.n),nB=esc(AC('b').pf.dn||AC('b').pf.n);
-  return ctl()+`<section class="cpx-settle ${net?'':'is-even'}"><div><small>ACERTO ENTRE VOCÊS</small>${net?`<h2>${esc(pn(who))} deve <em>${R(Math.abs(net))}</em> a ${esc(pn(who==='a'?'b':'a'))}</h2><p>Para equilibrar as despesas divididas deste período.</p>`:'<h2><em>Tudo em equilíbrio</em></h2><p>Não há valores pendentes de acerto.</p>'}</div><div class="cpx-sfoot"><span>Dividido <b>${R(totalShared)}</b></span><span>Em aberto <b>${R(openShared)}</b></span></div></section>
-  <section class="cpx-strip">${[['Saldo combinado',all.saldo,'',all.saldo<0?'bad':'ok'],['Receitas recebidas',all.rec,duo(A.rec,B.rec),'ok'],['Despesas comuns',all.desp,duo(A.desp,B.desp),''],['Compras no cartão',all.cd,duo(A.cd,B.cd),'']].map(x=>`<div class="cpx-kpi"><small>${x[0]}</small><b class="${x[3]}">${R(x[1])}</b>${x[2]}</div>`).join('')}</section>
+  return ctl()+`<section class="cpx-settle ${net?'':'is-even'}"><div><small>ACERTO ENTRE VOCÊS</small>${net?`<h2>${esc(pn(who))} deve <em>${R(Math.abs(net))}</em> a ${esc(pn(who==='a'?'b':'a'))}</h2><p>Para equilibrar as despesas divididas deste período.</p>`:'<h2><em>Tudo em equilíbrio</em></h2><p>Não há valores pendentes de acerto.</p>'}</div><div class="cpx-sfoot"><div>Dividido<b>${R(totalShared)}</b></div><div>Em aberto<b class="${openShared?'wr':'ok'}">${R(openShared)}</b></div></div></section>
+  <section class="cpx-sum"><div class="cpx-sum-top"><small>Saldo combinado</small><strong class="${all.saldo<0?'bad':'ok'}">${R(all.saldo)}</strong></div><div class="cpx-sum-t"><div class="cpx-sum-h"><span></span><span>Total</span><span style="--pcol:${pc('a')}"><i></i>${nA}</span><span style="--pcol:${pc('b')}"><i></i>${nB}</span></div>${[['Receitas recebidas','ok',all.rec,A.rec,B.rec],['Despesas comuns','',all.desp,A.desp,B.desp],['Compras no cartão','',all.cd,A.cd,B.cd]].map(r=>`<div class="cpx-sum-r"><span>${r[0]}</span><b class="${r[1]}">${R(r[2])}</b><span>${R(r[3])}</span><span>${R(r[4])}</span></div>`).join('')}</div></section>
   <div class="cpx-people">${personCard('a',A)}${personCard('b',B)}</div>
   <section class="cpx-list"><div class="cpx-lh"><h3>Despesas divididas</h3><span>${dv.length} registro${dv.length===1?'':'s'}</span></div>${splitRows||'<div class="cpx-empty">Nenhuma despesa dividida neste período. Ao registrar uma despesa, escolha “Dividir com o casal”.</div>'}</section>`;
 }
@@ -2753,7 +2753,7 @@ try{decorate();placeInd()}catch(e){}
 .tb-back{display:none;place-items:center;width:42px;height:42px;flex:none;padding:0;border:1px solid var(--ln);border-radius:13px;background:var(--sf);color:var(--tx);cursor:pointer;transition:background .2s,transform .2s var(--e)}
 .tb-back:hover{background:var(--s2);transform:translateX(-2px)}.tb-back:active{transform:scale(.92)}
 .tb-back svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
-body[data-tab]:not([data-tab=home]) .tb-back{display:grid}
+body[data-tab]:not([data-tab=home]) .tb-back,body.has-hist .tb-back{display:grid}
 .phd .page-back{display:none!important}
 @media(max-width:899px){.tb-back{width:40px;height:40px;border-radius:12px}}
 
@@ -2789,11 +2789,11 @@ body[data-tab]:not([data-tab=home]) .tb-back{display:grid}
 .pf-cam svg{width:15px;height:15px}
 .pf-id{flex:1;min-width:0;display:flex;flex-direction:column;gap:.25rem}
 .pf-badge{align-self:flex-start;padding:.2rem .65rem;border-radius:99px;background:var(--accent-soft);color:var(--accent-light);font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
-.pf-id h2{margin:.15rem 0 0;font-size:clamp(1.3rem,3vw,1.8rem);line-height:1.15;overflow-wrap:anywhere}
+.pf-id h2{margin:.15rem 0 0;font-size:clamp(1.3rem,3vw,1.8rem);line-height:1.15;overflow-wrap:break-word}
 .pf-id p{margin:0;color:var(--mu);font-size:.9rem}
 .pf-mail{display:flex;align-items:center;gap:.5rem;margin-top:.35rem;font-size:.92rem;font-weight:600;min-width:0}
 .pf-mail svg{width:17px;height:17px;flex:none;color:var(--accent-light)}
-.pf-mail span{overflow-wrap:anywhere}
+.pf-mail span{overflow-wrap:break-word}
 .pf-edit{flex:none;display:inline-flex;align-items:center;gap:.5rem}
 .pf-edit svg{width:17px;height:17px}
 .pf-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;align-items:start;grid-template-areas:"pers sec" "cont cont"}
@@ -2808,7 +2808,7 @@ body[data-tab]:not([data-tab=home]) .tb-back{display:grid}
 .pf-ico{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:13px;background:var(--accent-soft);color:var(--accent-light)}
 .pf-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:.1rem}
 .pf-info small{color:var(--mu);font-size:.7rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
-.pf-info b{font-size:.96rem;font-weight:700;overflow-wrap:anywhere}
+.pf-info b{font-size:.96rem;font-weight:700;overflow-wrap:break-word}
 .pf-sub{color:var(--mu);font-size:.78rem}
 .pf-ok{display:inline-flex;align-items:center;gap:.3rem;margin-top:.15rem;color:var(--ok);font-size:.74rem;font-weight:700}
 .pf-ok svg{width:14px;height:14px}
@@ -2894,17 +2894,66 @@ body[data-tab]:not([data-tab=home]) .tb-back{display:grid}
 .bnav button svg{fill:none!important;stroke:currentColor!important}
 .bnav button{gap:.5rem}
 
+/* E-mail sem corte */
+.pf-info b,.pf-mail span{word-break:normal;overflow-wrap:break-word}
+.pf-row-email .pf-info b{font-size:.92rem}
+@media(max-width:640px){
+ .pf-row-email .pf-row-main{flex-wrap:wrap}
+ .pf-row-email .pf-info{flex:1 1 calc(100% - 52px)}
+ .pf-row-email .pf-btn{margin-left:calc(38px + .7rem)}
+ .pf-mail span{font-size:.84rem}
+ .pf-id{flex-basis:calc(100% - 96px)}
+}
+
+/* ===== Compartilhado: resumo em cartão único ===== */
+.cpx-sum{margin-bottom:.9rem;border:1px solid var(--ln);border-radius:20px;background:var(--sf);overflow:hidden}
+.cpx-sum-top{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;padding:1.05rem 1.2rem;border-bottom:1px solid var(--ln);background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%)}
+.cpx-sum-top small{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.cpx-sum-top strong{font-size:clamp(1.35rem,5vw,1.8rem);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cpx-sum-top .ok{color:var(--ok)}.cpx-sum-top .bad{color:var(--bad)}
+.cpx-sum-h,.cpx-sum-r{display:grid;grid-template-columns:minmax(0,1.35fr) repeat(3,minmax(0,1fr));gap:.5rem;align-items:center;padding:.8rem 1.2rem}
+.cpx-sum-h{padding-top:.75rem;padding-bottom:.35rem;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--mu)}
+.cpx-sum-h span{display:flex;align-items:center;gap:.35rem;min-width:0;justify-content:flex-end;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cpx-sum-h span:first-child{justify-content:flex-start}
+.cpx-sum-h i{flex:none;width:7px;height:7px;border-radius:50%;background:var(--pcol,var(--accent))}
+.cpx-sum-r{border-top:1px solid var(--ln);font-variant-numeric:tabular-nums}
+.cpx-sum-r>span:first-child{font-size:.82rem;font-weight:700;line-height:1.25}
+.cpx-sum-r>b{text-align:right;font-size:.88rem;white-space:nowrap}
+.cpx-sum-r>b.ok{color:var(--ok)}
+.cpx-sum-r>span:not(:first-child){text-align:right;font-size:.8rem;color:var(--mu);white-space:nowrap}
+@media(max-width:560px){
+ .cpx-sum-top,.cpx-sum-h,.cpx-sum-r{padding-left:.9rem;padding-right:.9rem}
+ .cpx-sum-h,.cpx-sum-r{gap:.35rem;grid-template-columns:minmax(0,1.05fr) repeat(3,minmax(0,1fr))}
+ .cpx-sum-r>b{font-size:.78rem}.cpx-sum-r>span:not(:first-child){font-size:.72rem}.cpx-sum-r>span:first-child{font-size:.76rem}
+}
+.cpx-lsum{display:flex;gap:1.4rem;flex-wrap:wrap;margin:.1rem 0 .7rem;padding:.65rem .9rem;border-radius:12px;background:var(--s2);font-size:.8rem;color:var(--mu)}
+.cpx-lsum b{color:var(--tx);margin-left:.25rem;font-variant-numeric:tabular-nums}
+.cpx-lsum b.wr{color:var(--wr)}.cpx-lsum b.ok{color:var(--ok)}
+
 </style>
 <script id="ui-v20-js">
 (function(){
-  /* Seta de voltar do topo */
+  /* Histórico de navegação: a seta desfaz um passo por vez */
+  var _draw=draw,last=null;
+  draw=function(){
+    var key=V.tab+'|'+(V.tab==='set'?(V.sub||''):'');
+    if(last===null)last={tab:V.tab,sub:V.sub,key:key};
+    else if(key!==last.key){
+      if(!V._back){V._hist=V._hist||[];V._hist.push({tab:last.tab,sub:last.sub,key:last.key});if(V._hist.length>60)V._hist.shift()}
+      last={tab:V.tab,sub:V.sub,key:key};
+    }
+    V._back=false;
+    var r=_draw.apply(this,arguments);document.body.classList.toggle('has-hist',(V._hist||[]).length>0);return r;
+  };
   var back=document.getElementById('tbBack');
   if(back)back.onclick=function(){
     var sh=document.getElementById('msh');
     if(sh&&sh.classList.contains('on')){sheet(false);return}
-    if(V.tab==='set'&&V.pfEdit){V.pfEdit='';}
-    var prev=V._prevTab&&V._prevTab!==V.tab?V._prevTab:'home';
-    V._prevTab=null;goTab(prev);
+    var cur=V.tab+'|'+(V.tab==='set'?(V.sub||''):''),h=V._hist||[],e=h.pop();
+    while(e&&e.key===cur)e=h.pop();
+    if(!e)e={tab:'home'};
+    V.pfEdit='';V._back=true;V.tab=e.tab;if(e.tab==='set'&&e.sub)V.sub=e.sub;
+    V.card=null;V.hl=null;V.f={cat:'',st:'',pay:''};anim=1;sheet(false);draw();window.scrollTo(0,0);
   };
   /* Máscara de telefone + medidor de força da senha */
   document.addEventListener('input',function(e){
