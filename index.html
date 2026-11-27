@@ -2071,6 +2071,186 @@ const pfb=document.createElement('button');pfb.id='profileBtn';pfb.type='button'
 try{decorate();placeInd()}catch(e){}
 })();
 </script>
+<style id="landing-css">
+#landing{position:fixed;inset:0;z-index:10000;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;font-family:Manrope,system-ui,sans-serif;color:#eef1f7;
+  --lp-bg:#161c2c;--lp-bg2:#1d2438;--lp-sf:#ffffff0f;--lp-sf2:#ffffff17;--lp-ln:#ffffff1f;--lp-mu:#a3adc2;--lp-c1:#22d3ee;--lp-c2:#8b5cf6;
+  background:radial-gradient(900px 520px at 85% -5%,#8b5cf633,transparent 60%),radial-gradient(800px 480px at 0% 8%,#22d3ee26,transparent 60%),linear-gradient(180deg,var(--lp-bg) 0%,var(--lp-bg2) 55%,var(--lp-bg) 100%)}
+#landing[hidden]{display:none}
+html.lp-on,html.lp-on body{overflow:hidden}
+#landing *{box-sizing:border-box}
+#landing .lp-wrap{width:min(100% - 32px,1120px);margin:0 auto}
+#landing .lp-top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,#161c2c 78%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid #ffffff12;padding-top:env(safe-area-inset-top,0px)}
+#landing .lp-top .lp-wrap{display:flex;align-items:center;gap:10px;height:62px}
+#landing .lp-brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:.95rem;letter-spacing:-.01em;min-width:0}
+#landing .lp-brand img{width:32px;height:32px;border-radius:9px;flex:none}
+#landing .lp-brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#landing .lp-brand em{font-style:normal;background:linear-gradient(90deg,var(--lp-c1),var(--lp-c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#landing .lp-auth{margin-left:auto;display:flex;gap:8px;flex:none}
+#landing .lp-btn{font:inherit;cursor:pointer;border-radius:12px;font-weight:700;font-size:.88rem;padding:9px 14px;border:1px solid var(--lp-ln);background:var(--lp-sf);color:#eef1f7;transition:transform .2s,background .2s,border-color .2s}
+#landing .lp-btn:hover{background:var(--lp-sf2)}#landing .lp-btn:active{transform:scale(.96)}
+#landing .lp-btn.pri{border:0;color:#0b1020;background:linear-gradient(135deg,var(--lp-c1),#7c8cff 60%,var(--lp-c2))}
+#landing .lp-dl{font:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:18px;padding:17px 30px;font-size:1.08rem;font-weight:800;color:#0b1020;background:linear-gradient(135deg,var(--lp-c1),#7c8cff 60%,var(--lp-c2));box-shadow:0 18px 40px -16px #22d3eeaa,0 10px 30px -18px #8b5cf6;transition:transform .2s,box-shadow .2s}
+#landing .lp-dl:hover{transform:translateY(-2px)}#landing .lp-dl:active{transform:scale(.97)}
+#landing .lp-dl svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#landing .lp-dl.done{background:#34d399;box-shadow:none}
+#landing .lp-hero .lp-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:64px 0 40px}
+#landing .lp-tag{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;letter-spacing:.04em;color:#c9d2ff;background:#8b5cf61f;border:1px solid #8b5cf64d;padding:6px 12px;border-radius:999px}
+#landing .lp-tag i{width:7px;height:7px;border-radius:50%;background:var(--lp-c1);box-shadow:0 0 10px var(--lp-c1)}
+#landing h1{font-size:clamp(2.1rem,5.4vw,3.6rem);line-height:1.06;letter-spacing:-.035em;margin:18px 0 16px;font-weight:800}
+#landing h1 span{background:linear-gradient(90deg,var(--lp-c1),var(--lp-c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#landing .lp-lead{font-size:1.08rem;line-height:1.6;color:var(--lp-mu);margin:0 0 28px;max-width:34em}
+#landing .lp-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px}
+#landing .lp-link{font:inherit;background:none;border:0;color:#cfd6e6;font-weight:700;cursor:pointer;padding:6px 2px;border-bottom:1px solid #ffffff33}
+#landing .lp-note{margin-top:18px;font-size:.82rem;color:var(--lp-mu);display:flex;gap:14px;flex-wrap:wrap}
+#landing .lp-note b{color:#dfe5f2;font-weight:700}
+#landing .lp-phone{position:relative;justify-self:center;width:min(300px,78vw);aspect-ratio:390/664;border-radius:38px;padding:9px;background:linear-gradient(160deg,#3a4260,#141a29);box-shadow:0 40px 80px -30px #000c,0 0 0 1px #ffffff1a inset}
+#landing .lp-phone img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:30px;display:block;background:#0a0d14}
+#landing .lp-phone::before{content:"";position:absolute;inset:-40px;z-index:-1;border-radius:50%;background:radial-gradient(closest-side,#8b5cf640,transparent)}
+#landing .lp-feats{padding:10px 0 30px}
+#landing .lp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#landing .lp-card{background:var(--lp-sf);border:1px solid var(--lp-ln);border-radius:18px;padding:18px}
+#landing .lp-card .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:1.3rem;background:linear-gradient(135deg,#22d3ee26,#8b5cf633);border:1px solid #ffffff1a;margin-bottom:12px}
+#landing .lp-card b{display:block;font-size:1rem;margin-bottom:4px}
+#landing .lp-card p{margin:0;color:var(--lp-mu);font-size:.9rem;line-height:1.5}
+#landing .lp-sec-t{text-align:center;margin:0 auto 26px;max-width:640px}
+#landing .lp-sec-t small{font-size:.74rem;letter-spacing:.14em;font-weight:800;color:var(--lp-c1);text-transform:uppercase}
+#landing .lp-sec-t h2{font-size:clamp(1.6rem,3.6vw,2.3rem);letter-spacing:-.03em;margin:8px 0 8px;line-height:1.15}
+#landing .lp-sec-t p{margin:0;color:var(--lp-mu);line-height:1.6}
+#landing .lp-show{padding:50px 0 10px}
+#landing .lp-row{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:30px 0}
+#landing .lp-row.rev .lp-row-txt{order:2}
+#landing .lp-row h3{font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.025em;margin:10px 0 10px;line-height:1.15}
+#landing .lp-row p{color:var(--lp-mu);line-height:1.65;margin:0 0 16px}
+#landing .lp-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+#landing .lp-list li{display:flex;gap:10px;align-items:flex-start;font-size:.95rem;line-height:1.45}
+#landing .lp-list li::before{content:"";flex:none;width:20px;height:20px;margin-top:1px;border-radius:50%;background:#34d39926 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18 8' fill='none' stroke='%2334d399' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat}
+#landing .lp-pill{display:inline-block;font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:999px;color:#bfeefa;background:#22d3ee1f;border:1px solid #22d3ee44}
+#landing .lp-pill.v{color:#ddd2ff;background:#8b5cf624;border-color:#8b5cf655}
+#landing .lp-how{padding:50px 0}
+#landing .lp-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:s}
+#landing .lp-steps .lp-card{position:relative;padding-top:22px}
+#landing .lp-steps .lp-card::before{counter-increment:s;content:counter(s);position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.9rem;color:#0b1020;background:linear-gradient(135deg,var(--lp-c1),var(--lp-c2))}
+#landing .lp-cta{padding:20px 0 60px}
+#landing .lp-cta .lp-box{text-align:center;border-radius:26px;padding:44px 22px;border:1px solid #ffffff1f;background:radial-gradient(600px 260px at 50% 0,#8b5cf638,transparent),linear-gradient(135deg,#22d3ee14,#8b5cf61c),var(--lp-sf)}
+#landing .lp-cta h2{font-size:clamp(1.6rem,3.6vw,2.3rem);letter-spacing:-.03em;margin:0 0 10px}
+#landing .lp-cta p{color:var(--lp-mu);margin:0 0 24px}
+#landing footer{border-top:1px solid #ffffff12;padding:22px 0 calc(22px + env(safe-area-inset-bottom,0px));color:var(--lp-mu);font-size:.82rem}
+#landing footer .lp-wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+#lpInst{border:1px solid #ffffff22;border-radius:22px;background:#1a2133;color:#eef1f7;width:min(420px,92vw);padding:22px;font-family:Manrope,system-ui,sans-serif;box-shadow:0 30px 70px -20px #000}
+#lpInst::backdrop{background:#000a}
+#lpInst h3{margin:0 0 6px;font-size:1.15rem}#lpInst p{margin:0 0 14px;color:#a3adc2;font-size:.92rem;line-height:1.5}
+#lpInst ol{margin:0 0 18px;padding:0;list-style:none;display:grid;gap:10px;counter-reset:i}
+#lpInst li{counter-increment:i;display:flex;gap:12px;align-items:flex-start;background:#ffffff0d;border:1px solid #ffffff17;border-radius:14px;padding:11px 12px;font-size:.92rem;line-height:1.45}
+#lpInst li::before{content:counter(i);flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.8rem;color:#0b1020;background:linear-gradient(135deg,#22d3ee,#8b5cf6)}
+#lpInst .acts{display:flex;justify-content:flex-end}
+#lpInst button{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:12px;padding:10px 18px;color:#0b1020;background:linear-gradient(135deg,#22d3ee,#8b5cf6)}
+#gBackLp{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:#a3adc2;font:inherit;font-size:13px;cursor:pointer;padding:0;margin:0 0 14px}
+@media(max-width:860px){
+  #landing .lp-hero .lp-wrap{grid-template-columns:1fr;padding:36px 0 20px;gap:34px;text-align:center}
+  #landing .lp-lead{margin-left:auto;margin-right:auto}
+  #landing .lp-ctas,#landing .lp-note{justify-content:center}
+  #landing .lp-grid,#landing .lp-steps{grid-template-columns:1fr 1fr}
+  #landing .lp-row,#landing .lp-row.rev{grid-template-columns:1fr;gap:24px;text-align:left}
+  #landing .lp-row.rev .lp-row-txt{order:0}
+  #landing .lp-row .lp-phone{width:min(270px,72vw)}
+}
+@media(max-width:520px){
+  #landing .lp-grid,#landing .lp-steps{grid-template-columns:1fr}
+  #landing .lp-feats .lp-card{display:grid;grid-template-columns:42px 1fr;column-gap:14px;align-items:start;padding:14px 16px}
+  #landing .lp-feats .lp-card .ic{grid-row:span 2;margin:0}
+  #landing .lp-grid{gap:10px}
+  #landing .lp-brand span{font-size:.86rem}
+  #landing .lp-btn{padding:8px 11px;font-size:.82rem}
+  #landing .lp-dl{width:100%}
+  #landing .lp-top .lp-wrap{gap:8px}
+}
+@media(max-width:360px){#landing .lp-brand span{display:none}}
+</style>
+<script>
+/* Página de apresentação + instalação do app */
+(function(){
+  var ICON_DL='<svg viewBox="0 0 24 24"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>';
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__bip=e;});
+  function standalone(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
+  var ua=navigator.userAgent||'';
+  var isIOS=/iphone|ipad|ipod/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1);
+  var isAndroid=/android/i.test(ua);
+  var lp=document.createElement('div');lp.id='landing';lp.hidden=true;
+  lp.innerHTML=''
+  +'<header class="lp-top"><div class="lp-wrap">'
+  +'<div class="lp-brand"><img src="icons/icon-192.png" alt=""><span>Finanças <em>By Anderson</em></span></div>'
+  +'<div class="lp-auth"><button class="lp-btn" data-lp="login">Entrar</button><button class="lp-btn pri" data-lp="signup">Cadastrar</button></div>'
+  +'</div></header>'
+  +'<section class="lp-hero"><div class="lp-wrap"><div>'
+  +'<span class="lp-tag"><i></i>App de finanças pessoais</span>'
+  +'<h1>Seu dinheiro organizado, <span>na palma da mão</span></h1>'
+  +'<p class="lp-lead">Receitas, despesas, cartões, empréstimos e metas em um só lugar. Saiba quanto vai sobrar no fim do mês antes do mês acabar.</p>'
+  +'<div class="lp-ctas"><button class="lp-dl" data-lp="install">'+ICON_DL+'<span>Baixar app</span></button><button class="lp-link" data-lp="login">Já tenho conta</button></div>'
+  +'<div class="lp-note"><span><b>Android</b> · <b>iPhone</b> · <b>Computador</b></span><span>Seus dados sincronizados em todos</span></div>'
+  +'</div><div class="lp-phone"><img src="landing/app-inicio.webp" alt="Tela inicial do app com saldo previsto e resumo do mês" loading="eager"></div></div></section>'
+  +'<section class="lp-feats"><div class="lp-wrap"><div class="lp-grid">'
+  +'<div class="lp-card"><div class="ic">📈</div><b>Saldo previsto</b><p>Veja quanto vai sobrar no fim do mês, já contando o que ainda vai entrar e sair.</p></div>'
+  +'<div class="lp-card"><div class="ic">💳</div><b>Cartões e faturas</b><p>Fatura do mês, limite disponível e parcelas de cada cartão.</p></div>'
+  +'<div class="lp-card"><div class="ic">📊</div><b>Relatórios</b><p>Gastos por categoria, evolução mensal e exportação em PDF ou CSV.</p></div>'
+  +'<div class="lp-card"><div class="ic">🏦</div><b>Empréstimos</b><p>Controle parcelas pagas e em aberto, de quem você deve e de quem te deve.</p></div>'
+  +'<div class="lp-card"><div class="ic">👫</div><b>Compartilhado</b><p>Divida as finanças com outra pessoa e acompanhe tudo junto.</p></div>'
+  +'<div class="lp-card"><div class="ic">🏆</div><b>Metas e avisos</b><p>Defina metas e receba lembretes de contas a pagar e a receber.</p></div>'
+  +'</div></div></section>'
+  +'<section class="lp-show"><div class="lp-wrap">'
+  +'<div class="lp-sec-t"><small>Por dentro do app</small><h2>Feito para você entender seu dinheiro rápido</h2><p>Telas limpas, números grandes e tudo a um toque de distância.</p></div>'
+  +'<div class="lp-row"><div class="lp-row-txt"><span class="lp-pill">Cartões</span><h3>Cada cartão com a sua fatura, do jeito do seu banco</h3><p>Cadastre seus cartões e acompanhe tudo sem abrir o app do banco.</p>'
+  +'<ul class="lp-list"><li>Fatura do mês e quanto do limite já foi usado</li><li>Compras parceladas com as parcelas que faltam</li><li>Dia de fechamento e vencimento sempre à vista</li><li>Pague a fatura com um toque e o saldo se atualiza</li></ul></div>'
+  +'<div class="lp-phone"><img src="landing/app-cartoes.webp" alt="Tela de cartões com fatura e limite" loading="lazy"></div></div>'
+  +'<div class="lp-row rev"><div class="lp-row-txt"><span class="lp-pill v">Relatórios</span><h3>Descubra para onde seu dinheiro está indo</h3><p>Gráficos que mostram o seu mês e os próximos, sem planilha.</p>'
+  +'<ul class="lp-list"><li>Evolução de receitas, despesas e saldo mês a mês</li><li>Ritmo de gastos comparado ao mês anterior</li><li>Parcelas já comprometidas nos próximos meses</li><li>Exporte para PDF ou CSV quando precisar</li></ul></div>'
+  +'<div class="lp-phone"><img src="landing/app-relatorios.webp" alt="Tela de relatórios com gráficos" loading="lazy"></div></div>'
+  +'</div></section>'
+  +'<section class="lp-how"><div class="lp-wrap">'
+  +'<div class="lp-sec-t"><small>Como começar</small><h2>Pronto em menos de um minuto</h2></div>'
+  +'<div class="lp-steps">'
+  +'<div class="lp-card"><b>Baixe o app</b><p>Toque em “Baixar app”. Ele vai para a tela inicial do seu celular, como qualquer aplicativo.</p></div>'
+  +'<div class="lp-card"><b>Crie sua conta</b><p>Cadastre-se com seu e-mail. No computador, é só clicar em Entrar aqui no site.</p></div>'
+  +'<div class="lp-card"><b>Lance seus gastos</b><p>Adicione receitas, despesas e cartões. O app calcula o resto para você.</p></div>'
+  +'</div></div></section>'
+  +'<section class="lp-cta"><div class="lp-wrap"><div class="lp-box"><h2>Comece a organizar hoje</h2><p>Baixe o app e tenha suas finanças sempre com você.</p>'
+  +'<button class="lp-dl" data-lp="install">'+ICON_DL+'<span>Baixar app</span></button></div></div></section>'
+  +'<footer><div class="lp-wrap"><span>© '+new Date().getFullYear()+' Finanças By Anderson</span><button class="lp-link" data-lp="login">Entrar na minha conta</button></div></footer>';
+  document.body.appendChild(lp);
+
+  var dlg=document.createElement('dialog');dlg.id='lpInst';document.body.appendChild(dlg);
+  function showSteps(title,intro,steps){
+    dlg.innerHTML='<h3>'+title+'</h3><p>'+intro+'</p><ol>'+steps.map(function(s){return '<li><span>'+s+'</span></li>';}).join('')+'</ol><div class="acts"><button type="button">Entendi</button></div>';
+    dlg.querySelector('button').onclick=function(){dlg.close();};
+    if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');
+  }
+  function markInstalled(){lp.querySelectorAll('[data-lp=install]').forEach(function(b){b.classList.add('done');b.querySelector('span').textContent='App instalado ✓';});}
+  window.addEventListener('appinstalled',markInstalled);
+  function install(){
+    if(window.__bip){var e=window.__bip;window.__bip=null;e.prompt();if(e.userChoice)e.userChoice.then(function(r){if(r&&r.outcome==='accepted')markInstalled();});return;}
+    if(isIOS){
+      var notSafari=/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
+      showSteps('Instalar no iPhone','No iPhone a instalação é feita pelo Safari, em 3 toques:',
+        (notSafari?['Abra este site no <b>Safari</b>']:[]).concat(['Toque no botão <b>Compartilhar</b> (o quadrado com a seta para cima)','Role e toque em <b>Adicionar à Tela de Início</b>','Toque em <b>Adicionar</b>. Pronto, o ícone aparece na sua tela']));
+      return;
+    }
+    if(isAndroid){
+      showSteps('Instalar no Android','Se a janela de instalação não abriu, faça assim:',['Abra este site no <b>Chrome</b>','Toque nos <b>três pontinhos ⋮</b> no canto de cima','Toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>']);
+      return;
+    }
+    showSteps('Instalar no computador','No Chrome ou no Edge você pode instalar o app no computador:',['Clique no ícone de <b>instalar</b> no lado direito da barra de endereço','Confirme em <b>Instalar</b>','Ou, se preferir, clique em <b>Entrar</b> e use direto pelo site']);
+  }
+  window.__lpShow=function(){if(standalone())return;lp.hidden=false;document.documentElement.classList.add('lp-on');lp.scrollTop=0;};
+  window.__lpHide=function(){lp.hidden=true;document.documentElement.classList.remove('lp-on');};
+  lp.addEventListener('click',function(e){
+    var b=e.target.closest('[data-lp]');if(!b)return;var a=b.dataset.lp;
+    if(a==='install'){install();return;}
+    window.__lpHide();
+    if(window.__gateMode)window.__gateMode(a==='signup'?'signup':'login');
+    setTimeout(function(){var i=document.getElementById(a==='signup'?'gName':'gMail');if(i)i.focus();},50);
+  });
+})();
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script>
@@ -2125,6 +2305,7 @@ try{decorate();placeInd()}catch(e){}
   var gate=document.createElement('div');
   gate.id='gate';
   gate.innerHTML='<div class="card">'
+   +'<button type="button" id="gBackLp">\u2190 Conhecer o app</button>'
    +'<h1>Finan\u00e7as <em>By Anderson</em></h1>'
    +'<p class="sub" id="gsub">Entre na sua conta</p>'
    +'<div id="gform">'
@@ -2141,6 +2322,7 @@ try{decorate();placeInd()}catch(e){}
   document.body.appendChild(gate);
 
   var mode='login';
+  window.__gateMode=function(m){setMode(m);};
   function sh(id,b){var e=$(id);if(e)e.style.display=b?'':'none';}
   function gmsg(t,ok){var e=$('gMsg');if(!e)return;e.textContent=t||'';e.className='msg '+(ok===true?'ok':ok===false?'err':'');}
   function setMode(m){
@@ -2400,7 +2582,7 @@ try{decorate();placeInd()}catch(e){}
         display_name:(USER.user_metadata&&USER.user_metadata.display_name)||MAIL.split('@')[0]});
     }catch(e){}
     await loadAll();
-    gate.classList.add('hide');
+    gate.classList.add('hide'); if(window.__lpHide)window.__lpHide();
     mountAcctButton();
     booted=true;
     try{ V.acc='a'; S.cur='a'; applySet(); draw(); }catch(e){ console.error(e); }
@@ -2421,18 +2603,19 @@ try{decorate();placeInd()}catch(e){}
   sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
   setMode('login');
   $('gGo').onclick=doGo;
+  (function(){var b=$('gBackLp');var sa=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;if(!b)return;if(sa){b.style.display='none';return;}b.onclick=function(){if(window.__lpShow)window.__lpShow();};})();
   $('gToSignup').onclick=function(){setMode(mode==='signup'?'login':'signup');};
   $('gToReset').onclick=function(){setMode('reset');};
   ['gMail','gPass','gName'].forEach(function(id){var e=$(id);if(e)e.addEventListener('keydown',function(ev){if(ev.key==='Enter'){ev.preventDefault();doGo();}});});
 
   sb.auth.onAuthStateChange(function(evt,session){
-    if(evt==='PASSWORD_RECOVERY'){ gate.classList.remove('hide'); setMode('newpass'); return; }
+    if(evt==='PASSWORD_RECOVERY'){ if(window.__lpHide)window.__lpHide(); gate.classList.remove('hide'); setMode('newpass'); return; }
     if(session && session.user){ if(!booted||ME!==session.user.id) afterLogin(session); }
-    else if(evt==='SIGNED_OUT'){ booted=false; ME=null; gate.classList.remove('hide'); }
+    else if(evt==='SIGNED_OUT'){ booted=false; ME=null; gate.classList.remove('hide'); if(window.__lpShow)window.__lpShow(); }
   });
   sb.auth.getSession().then(function(r){
     if(r.data && r.data.session){ afterLogin(r.data.session); }
-    else { gate.classList.remove('hide'); }
+    else { gate.classList.remove('hide'); if(window.__lpShow&&!/type=recovery/.test(location.hash))window.__lpShow(); }
   });
 })();
 
