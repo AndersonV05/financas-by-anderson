@@ -3,6 +3,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- build: 2026-11-20-final-phases-1-9-v19 -->
 <title>Finanças By Anderson</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a0d14">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Finanças">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=Cormorant+Garamond:wght@600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0d14;--sf:#ffffff0d;--s2:#ffffff17;--ln:#ffffff1c;--tx:#e9edf5;--mu:#8a94a8;--c1:#22d3ee;--c2:#8b5cf6;--ok:#34d399;--bad:#f87171;--wr:#fbbf24;--ca:#22d3ee;--cb:#a78bfa;--cc:#f472b6;--fs:16px;--e:cubic-bezier(.2,.8,.2,1);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -2490,6 +2498,9 @@ try{decorate();placeInd()}catch(e){}
 }
 </style>
 
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+</script>
 </body></html>
 
 <style>
